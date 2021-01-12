@@ -1,16 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AppMaterialModule} from './utilities/app-material/app-material.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
+    FormsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AppMaterialModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
