@@ -3,9 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {AppMaterialModule} from './utilities/app-material/app-material.module';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatNativeDateModule} from '@angular/material/core';
+import { AppMaterialModule } from './utilities/app-material/app-material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ConfigurationModule } from './configuration/configuration.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     AppRoutingModule,
     AppMaterialModule,
     MatNativeDateModule,
+    ConfigurationModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
   ],
