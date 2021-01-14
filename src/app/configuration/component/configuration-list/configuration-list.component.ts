@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MatTableDataSource} from '@angular/material/table';
+import {ConfigurationModel} from '../../models/configuration.model';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-configuration-list',
@@ -7,9 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ConfigurationListComponent implements OnInit {
 
-  constructor() { }
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  ngOnInit(): void {
+  constructor() { }
+  listConfiguration: MatTableDataSource<ConfigurationModel>;
+  displayColumns : string[]=['Status','Valeur Debut','Valeur Fin','Montant','Actions']
+
+  ngOnInit(): void { this.refreshConfigList(); }
+
+  refreshConfigList(){
+    var dumpData = [{ status:'Actif',valeurDebut: '26700',valeurFin:'6000',montant:'20700'}]
+    this.listConfiguration = new MatTableDataSource<ConfigurationModel>(dumpData);
+  }
+
+  onEditConfig(row){
+
+  }
+
+  onDeleteConfig(id){
+
   }
 
 }

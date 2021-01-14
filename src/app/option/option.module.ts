@@ -5,7 +5,7 @@ import {OptionEditComponent} from './component/option-edit/option-edit.component
 import {OptionListComponent} from './component/option-list/option-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OptionRootingModule} from './option-rooting.module';
-import {AppMaterialModule} from "../utilities/app-material/app-material.module";
+import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 
 
 @NgModule({
