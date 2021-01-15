@@ -1,0 +1,111 @@
+<div class="form-content">
+  <div class="container register-form pt-3">
+    <div class="card">
+      <h6 class="card-header">Modification DE SOCIETE</h6>
+      <div class="card-body">
+        <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Raison sociale </b></label>
+                <input class="form-control" type="text" formControlName="socialReason"  required="true" [ngClass]="setError(socialReason)" placeholder="Raison sociale" name="uname" >
+                <div *ngIf="socialReason.invalid && (socialReason.dirty || socialReason.touched)" class="invalid-feedback">
+                  <div *ngIf="socialReason.errors.required">Veuillez saisir la raison sociale </div>
+                </div>
+                <div *ngIf="hasError" style="color: red; margin-top: 15px;">
+                  <i class="fa fa-info-circle" aria-hidden="true" style="font-size: x-large"></i>  {{message}}
+                </div>s
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Email </b></label>
+                <input class="form-control" type="text" formControlName="email"  required="true" [ngClass]="setError(email)" placeholder="example@example.sn" name="uname" >
+                <div *ngIf="email.invalid && (email.dirty || email.touched || email.invalid)" class="invalid-feedback">
+                  <div *ngIf="email.errors.required">Veuillez saisir l'email </div>
+                  <div *ngIf="email.invalid">Email incorrect</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>adresse </b></label>
+                <input class="form-control" type="text" formControlName="adress"  required="true" [ngClass]="setError(adress)" placeholder="adresse" name="uname" >
+                <div *ngIf="adress.invalid && (adress.dirty || adress.touched)" class="invalid-feedback">
+                  <div *ngIf="adress.errors.required">Veuillez saisir l'adresse </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Téléphone </b></label>
+                <input class="form-control" type="text" formControlName="phone"  required="true" [ngClass]="setError(phone)" placeholder="Téléphone" name="uname" >
+                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="invalid-feedback">
+                  <div *ngIf="phone.errors.required">Veuillez saisir le phone </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Site Web </b></label>
+                <input class="form-control" type="text" formControlName="webSite"  required="true" [ngClass]="setError(webSite)" placeholder="hpc.sn" name="uname" >
+                <div *ngIf="webSite.invalid && (webSite.dirty || webSite.touched)" class="invalid-feedback">
+                  <div *ngIf="webSite.errors.required">Veuillez saisir le site web </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Ville </b></label>
+                <select class="form-control" name="" formControlName="city"  required="true" [ngClass]="setError(city)">
+                  <option *ngFor="let city of listCity" value={{city.id}}>{{city.caption}}</option>
+                </select>
+                <div *ngIf="city.invalid && (city.dirty || city.touched)" class="invalid-feedback">
+                  <div *ngIf="city.errors.required">Veuillez sélectionner la ville</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Status</b></label>
+                <select class="form-control" name="" formControlName="status"  required="true" [ngClass]="setError(status)">
+                  <option value="Actif">Actif</option>
+                  <option value="Inactif">Inactif</option>
+                </select>
+                <div *ngIf="status.invalid && (status.dirty || status.touched)" class="invalid-feedback">
+                  <div *ngIf="status.errors.required">Veuillez sélectionner le status </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Type de génération du login</b></label>
+                <select class="form-control" name="" formControlName="typeGeneriqueLogin"  required="true" [ngClass]="setError(typeGeneriqueLogin)">
+                  <option value="FirstLetterOfFirstNameAndLastName">1 ière lettre du Prénom + Nom</option>
+                  <option value="FirstLetterOfLastNameAndFirstName">1 ière lettre du Nom + Prénom</option>
+                  <option value="FirstNameAndFirstLetterOfLastName">Prénom + 1 ière lettre du Nom </option>
+                  <option value="TwoLettersOfFirstNameAndTreeLetterOfLastName">2 premières lettre du Prénom + 3 premières lettre du Nom</option>
+                  <option value="BeforeEmail">Avant @</option>
+                </select>
+                <div *ngIf="typeGeneriqueLogin.invalid && (typeGeneriqueLogin.dirty || typeGeneriqueLogin.touched)" class="invalid-feedback">
+                  <div *ngIf="typeGeneriqueLogin.errors.required">Veuillez séletionner le type de génération </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success mr-2" >Sauvegarder</button>
+          <button type="button" class="btn" id="list" (click)="goBack()">Annuler</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

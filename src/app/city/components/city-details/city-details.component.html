@@ -1,0 +1,26 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <div class="card">
+    <h4 class="card-header">Detail</h4>
+    <div class="card-body">
+      <div class="form-group">
+        <span>Code:</span>
+        <b>{{city.code}}dd</b>
+      </div>
+      <div class="form-group">
+        <span>Nom:</span>
+        <b>{{city.caption}}dd</b>
+      </div>
+      <div class="form-group">
+        <span>Status:</span>
+        <b>{{city.status}}dd</b>
+      </div>
+      <div class="form-group">
+        <span>Pays:</span>
+        <b>{{city.country.caption}}dd</b>
+      </div>
+    </div>
+    <div class="card-footer">
+      <button class="btn btn-danger" (click)="goBack()">Retour</button>
+    </div>
+  </div>
+</div>

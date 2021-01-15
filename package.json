@@ -48,6 +48,9 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.2"
+    "typescript": "~4.0.2",
+    "ngx-csv-parser": "0.0.6",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^10.5.0"
   }
 }
