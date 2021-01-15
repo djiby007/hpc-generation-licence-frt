@@ -4,10 +4,10 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   { path: 'configuration',
     loadChildren: () => import('./configuration/configuration.module').then(c => c.ConfigurationModule) },
-  { path: 'option',
+  { path: '',
     loadChildren: () => import('./option/option.module').then(o => o.OptionModule) },
 
-  { path: 'configuration', redirectTo: '/' }
+  { path: 'home', redirectTo: '/' }
 ];
 
 @NgModule({
