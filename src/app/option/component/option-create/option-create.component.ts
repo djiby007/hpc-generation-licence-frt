@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-
+import {MatDialogRef} from '@angular/material/dialog';
+import {OptionService} from '../../services/option.service';
+import {OptionModel} from '../../models/option.model';
 
 @Component({
   selector: 'app-option-create',
@@ -10,9 +12,12 @@ import {Router} from '@angular/router';
 })
 export class OptionCreateComponent implements OnInit {
   optionForm: FormGroup;
-  constructor(private router: Router) { }
+  constructor(private router: Router,
+              private dialogbox: MatDialogRef<OptionCreateComponent>,
+              private optionService: OptionService ,
+              private formBuilder: FormBuilder) { }
 
-  ngOnInit(): void { this.createForm();}
+  ngOnInit(): void { this.createForm(); this.resetForm(); }
 
   createForm(){
     this.optionForm = new FormGroup({
@@ -21,17 +26,28 @@ export class OptionCreateComponent implements OnInit {
     });
   }
 
-  get caption(){
-    return this.optionForm.get('caption');
+  resetForm(){
+    if (this.optionForm != null){
+      console.log(this.optionForm);
+      this.optionForm.reset();
+    }
+    this.optionForm = this.formBuilder.group({
+      caption: [, { validators: [Validators.required], updateOn: 'change' }],
+      status: [, { validators: [Validators.required], updateOn: 'change' }],
+    });
   }
+  get caption(){return this.optionForm.get('caption'); }
+  get status(){return this.optionForm.get('status'); }
 
-  get status(){
-    return this.optionForm.get('status');
-  }
+  OnClose(){this.dialogbox.close(); }
 
-  OnClose(){this.router.navigateByUrl("/option");}
-
-  onSaveOption(){
-
+  onSaveOption(option: OptionModel){
+    option = this.optionForm.value;
+    this.optionService.saveOption(option).subscribe(res => {
+      alert(res);
+      this.resetForm();
+      this.OnClose();
+      console.log(res);
+    });
   }
 }

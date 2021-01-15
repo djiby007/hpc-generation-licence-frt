@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: 'option',
     loadChildren: () => import('./option/option.module').then(o => o.OptionModule) },
 
-  { path: 'home', redirectTo: '/' }
+  { path: 'configuration', redirectTo: '/' }
 ];
 
 @NgModule({

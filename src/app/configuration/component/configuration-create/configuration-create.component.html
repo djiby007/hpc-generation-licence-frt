@@ -1,52 +1,86 @@
-<section class="container mt-5 col-md-6">
-  <div class="row mt-3">
-    <div class="col-md-12">
-      <div class="card card-warning card-outline">
-        <div class="card-header">
-          <h4 class="card-title">AJOUTER UNE NOUVELLE CONFIGURATION</h4>
-        </div>
-        <div class="card-body">
-          <mat-card-content class="d-flex justify-content-center">
-            <form [formGroup]="configForm"  (ngSubmit)="onSaveConfiguration()">
-              <div class="row text-center">
-                <div class="col-md-6">
-                  <mat-form-field class="exemple-full-width">
-                    <input matInput placeholder="Valeur debut" name="valeurDebut" class="full-width">
-                  </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                  <mat-form-field class="exemple-full-width">
-                    <input matInput placeholder="Valeur fin" name="valeurFin" class="full-width">
-                  </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                  <mat-form-field class="exemple-full-width">
-                    <input matInput placeholder="Montant" name="valeurFin" class="full-width">
-                  </mat-form-field>
-                </div>
-                <div class="col-md-6">
-                  <mat-form-field >
-                    <mat-label>Status</mat-label>
-                    <mat-select name="status">
-                      <mat-option value="Actif">
-                        Actif
-                      </mat-option>
-                      <mat-option value="value">
-                        Inactif
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-            </form>
-          </mat-card-content>
-          <mat-card-actions>
-            <a mat-raised-button color="accent" type="submit" class="btn-sm save">Savegarder</a>
-            <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="Close()">Annuler</a>
-          </mat-card-actions>
-        </div>
-      </div>
+<div class="card card-warning card-outline">
+    <div class="card-header">
+      <h4 class="card-title">AJOUTER UNE NOUVELLE CONFIGURATION</h4>
     </div>
-  </div>
-</section>
+    <div class="card-body">
+      <form [formGroup]="configForm"  (ngSubmit)="onSaveConfiguration(configForm.value)" autocomplete="off">
+        <mat-card-content class="d-flex justify-content-center">
+          <div class="row text-center">
+            <div class="col-md-6">
+              <mat-form-field class="exemple-full-width">
+                <input matInput placeholder="Valeur debut"
+                       formControlName="valeurDebut"
+                       name="valeurDebut"
+                       type="text"
+                       required minLength="1">
+                <mat-error
+                  *ngIf="configForm.get('valeurDebut').hasError('required')">
+                  Valeur debut <strong>obligatoire</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="exemple-full-width">
+                <input matInput placeholder="Valeur fin"
+                       formControlName="valeurFin"
+                       name="valeurFin"
+                       type="text"
+                       required minLength="1">
+                <mat-error
+                  *ngIf="configForm.get('valeurDebut').hasError('required')">
+                  Valeur finale <strong>obligatoire</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="exemple-full-width">
+                <input matInput placeholder="Montant"
+                       formControlName="montant"
+                       name="montant"
+                       type="text"
+                       required minLength="1"
+                       class="full-width">
+                <mat-error
+                  *ngIf="configForm.get('valeurDebut').hasError('required')">
+                  Montant <strong>obligatoire</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field >
+                <mat-label>Status</mat-label>
+                <mat-select name="status" formControlName="status">
+                  <mat-option value="Actif">
+                    Actif
+                  </mat-option>
+                  <mat-option value="Inactif">
+                    Inactif
+                  </mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="configForm.get('status').hasError('required')">
+                  Le status est <strong>obligatoire</strong>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <mat-label>Option</mat-label>
+                <mat-select  name="optionVente"  formControlName= "optionVente">
+                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="configForm.get('optionVente').hasError('required')">
+                  Le status est <strong>obligatoire</strong>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="configForm.invalid">Savegarder</button>
+        <button mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="Close()">Annuler</button>
+      </mat-card-actions>
+      </form>
+    </div>
+</div>
+
 

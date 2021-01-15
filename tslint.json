@@ -77,13 +77,11 @@
       "options": {
         "anonymous": "never",
         "asyncArrow": "always",
-        "constructor": "never",
-        "method": "never",
-        "named": "never"
+        "constructor": "never"
       }
     },
     "typedef": [
-      true,
+      false,
       "call-signature"
     ],
     "typedef-whitespace": {
