@@ -5,6 +5,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {ConfigurationService} from '../../services/configuration.service';
 import {ConfigurationModel} from '../../models/configuration.model';
 import {OptionService} from '../../../option/services/option.service';
+import {OptionModule} from '../../../option/option.module';
 
 @Component({
   selector: 'app-configuration-create',
@@ -15,23 +16,22 @@ export class ConfigurationCreateComponent implements OnInit {
   configForm: FormGroup;
   listActivesOptions: {};
 
-  constructor(private router: Router,
-              private dialogbox: MatDialogRef<ConfigurationCreateComponent>,
+  constructor(private dialogs: MatDialogRef<ConfigurationCreateComponent>,
               private configService: ConfigurationService,
               private fb: FormBuilder,
               private optionService: OptionService) { }
 
-  ngOnInit(): void { this.createForm(); this.resetForm(); this.OptionList(); }
+  ngOnInit(): void { this.createConfigForm(); this.resetConfigForm(); this.OptionList(); }
 
-  resetForm(){
-    if (this.configForm != null){
+  resetConfigForm(){
+    if (this.configForm !== null){
       console.log(this.configForm);
       this.configForm.reset();
     }
     this.configForm = this.fb.group({
-      valeurDebut: [, { validators: [Validators.required], updateOn: 'change' }],
-      valeurFin: [, { validators: [Validators.required], updateOn: 'change' }],
-      montant: [, { validators: [Validators.required], updateOn: 'change' }],
+      valeurDebut: [, { validators: [Validators.required, Validators.pattern('^[0-9]*$') ], updateOn: 'change' }],
+      valeurFin: [, { validators: [Validators.required, Validators.pattern('^[0-9]*$')], updateOn: 'change' }],
+      montant: [, { validators: [Validators.required, Validators.pattern('^[0-9]*$')], updateOn: 'change' }],
       optionVente: [, { validators: [Validators.required], updateOn: 'change' }],
       status: [, { validators: [Validators.required], updateOn: 'change' }],
     });
@@ -45,7 +45,7 @@ export class ConfigurationCreateComponent implements OnInit {
     });
   }
 
-  createForm(){
+  createConfigForm(){
     this.configForm = new FormGroup({
       valeurDebut: new FormControl('', Validators.required),
       valeurFin: new FormControl('', Validators.required),
@@ -61,14 +61,16 @@ export class ConfigurationCreateComponent implements OnInit {
   get montant(){return this.configForm.get('montant'); }
   get status(){return this.configForm.get('status'); }
 
-  Close(){this.dialogbox.close(); }
+  Close(){this.dialogs.close(); }
 
   onSaveConfiguration(config: ConfigurationModel){
+    const option = new OptionModule();
+    config.optionVente = this.configForm.value.optionVente;
     config = this.configForm.value;
     console.log(config);
     this.configService.saveConfig(config).subscribe(res => {
       alert(res);
-      this.resetForm();
+      this.resetConfigForm();
       console.log(res);
     });
   }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';
 import {OptionService} from '../../services/option.service';
 import {OptionModel} from '../../models/option.model';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-option-create',
@@ -12,10 +12,15 @@ import {OptionModel} from '../../models/option.model';
 })
 export class OptionCreateComponent implements OnInit {
   optionForm: FormGroup;
-  constructor(private router: Router,
-              private dialogbox: MatDialogRef<OptionCreateComponent>,
+  successApiMessage: string;
+  errorApiMessage: string;
+  successStatus: boolean;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor(private dialogue: MatDialogRef<OptionCreateComponent>,
               private optionService: OptionService ,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder,
+              private snackbar: MatSnackBar) { }
 
   ngOnInit(): void { this.createForm(); this.resetForm(); }
 
@@ -28,26 +33,38 @@ export class OptionCreateComponent implements OnInit {
 
   resetForm(){
     if (this.optionForm != null){
-      console.log(this.optionForm);
       this.optionForm.reset();
     }
     this.optionForm = this.formBuilder.group({
-      caption: [, { validators: [Validators.required], updateOn: 'change' }],
+      caption: [, { validators: [Validators.required, Validators.pattern('^[A-Za-z]*$') ], updateOn: 'change' }],
       status: [, { validators: [Validators.required], updateOn: 'change' }],
     });
   }
+
   get caption(){return this.optionForm.get('caption'); }
   get status(){return this.optionForm.get('status'); }
 
-  OnClose(){this.dialogbox.close(); }
+  OnClose(){this.dialogue.close(); this.optionService.filter('Save option'); }
 
   onSaveOption(option: OptionModel){
     option = this.optionForm.value;
     this.optionService.saveOption(option).subscribe(res => {
-      alert(res);
       this.resetForm();
-      this.OnClose();
-      console.log(res);
+      this.successApiMessage  = res.message;
+      this.successStatus = res.success;
+      if (this.successStatus === true){
+        this.snackbar.open(this.successApiMessage.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+        this.OnClose();
+      } else {
+        this.errorApiMessage = res.message;
+      }
+    }, err => {
+      console.log(err.message);
     });
   }
 }

@@ -7,7 +7,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   text-decoration: none !important;
 }
 .save{
-  background: green;
+  background: #095806;
   color: white;
   text-decoration: none !important;
+}
+.option_icon_active{
+  color: #095806;
+}
+.option_icon_inactive{
+  color: black;
+}
+.green-snackbar {
+  background: 	rgb(244,245,246)!important;
+  border-color: #095806 !important;
+  color: rgb(5,67,110);
+  font-size: medium;
+  font-weight: bold;
 }

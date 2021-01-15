@@ -12,6 +12,8 @@ import {OptionService} from './option/services/option.service';
 import {ConfigurationCreateComponent} from './configuration/component/configuration-create/configuration-create.component';
 import {HttpClientModule} from '@angular/common/http';
 import {OptionCreateComponent} from './option/component/option-create/option-create.component';
+import {OptionEditComponent} from './option/component/option-edit/option-edit.component';
+import {ConfigurationEditComponent} from './configuration/component/configuration-edit/configuration-edit.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,6 @@ import {OptionCreateComponent} from './option/component/option-create/option-cre
   ],
   providers: [ConfigurationService, OptionService],
   bootstrap: [AppComponent],
-  entryComponents: [ConfigurationCreateComponent, OptionCreateComponent]
+  entryComponents: [ConfigurationCreateComponent, ConfigurationEditComponent, OptionCreateComponent, OptionEditComponent]
 })
 export class AppModule { }

@@ -6,6 +6,8 @@ import {MatSort} from '@angular/material/sort';
 import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
 import {ConfigurationCreateComponent} from '../configuration-create/configuration-create.component';
 import {ConfigurationService} from '../../services/configuration.service';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import {ConfigurationEditComponent} from '../configuration-edit/configuration-edit.component';
 
 @Component({
   selector: 'app-configuration-list',
@@ -16,12 +18,16 @@ export class ConfigurationListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
-  constructor(private dialog: MatDialog, private configService: ConfigurationService) { }
-
   listConfiguration: MatTableDataSource<ConfigurationModel>;
   displayColumns: string[] = ['Status', 'Valeur Debut', 'Valeur Fin', 'Montant', 'Actions'];
-  successMessage: string;
+  successApiMessage: string;
+  errorApiMessage: string;
+  successStatus: boolean;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor(private dialog: MatDialog,
+              private snackbar: MatSnackBar,
+              private configService: ConfigurationService) { }
 
   ngOnInit(): void { this.refreshConfigList(); }
 
@@ -33,14 +39,31 @@ export class ConfigurationListComponent implements OnInit {
 
   onEditConfig(config: ConfigurationModel){
     console.log(config);
+    const dialogConfiguration = new MatDialogConfig();
+    dialogConfiguration.disableClose = true;
+    dialogConfiguration.autoFocus = true;
+    dialogConfiguration.width = '50%';
+    this.dialog.open(ConfigurationEditComponent, dialogConfiguration);
   }
 
   onDeleteConfig(config: ConfigurationModel){
     if (config.id){
       this.configService.deleteConfig(config.id, config).subscribe(response => {
-        this.successMessage = response.message;
-        alert(this.successMessage);
-        this.refreshConfigList();
+        this.successApiMessage = response.message;
+        this.successStatus = Boolean(response.success);
+        if (this.successStatus === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
+          this.refreshConfigList();
+        }else {
+          this.errorApiMessage = response.message;
+        }
+      }, err => {
+        console.log(err.message);
       });
     }
   }
