@@ -21,19 +21,22 @@
                     </div>
                   </div>
 
-                  <div class="mat-elevation-z8">
-                    <mat-table [dataSource]="listOptions">
-                      <mat-header-row *matHeaderRowDef="Columns"></mat-header-row>
+                  <div class="mat-elevation-z8 d-flex justify-content-lg-center table-responsive">
+                    <mat-table multiTemplateDataRows [dataSource]="listOptions"  class="table-responsive">
+                      <mat-header-row *matHeaderRowDef="Columns" ></mat-header-row>
                       <mat-row *matRowDef="let option;columns:Columns"></mat-row>
 
                       <ng-container matColumnDef="Status">
                         <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.status}}</mat-header-cell>
+                        <mat-header-cell *matCellDef="let element" >
+                          <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
+                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
+                        </mat-header-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="Code">
-                        <mat-header-cell *matHeaderCellDef>Code</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.code}}</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef style="text-align: right">Code</mat-header-cell>
+                        <mat-header-cell *matCellDef="let element" style="text-align: center">{{element.code}}</mat-header-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="Caption">

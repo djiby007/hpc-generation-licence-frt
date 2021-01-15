@@ -17,7 +17,7 @@ export class OptionListComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   listOptions: MatTableDataSource<OptionModel>;
-  Columns: string[] = ['Status', 'Code', 'Caption', 'Actions'];
+  Columns: string[] = [ 'Status', 'Code', 'Caption', 'Actions' ];
   successMessage: string;
 
   constructor(private dialog: MatDialog,

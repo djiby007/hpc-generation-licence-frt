@@ -11,3 +11,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: white;
   text-decoration: none !important;
 }
+.option_icon_active{
+  color: green;
+}
+.option_icon_inactive{
+  color: black;
+}

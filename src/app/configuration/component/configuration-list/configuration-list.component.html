@@ -24,11 +24,14 @@
                   <div class="mat-elevation-z8">
                     <mat-table [dataSource]="listConfiguration">
                       <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row;columns:displayColumns"></mat-row>
+                      <mat-row *matRowDef="let row;columns: displayColumns"></mat-row>
 
                       <ng-container matColumnDef="Status">
                         <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.status}}</mat-header-cell>
+                        <mat-header-cell *matCellDef="let element">
+                          <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">miscellaneous_services</mat-icon>
+                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
+                        </mat-header-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="Valeur Debut">
