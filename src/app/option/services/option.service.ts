@@ -36,6 +36,7 @@ export class OptionService {
   deleteOption(id: number, option: OptionModel){
     return this.httpClient.put(this.apiUrl + this.optionEndPoint + this.deleteOptionEndPoint + id, option);
   }
+
   updateOption(id: number, option: OptionModel){
     return this.httpClient.put(this.apiUrl + this.optionEndPoint + '/' + id, option);
   }

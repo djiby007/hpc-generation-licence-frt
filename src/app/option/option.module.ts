@@ -23,4 +23,6 @@ import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 
   ]
 })
-export class OptionModule { }
+export class OptionModule {
+    id: any;
+}

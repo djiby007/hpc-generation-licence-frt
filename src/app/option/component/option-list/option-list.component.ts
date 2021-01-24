@@ -44,19 +44,18 @@ export class OptionListComponent implements OnInit {
 
   onEditOption(opt: OptionModel){
     this.optionService.currentOption = opt;
-    console.log( opt);
     const dialogOption = new MatDialogConfig();
     dialogOption.disableClose = true;
     dialogOption.autoFocus = true;
-    dialogOption.width = '70%';
+    dialogOption.width = '50%';
     this.dialog.open(OptionEditComponent, dialogOption);
   }
 
   onDeleteOption(option: OptionModel){
     if (option.id){
       this.optionService.deleteOption(option.id, option).subscribe(response => {
-        this.successApiMessage = response.message;
         this.successStatus = Boolean(response.success);
+        this.successApiMessage = response.message;
         if (this.successStatus === true){
           this.snackbar.open(this.successApiMessage.toString(), '', {
             duration: 4000,
@@ -64,10 +63,16 @@ export class OptionListComponent implements OnInit {
             verticalPosition: this.verticalPosition,
             panelClass: ['green-snackbar']
           });
-          this.refreshOptionList();
         }else {
           this.errorApiMessage = response.message;
+          this.snackbar.open(this.errorApiMessage .toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
+        this.refreshOptionList();
       }, err => {
         console.log(err.message);
       });
@@ -82,7 +87,8 @@ export class OptionListComponent implements OnInit {
     const dialogOption = new MatDialogConfig();
     dialogOption.disableClose = true;
     dialogOption.autoFocus = true;
-    dialogOption.width = '70%';
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(OptionCreateComponent, dialogOption);
   }
 }

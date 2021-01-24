@@ -19,7 +19,7 @@ export class ConfigurationListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   listConfiguration: MatTableDataSource<ConfigurationModel>;
-  displayColumns: string[] = ['Status', 'Valeur Debut', 'Valeur Fin', 'Montant', 'Actions'];
+  displayColumns: string[] = ['Status', 'Option', 'Valeur Debut', 'Valeur Fin', 'Montant', 'Actions'];
   successApiMessage: string;
   errorApiMessage: string;
   successStatus: boolean;
@@ -27,13 +27,19 @@ export class ConfigurationListComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(private dialog: MatDialog,
               private snackbar: MatSnackBar,
-              private configService: ConfigurationService) { }
+              private configService: ConfigurationService) {
+    this.configService.listen().subscribe( (c: any) => {
+      this.refreshConfigList();
+    });
+  }
 
   ngOnInit(): void { this.refreshConfigList(); }
 
   refreshConfigList(){
     this.configService.getConfigList().subscribe(data => {
         this.listConfiguration = new MatTableDataSource<ConfigurationModel>(data);
+        this.listConfiguration.sort = this.sort;
+        this.listConfiguration.paginator = this.paginator;
     });
   }
 
@@ -58,10 +64,16 @@ export class ConfigurationListComponent implements OnInit {
             verticalPosition: this.verticalPosition,
             panelClass: ['green-snackbar']
           });
-          this.refreshConfigList();
         }else {
           this.errorApiMessage = response.message;
+          this.snackbar.open(this.errorApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
+        this.refreshConfigList();
       }, err => {
         console.log(err.message);
       });
@@ -78,6 +90,7 @@ export class ConfigurationListComponent implements OnInit {
     dialogConfiguration.disableClose = true;
     dialogConfiguration.autoFocus = true;
     dialogConfiguration.width = '50%';
+    dialogConfiguration.panelClass = ['background-dialog'];
     this.dialog.open(ConfigurationCreateComponent, dialogConfiguration);
   }
 }

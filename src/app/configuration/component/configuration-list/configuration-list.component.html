@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="card card-warning card-outline">
           <div class="card-header">
-            <h6 class="card-title" style="font-weight:bold;font-size: small;" >Configurations</h6>
+            <h6 class="card-title" style="font-weight:bold;font-size: small;" >Liste des Configurations</h6>
           </div>
           <div class="card-body table-responsive pt-2 pb-3">
             <div class="table-responsive" >
@@ -16,7 +16,7 @@
                     </div>
                     <div class="col-lg-3">
                       <mat-form-field >
-                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtre">
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Rechercher">
                       </mat-form-field>
                     </div>
                   </div>
@@ -27,33 +27,38 @@
                       <mat-row *matRowDef="let row;columns: displayColumns"></mat-row>
 
                       <ng-container matColumnDef="Status">
-                        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Status</mat-header-cell>
                         <mat-header-cell *matCellDef="let element">
                           <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">miscellaneous_services</mat-icon>
-                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
+                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">miscellaneous_services</mat-icon>
                         </mat-header-cell>
                       </ng-container>
 
+                      <ng-container matColumnDef="Option">
+                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Option</mat-header-cell>
+                        <mat-header-cell *matCellDef="let element">{{element.optionVente.caption}}</mat-header-cell>
+                      </ng-container>
+
                       <ng-container matColumnDef="Valeur Debut">
-                        <mat-header-cell *matHeaderCellDef>Valeur Debut</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Debut</mat-header-cell>
                         <mat-header-cell *matCellDef="let element">{{element.valeurDebut}}</mat-header-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="Valeur Fin">
-                        <mat-header-cell *matHeaderCellDef>Valeur Fin</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Fin</mat-header-cell>
                         <mat-header-cell *matCellDef="let element">{{element.valeurFin}}</mat-header-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="Montant">
-                        <mat-header-cell *matHeaderCellDef>Montant</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Montant</mat-header-cell>
                         <mat-header-cell *matCellDef="let element">{{element.montant}}</mat-header-cell>
                       </ng-container>
 
                       <ng-container matColumnDef="Actions">
-                        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</mat-header-cell>
                         <mat-cell *matCellDef="let row">
-                          <div class="row" class="d-flex justify-content-sm-center">
-                            <div class="col-sm-12">
+                          <div class="row" class="d-flex justify-content-sm-between">
+                            <div class="col-sm-12 float-right">
                               <a mat-icon-button class="edit" (click)="onEditConfig(row)">
                                 <mat-icon>launch</mat-icon>
                               </a>
@@ -68,6 +73,7 @@
                     </mat-table>
                   </div>
                 </div>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
               </div>
             </div>
           </div>

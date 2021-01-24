@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import { Router } from '@angular/router';
 import {MatDialogRef} from '@angular/material/dialog';
 import {ConfigurationService} from '../../services/configuration.service';
 import {ConfigurationModel} from '../../models/configuration.model';
 import {OptionService} from '../../../option/services/option.service';
 import {OptionModule} from '../../../option/option.module';
+import {OptionModel} from '../../../option/models/option.model';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-configuration-create',
@@ -15,10 +16,16 @@ import {OptionModule} from '../../../option/option.module';
 export class ConfigurationCreateComponent implements OnInit {
   configForm: FormGroup;
   listActivesOptions: {};
+  successApiMessage: string;
+  errorApiMessage: string;
+  successStatus: boolean;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private dialogs: MatDialogRef<ConfigurationCreateComponent>,
               private configService: ConfigurationService,
               private fb: FormBuilder,
+              private snackbar: MatSnackBar,
               private optionService: OptionService) { }
 
   ngOnInit(): void { this.createConfigForm(); this.resetConfigForm(); this.OptionList(); }
@@ -61,17 +68,29 @@ export class ConfigurationCreateComponent implements OnInit {
   get montant(){return this.configForm.get('montant'); }
   get status(){return this.configForm.get('status'); }
 
-  Close(){this.dialogs.close(); }
+  Close(){this.dialogs.close();  this.configService.filter('Save configuration'); }
 
   onSaveConfiguration(config: ConfigurationModel){
-    const option = new OptionModule();
-    config.optionVente = this.configForm.value.optionVente;
-    config = this.configForm.value;
-    console.log(config);
+    const opt = new OptionModule();
+    opt.id = this.configForm.value.optionVente;
+    config.optionVente = (opt as OptionModel);
     this.configService.saveConfig(config).subscribe(res => {
-      alert(res);
       this.resetConfigForm();
-      console.log(res);
+      this.successApiMessage  = res.message;
+      this.successStatus = res.success;
+      if (this.successStatus === true){
+        this.snackbar.open(this.successApiMessage.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+        this.Close();
+      } else {
+        this.errorApiMessage = res.message;
+      }
+    }, err => {
+      console.log(err.message);
     });
   }
 }

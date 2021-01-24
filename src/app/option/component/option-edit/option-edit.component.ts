@@ -22,7 +22,7 @@ export class OptionEditComponent implements OnInit {
               private formBuilder: FormBuilder,
               private snackbar: MatSnackBar) { }
 
-  ngOnInit(): void { this.createForm(); this.resetForm(); }
+  ngOnInit(): void { this.createForm(); this.resetEditForm(); }
 
   createForm(){
     this.updateOptionForm = new FormGroup({
@@ -31,12 +31,13 @@ export class OptionEditComponent implements OnInit {
     });
   }
 
-  resetForm(){
+  resetEditForm(){
     if (this.updateOptionForm != null){
       this.updateOptionForm.reset();
     }
     this.updateOptionForm = this.formBuilder.group({
-      caption: new  FormControl([, {validators: [Validators.required, Validators.pattern('^[A-Za-z]*$')], updateOn: 'change'}]),
+      caption: new  FormControl([, {validators: [Validators.required, Validators.pattern('^[A-Za-z,è,é,ê,ë,û,ù,à,ï,i]*$')],
+        updateOn: 'change'}]),
       status: new FormControl([, { validators: [Validators.required], updateOn: 'change' }]),
     });
   }
@@ -46,11 +47,12 @@ export class OptionEditComponent implements OnInit {
 
   OnClose(){this.dialogue.close(); this.optionService.filter('Update option'); }
 
-  onUpdateOption(opt: OptionModel) {
-    this.optionService.currentOption = opt;
-    const option: OptionModel = {id: opt.id , code: opt.code, success: opt.success, message: opt.message,
+  onUpdateOption() {
+    const options = this.optionService.currentOption;
+    const option: OptionModel = {id: options.id , code: options.code, success: options.success, message: options.message,
       caption: this.updateOptionForm.get('caption').value, status: this.updateOptionForm.get('status').value};
     this.optionService.updateOption(option.id, option).subscribe( data => {
+      this.successApiMessage = data.message;
       this.snackbar.open(this.successApiMessage.toString(), '', {
         duration: 4000,
         horizontalPosition: this.horizontalPosition,

@@ -19,8 +19,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .green-snackbar {
   background: 	rgb(244,245,246)!important;
-  border-color: #095806 !important;
+  /*color: #095806;*/
   color: rgb(5,67,110);
   font-size: medium;
   font-weight: bold;
 }
+

@@ -36,7 +36,8 @@ export class OptionCreateComponent implements OnInit {
       this.optionForm.reset();
     }
     this.optionForm = this.formBuilder.group({
-      caption: [, { validators: [Validators.required, Validators.pattern('^[A-Za-z]*$') ], updateOn: 'change' }],
+      caption: [, { validators: [Validators.required, Validators.pattern('^[A-Za-z,è,é,ê,ë,û,ù,à,ï,i]*$') ],
+        updateOn: 'change' }],
       status: [, { validators: [Validators.required], updateOn: 'change' }],
     });
   }
@@ -62,6 +63,12 @@ export class OptionCreateComponent implements OnInit {
         this.OnClose();
       } else {
         this.errorApiMessage = res.message;
+        this.snackbar.open(this.successApiMessage.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
       }
     }, err => {
       console.log(err.message);
