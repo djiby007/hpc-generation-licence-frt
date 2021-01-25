@@ -12,7 +12,7 @@
                      name="caption"
                      formControlName="caption"
                      type="text"
-                     required minLength="4"
+                     required="required" minLength="4"
                      [(ngModel)]="optionService.currentOption.caption">
               <mat-error
                 *ngIf="updateOptionForm.get('caption').hasError('required')">
