@@ -20,24 +20,14 @@
                       </mat-form-field>
                     </div>
                   </div>
-<<<<<<< HEAD
                   <div style="overflow: auto">
                   <div class="mat-elevation-z8">
                     <mat-table multiTemplateDataRows [dataSource]="listOptions" matSort class="table-responsive">
-=======
-
-                  <div class="mat-elevation-z8 d-flex justify-content-lg-center table-responsive">
-                    <mat-table multiTemplateDataRows [dataSource]="listOptions"  class="table-responsive">
->>>>>>> c48b302f5dead2bb2aa41b8c246f7209e6523294
                       <mat-header-row *matHeaderRowDef="Columns" ></mat-header-row>
                       <mat-row *matRowDef="let option;columns:Columns"></mat-row>
 
                       <ng-container matColumnDef="Status">
-<<<<<<< HEAD
                         <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</mat-header-cell>
-=======
-                        <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
->>>>>>> c48b302f5dead2bb2aa41b8c246f7209e6523294
                         <mat-header-cell *matCellDef="let element" >
                           <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
                           <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
@@ -45,13 +35,8 @@
                       </ng-container>
 
                       <ng-container matColumnDef="Code">
-<<<<<<< HEAD
                         <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Code</mat-header-cell>
                         <mat-header-cell *matCellDef="let element" > {{element.code}}</mat-header-cell>
-=======
-                        <mat-header-cell *matHeaderCellDef style="text-align: right">Code</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element" style="text-align: center">{{element.code}}</mat-header-cell>
->>>>>>> c48b302f5dead2bb2aa41b8c246f7209e6523294
                       </ng-container>
 
                       <ng-container matColumnDef="Caption">
