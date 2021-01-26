@@ -14,15 +14,22 @@ import {HttpClientModule} from '@angular/common/http';
 import {OptionCreateComponent} from './option/component/option-create/option-create.component';
 import {OptionEditComponent} from './option/component/option-edit/option-edit.component';
 import {ConfigurationEditComponent} from './configuration/component/configuration-edit/configuration-edit.component';
+import { PermissionListComponent } from './permission/components/permission-list/permission-list.component';
+import {PermissionModule} from './permission/permission.module';
+import {ProfileModule} from './profile/profile.module';
+import {FeatureModule} from './feature/feature.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     FormsModule,
     BrowserModule,
+    ProfileModule,
+    FeatureModule,
     AppRoutingModule,
+    PermissionModule,
     HttpClientModule,
     AppMaterialModule,
     MatNativeDateModule,
@@ -30,7 +37,7 @@ import {ConfigurationEditComponent} from './configuration/component/configuratio
     ReactiveFormsModule,
     BrowserAnimationsModule,
   ],
-  providers: [ConfigurationService, OptionService],
+  providers: [PermissionListComponent, ConfigurationService, OptionService],
   bootstrap: [AppComponent],
   entryComponents: [ConfigurationCreateComponent, ConfigurationEditComponent, OptionCreateComponent, OptionEditComponent]
 })

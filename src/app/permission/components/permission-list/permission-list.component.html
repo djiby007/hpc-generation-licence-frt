@@ -1,0 +1,56 @@
+<div class="content-wrapper">
+  <section class="container">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card card-warning card-outline">
+          <div class="card-header">
+            <h4 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES AFFECTATIONS</h4>
+          </div>
+          <div class="card-body table-responsive pt-2 pb-3">
+            <div class="panel-body pb-4">
+              <div class="row">
+                <div class="col-sm-6">
+                  <button (click)="AlouerPermision()" *ngIf="canWrite == true" class="btn btn-success btn-sm">
+                    <i class="fa fa-link" aria-hidden="true"></i> Alouer Permission
+                  </button>
+                </div>
+                <div class="col-sm-6">
+                  <form #searchPermis="ngForm" (ngSubmit)="onChercheProfile(searchPermis.value)"  class="form-inline" style="float:right">
+                    <div class="form-group mr-2">
+                      <select name="code" ngModel class="form-control">
+                        <option value="" selected>Profil</option>
+                        <option *ngFor="let p of profiles" [ngValue]="p.id" selected>{{p.caption}}</option>
+                      </select>
+                    </div>
+                    <button class="btn btn-success btn-sm" type="submit" data-toggle="modal" data-target=".bd-example-modal-lg">
+                      <i class="fa fa-search" aria-hidden="true"></i> Rechercher
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive" >
+              <div class="panel-body">
+                <table  class="table table-bordred table-striped">
+                  <tbody>
+                  <thead>
+                  <th>Profile</th>
+                  <th>Fonctionalité</th>
+                  <th>Edit</th>
+                  <th>Write</th>
+                  <th>Read</th>
+                  <th>Delete</th>
+                  <th>Action</th>
+                  </thead>
+                  <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
+                  <tbody>
+                </table>
+                <div *ngIf="test === true"><p>Aucune affectation n'a encore été éffectuée pour ce profil!</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
