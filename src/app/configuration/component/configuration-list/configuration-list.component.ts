@@ -44,7 +44,7 @@ export class ConfigurationListComponent implements OnInit {
   }
 
   onEditConfig(config: ConfigurationModel){
-    console.log(config);
+    this.configService.currentConfig = config;
     const dialogConfiguration = new MatDialogConfig();
     dialogConfiguration.disableClose = true;
     dialogConfiguration.autoFocus = true;

@@ -15,7 +15,7 @@ import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition}
 })
 export class ConfigurationCreateComponent implements OnInit {
   configForm: FormGroup;
-  listActivesOptions: {};
+  listActivesOptions: OptionModel[];
   successApiMessage: string;
   errorApiMessage: string;
   successStatus: boolean;
@@ -32,7 +32,6 @@ export class ConfigurationCreateComponent implements OnInit {
 
   resetConfigForm(){
     if (this.configForm !== null){
-      console.log(this.configForm);
       this.configForm.reset();
     }
     this.configForm = this.fb.group({

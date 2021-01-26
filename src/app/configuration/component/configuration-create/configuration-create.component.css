@@ -8,3 +8,9 @@
   color: white;
   text-decoration: none !important;
 }
+table{
+  width: 100%;
+}
+td, th {
+  width: 20%;
+}

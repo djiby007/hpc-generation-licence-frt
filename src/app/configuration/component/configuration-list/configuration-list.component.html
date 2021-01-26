@@ -22,55 +22,51 @@
                   </div>
 
                   <div class="mat-elevation-z8">
-                    <mat-table [dataSource]="listConfiguration">
-                      <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row;columns: displayColumns"></mat-row>
+                      <table mat-table [dataSource]="listConfiguration" matSort class="table-bordred table-striped table-sm">
+                      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                      <tr mat-row *matRowDef="let row;columns: displayColumns"></tr>
 
                       <ng-container matColumnDef="Status">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Status</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Status</th>
+                        <td mat-header-cell *matCellDef="let element" style="margin-right: 70%">
                           <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">miscellaneous_services</mat-icon>
                           <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">miscellaneous_services</mat-icon>
-                        </mat-header-cell>
+                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="Option">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Option</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.optionVente.caption}}</mat-header-cell>
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Option</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.optionVente.caption}}</td>
                       </ng-container>
 
                       <ng-container matColumnDef="Valeur Debut">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Debut</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.valeurDebut}}</mat-header-cell>
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Debut</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.valeurDebut}}</td>
                       </ng-container>
 
                       <ng-container matColumnDef="Valeur Fin">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Fin</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.valeurFin}}</mat-header-cell>
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Fin</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.valeurFin}}</td>
                       </ng-container>
 
                       <ng-container matColumnDef="Montant">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Montant</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.montant}}</mat-header-cell>
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Montant</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.montant}}</td>
                       </ng-container>
 
                       <ng-container matColumnDef="Actions">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</mat-header-cell>
-                        <mat-cell *matCellDef="let row">
-                          <div class="row" class="d-flex justify-content-sm-between">
-                            <div class="col-sm-12 float-right">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+                        <td mat-cell *matCellDef="let row" class="d-flex justify-content-sm-between">
                               <a mat-icon-button class="edit" (click)="onEditConfig(row)">
                                 <mat-icon>launch</mat-icon>
                               </a>
                               <a mat-icon-button color="warn"  (click)="onDeleteConfig(row)">
                                 <mat-icon>delete_outline</mat-icon>
                               </a>
-                            </div>
-                          </div>
-                        </mat-cell>
+                        </td>
                       </ng-container>
 
-                    </mat-table>
+                    </table>
                   </div>
                 </div>
                 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
