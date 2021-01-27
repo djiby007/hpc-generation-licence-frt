@@ -6,24 +6,28 @@
   <span class="example-spacer"></span>
   <button mat-button [matMenuTriggerFor]="aboveMenu">Configuration</button>
   <mat-menu #aboveMenu="matMenu" yPosition="above">
-    <button mat-menu-item mat-menu-item routerLink="continent">Continent</button>
-    <button mat-menu-item mat-menu-item routerLink="country">Pays</button>
-    <button mat-menu-item mat-menu-item routerLink="city">Villes</button>
-    <button mat-menu-item mat-menu-item routerLink="company">Sociétés</button>
-    <button mat-menu-item mat-menu-item routerLink="filiale">Filiales</button>
-    <button mat-menu-item mat-menu-item routerLink="user">Utilisateurs</button>
+    <button mat-menu-item routerLink="continent">Continent</button>
+    <button mat-menu-item routerLink="country">Pays</button>
+    <button mat-menu-item routerLink="city">Villes</button>
+    <button mat-menu-item routerLink="company">Sociétés</button>
+    <button mat-menu-item routerLink="filiale">Filiales</button>
+    <button mat-menu-item routerLink="user">Utilisateurs</button>
+    <button mat-menu-item routerLink="application">Applicatons</button>
   </mat-menu>
 
   <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
   <mat-menu #belowMenu="matMenu" yPosition="below">
-    <button mat-menu-item>Item 1</button>
-    <button mat-menu-item>Item 2</button>
+    <button mat-menu-item routerLink="profile">Profiles</button>
+    <button mat-menu-item routerLink="permission">Permissions</button>
+    <button mat-menu-item routerLink="feature">Fonctionnalités</button>
   </mat-menu>
 
-  <button mat-button [matMenuTriggerFor]="beforeMenu">Mon Profile</button>
+  <button mat-button [matMenuTriggerFor]="beforeMenu">
+    <i class="fa fa-user" aria-hidden="true"></i> {{currentUser?.firstName}} {{currentUser?.lastName}}
+  </button>
   <mat-menu #beforeMenu="matMenu" xPosition="before">
     <button mat-menu-item routerLink="updatepassword">Modifier mot de passe</button>
-    <button mat-menu-item >Se déconnecter</button>
+    <button mat-menu-item (click)="logout()">Se déconnecter</button>
   </mat-menu>
 
 </mat-toolbar>
