@@ -35,4 +35,17 @@ table{
 td, th {
   width: 20%;
 }
+#list{
+  background-color: #05436e;
+  color:white
+}
+.iconVert{
+  color:#138f46;
+}
+.iconBleu{
+  color:#05436e;
+}
+.errorControl{
+  color: red;
+}
 

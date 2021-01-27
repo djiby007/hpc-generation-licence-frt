@@ -1,1 +1,46 @@
-<p>profile-edit works!</p>
+<div class="form-content">
+  <div class="container register-form pt-3">
+    <div class="card">
+      <h6 class="card-header">MODIFIER UN PROFILE</h6>
+      <div class="card-body">
+        <form [formGroup]="editProfileForm"  (ngSubmit)="onEditProfile()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Caption</b></label>
+                <input type="text"  formControlName="caption" [ngClass]="setError(caption)" class="form-control"
+                       placeholder="Caption*" name="caption" required="true" />
+                <div *ngIf="caption.invalid && (caption.dirty || caption.touched)" class="invalid-feedback">
+                  <div *ngIf="caption.errors.required">Veuillez saisir le nom du profil</div>
+                  <div *ngIf="caption.errors.minlength">Le nom du profil doit contenir au moins 4 lettres </div>
+                  <div *ngIf="caption.invalid">Le nom du profil doit être alphabétique </div>
+                </div>
+                <div *ngIf="error" style="color: red; margin-top: 15px;">
+                  <i class="fa fa-info-circle"></i>  {{errorMessage}}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Status </b></label>
+                <select formControlName="status" [ngClass]="setError(status)" name="status" id="" class="form-control">
+                  <option value="Actif">Actif</option>
+                  <option value="Inactif">Inactif</option>
+                </select>
+                <div *ngIf="status.invalid && (status.dirty || status.touched)" class="invalid-feedback">
+                  <div *ngIf="status.errors.required">Le status du profil est obligatoire! </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" *ngIf="errorMessage" style="color: #DC143C;font-size: x-small;">
+              <i class="fa fa-info-circle"></i> {{errorMessage}}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-success mr-2" [disabled]="editProfileForm.invalid">Sauvegarder</button>
+          <button type="button" class="btn btn-primary" (click)="OnClose()">Annuler</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

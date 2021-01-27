@@ -1,0 +1,32 @@
+.form-content
+{
+  padding-left: 20%;
+  padding-right: 20%;
+  margin-bottom: 2%;
+}
+
+p {
+  font-weight: bold;
+  font-family: 'Georgia', Times New Roman, Times, serif;
+}
+.btnSubmit
+{
+  border:none;
+  border-radius:1.5rem;
+  padding: 1%;
+  width: 20%;
+  cursor: pointer;
+  background: #095806;
+  color: #fff;
+}
+.btnUpSubmit
+{
+  border:none;
+  border-radius:1.5rem;
+  padding: 1%;
+  width: 20%;
+  cursor: pointer;
+  background: #7e9ddf;
+  color: #000000;
+}
+
