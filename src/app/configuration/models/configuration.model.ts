@@ -1,8 +1,12 @@
+import {OptionVentEditConfigModel} from '../../option/models/optionVentEditConfig.model';
 
 export interface ConfigurationModel{
   id: number;
-  valeurDebut: string;
-  valeurFin: string;
-  montant: string;
+  valeurDebut: number;
+  valeurFin: number;
+  montant: number;
   status: string;
+  optionVente: OptionVentEditConfigModel;
+  success: boolean;
+  message: string;
 }

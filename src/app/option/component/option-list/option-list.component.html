@@ -4,20 +4,60 @@
       <div class="col-md-12">
         <div class="card card-warning card-outline">
           <div class="card-header">
-            <h6 class="card-title" style="font-weight:bold;font-size: small;" >Options</h6>
+            <h6 class="card-title" style="font-weight:bold;font-size: small;">Liste des Options de Vente</h6>
           </div>
           <div class="card-body table-responsive pt-2 pb-3">
-            <div class="panel-body pb-4">
-              <div class="row">
-                <div class="col-sm-6">
-                </div>
-                <div class="col-sm-6" >
-                </div>
-              </div>
-            </div>
             <div class="table-responsive" >
-              <div class="panel-body" >
+              <div class="panel-body">
+                <div style="overflow: auto">
+                  <div class="row" class="d-flex justify-content-lg-between">
+                    <div class="col-lg-3">
+                      <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="onAddOption()">Ajouter</a>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field >
+                        <input matInput (keyup)="applyFilterOptions($event.target.value)" placeholder="Rechercher">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div  class="mat-elevation-z8">
+                    <table mat-table multiTemplateDataRows [dataSource]="listOptions" matSort class="table-bordred table-striped table-sm">
+                        <tr mat-header-row *matHeaderRowDef="Columns" ></tr>
+                        <tr mat-row *matRowDef="let option;columns:Columns"></tr>
 
+                        <ng-container matColumnDef="Status">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</th>
+                          <td mat-header-cell *matCellDef="let element" >
+                            <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
+                            <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
+                          </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Code">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Code</th>
+                          <td mat-header-cell *matCellDef="let element" > {{element.code}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Caption">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Caption</th>
+                          <td mat-header-cell *matCellDef="let element">{{element.caption}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Actions">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+                          <td mat-cell *matCellDef="let option" class="d-flex justify-content-sm-between">
+                              <a mat-icon-button class="edit" (click)="onEditOption(option)">
+                                <mat-icon>launch</mat-icon>
+                              </a>
+                              <a mat-icon-button color="warn"  (click)="onDeleteOption(option)">
+                                <mat-icon>delete_outline</mat-icon>
+                              </a>
+                          </td>
+                        </ng-container>
+                      </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                  </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -26,5 +66,6 @@
     </div>
   </section>
 </div>
+
 
 

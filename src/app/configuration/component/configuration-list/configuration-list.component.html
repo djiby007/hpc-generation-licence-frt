@@ -1,1 +1,80 @@
-<p>configuration-list works!</p>
+<div class="content-wrapper">
+  <section class="container">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card card-warning card-outline">
+          <div class="card-header">
+            <h6 class="card-title" style="font-weight:bold;font-size: small;" >Liste des Configurations</h6>
+          </div>
+          <div class="card-body table-responsive pt-2 pb-3">
+            <div class="table-responsive" >
+              <div class="panel-body">
+                <div style="overflow: auto">
+                  <div class="row" class="d-flex justify-content-lg-between">
+                    <div class="col-lg-3">
+                      <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="onAdd()">Ajouter</a>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field >
+                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Rechercher">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="mat-elevation-z8">
+                      <table mat-table [dataSource]="listConfiguration" matSort class="table-bordred table-striped table-sm">
+                      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                      <tr mat-row *matRowDef="let row;columns: displayColumns"></tr>
+
+                      <ng-container matColumnDef="Status">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Status</th>
+                        <td mat-header-cell *matCellDef="let element" style="margin-right: 70%">
+                          <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">miscellaneous_services</mat-icon>
+                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">miscellaneous_services</mat-icon>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Option">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Option</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.optionVente.caption}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Valeur Debut">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Debut</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.valeurDebut}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Valeur Fin">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Nb-Fin</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.valeurFin}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Montant">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Montant</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.montant}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Actions">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+                        <td mat-cell *matCellDef="let row" class="d-flex justify-content-sm-between">
+                              <a mat-icon-button class="edit" (click)="onEditConfig(row)">
+                                <mat-icon>launch</mat-icon>
+                              </a>
+                              <a mat-icon-button color="warn"  (click)="onDeleteConfig(row)">
+                                <mat-icon>delete_outline</mat-icon>
+                              </a>
+                        </td>
+                      </ng-container>
+
+                    </table>
+                  </div>
+                </div>
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

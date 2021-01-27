@@ -1,0 +1,20 @@
+.edit{
+  color:#05436e;
+  text-decoration: none !important;
+}
+.refuse{
+  background-color: blue;
+  color: white;
+  text-decoration: none !important;
+}
+.save{
+  background: green;
+  color: white;
+  text-decoration: none !important;
+}
+table{
+  width: 100%;
+}
+td, th {
+  width: 20%;
+}

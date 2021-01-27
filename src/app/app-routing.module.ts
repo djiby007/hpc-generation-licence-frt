@@ -6,6 +6,12 @@ const routes: Routes = [
     loadChildren: () => import('./configuration/configuration.module').then(c => c.ConfigurationModule) },
   { path: 'option',
     loadChildren: () => import('./option/option.module').then(o => o.OptionModule) },
+  { path: 'feature',
+    loadChildren: () => import('./feature/feature.module').then(f => f.FeatureModule) },
+  { path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then(p => p.ProfileModule) },
+  { path: 'permission',
+    loadChildren: () => import('./permission/permission.module').then(a => a.PermissionModule) },
   { path: 'continent',
     loadChildren: () => import('./continent/continent.module').then(c => c.ContinentModule) },
   { path: 'country',
@@ -17,7 +23,7 @@ const routes: Routes = [
   { path: 'filiale',
     loadChildren: () => import('./filiale/filiale.module').then(f => f.FilialeModule) },
 
-  //{ path: '', redirectTo: '/continent' }
+  { path: 'home', redirectTo: '/' }
 ];
 
 @NgModule({
