@@ -1,18 +1,5 @@
 
 <app-navbar *ngIf="isAuthenticated()"></app-navbar>
-
-  <div class="container-fluid">
-    <router-outlet></router-outlet>
-  </div>
-<!--<mat-card>
-      <h4> Selection lists</h4>
-      <mat-selection-list #shoes>
-        <mat-list-option *ngFor="let shoe of typesOfShoes">
-          {{shoe}}
-        </mat-list-option>
-      </mat-selection-list>
-
-      <p>
-        Options selected: {{shoes.selectedOptions.selected.length}}
-      </p>
-    </mat-card>-->
+<div class="container-fluid">
+  <router-outlet></router-outlet>
+</div>
