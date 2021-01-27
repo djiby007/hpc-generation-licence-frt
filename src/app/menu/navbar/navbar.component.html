@@ -12,8 +12,15 @@
     <button mat-menu-item routerLink="company">Sociétés</button>
     <button mat-menu-item routerLink="filiale">Filiales</button>
     <button mat-menu-item routerLink="user">Utilisateurs</button>
-    <button mat-menu-item routerLink="application">Applicatons</button>
+    <button mat-menu-item [matMenuTriggerFor]="invertebrates">Configurations des applications</button>
+
+    <mat-menu #invertebrates="matMenu">
+      <button mat-menu-item routerLink="configuration">Configurations</button>
+      <button mat-menu-item routerLink="option">Options</button>
+      <button mat-menu-item routerLink="application">Applicatons</button>
+    </mat-menu>
   </mat-menu>
+
 
   <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
   <mat-menu #belowMenu="matMenu" yPosition="below">
