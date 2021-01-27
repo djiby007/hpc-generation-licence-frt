@@ -1,0 +1,130 @@
+<div class="content-wrapper">
+  <section class="container">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card card-warning card-outline">
+          <div class="card-header">
+            <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES Utilisateurs</h6>
+          </div>
+          <div class="card-body table-responsive pt-2 pb-3">
+            <div class="panel-body pb-4">
+              <div class="row">
+                <div class="col-sm-6">
+                  <button *ngIf="write == true" class="btn btn btn-sm btn-success mr-2 ml-2" routerLink="/user/create">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Ajouter
+                  </button>
+                  <button *ngIf="write == true" class="btn btn btn-sm btn-success mr-2 ml-2" data-target="#exampleModal"
+                          data-toggle="modal" id="list">
+                    <i class="fa fa-upload" aria-hidden="true"></i> Importer
+                  </button>
+                </div>
+                <div class="col-sm-6" >
+                  <form [formGroup]="searchForm"  (ngSubmit)="onSearch()"  class="form-inline" style="float:right">
+                    <input  type="text" formControlName="code" [ngClass]="setError(code)"  name="code" class="form-control mr-sm-2" placeholder="Rechercher">
+                    <div *ngIf="submitted && code.errors" class="invalid-feedback">
+                      <div *ngIf="code.errors.required">Veuillez saisir le code de l'utilisateur! </div>
+                    </div>
+                    <button class="btn btn-success btn-sm" type="submit" data-toggle="modal" data-target=".bd-example-modal-lg">
+                      <i class="fa fa-search" aria-hidden="true"></i> Rechercher
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive" >
+              <div class="panel-body">
+                <table *ngIf="listUser" id="mytable" class="table table-bordred table-striped table-sm">
+                  <thead>
+                  <th>Status</th>
+                  <th>Civilité</th>
+                  <th>Login</th>
+                  <th>Prénom</th>
+                  <th>Nom</th>
+                  <th>Email</th>
+                  <th>Profile</th>
+                  <th>Filiale</th>
+                  <th>Actions</th>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor = "let user of listUser" style="font-size: small;">
+                    <td>
+                      <i  *ngIf="user.status == 'Actif'" class="fa fa-address-card fa-lg" aria-hidden="true" id="iconVert"></i>
+                      <i *ngIf="user.status == 'Inactif'" class="fa fa-address-card fa-lg" aria-hidden="true"></i>
+                      <i *ngIf="user.status == 'Supprime'" class="fa fa-address-card fa-lg" aria-hidden="true"></i>
+                    </td>
+                    <td>{{user.civility}}</td>
+                    <td>{{user.login}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.profile.caption}}</td>
+                    <td>{{user.filiale.caption}}</td>
+                    <td>
+                      <a (click)="onEditUser(user)" *ngIf="edit == true" class="btn btn-sm">
+                        <i aria-hidden="true" class="fa fa-pencil-square-o fa-lg iconbleu"></i>
+                      </a>
+                      |
+                      <a (click)="onDeleteUser(user)" *ngIf="delete == true" class="btn btn-sm">
+                        <i class="fa fa-trash-o fa-lg" aria-hidden="true" style="color: red;"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="modal-content">
+        <div class="modal-header card-header">
+          <div class="col-sm-6">
+            <h5 class="modal-title" id="exampleModalLabel">Import</h5><br>
+            <input type="file" formControlName="file"id="file" (change)="fileChangeListener($event)" accept=".csv"><br>
+          </div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table-responsive" *ngIf="listImportUser.length>0">
+            <thead>
+            <tr>
+              <th>Prénom</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Filiale</th>
+              <th>Profile</th>
+              <th>Civilité</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of listImportUser">
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.email}}</td>
+              <td>{{user?.filiale.caption}}</td>
+              <td>{{user?.profile.id}}</td>
+              <td>{{user.civility}}</td>
+              <td>{{user.status}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button type="submit" class="btn btn-success">Importer</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

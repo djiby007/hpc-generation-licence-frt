@@ -1,9 +1,7 @@
-
 import {Status} from '../../enum/status.enum';
 import {Civility} from '../../enum/civility.enum';
 import {ProfileModel} from '../../profile/models/profile.model';
 import {FilialeModel} from '../../filiale/models/filiale.model';
-
 
 export interface UserModel{
   id: number;

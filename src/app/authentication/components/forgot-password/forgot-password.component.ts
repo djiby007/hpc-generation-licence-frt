@@ -50,6 +50,7 @@ export class ForgotPasswordComponent implements OnInit {
     }
     let forgot: ForgotPasswordModel;
     forgot = this.forgotForm.value;
+    // @ts-ignore
     forgot.url = environment.frontUrl + '/reset-password';
     this.authService.forgotPassword(forgot).subscribe(
       (data) => {

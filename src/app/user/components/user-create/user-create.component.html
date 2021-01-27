@@ -1,0 +1,97 @@
+<div class="form-content">
+  <div class="container register-form pt-3">
+    <div class="card">
+      <h6 class="card-header">AJOUT D'UTILISATEURS</h6>
+      <div class="card-body">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Prénom</b></label>
+                <input class="form-control" type="text" formControlName="firstName" [ngClass]="setError(firstName)" placeholder="Prénom" name="uname" >
+                <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="invalid-feedback">
+                  <div *ngIf="firstName.errors.required">Veuillez saisir le prénom </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Nom</b></label>
+                <input class="form-control" type="text" formControlName="lastName" [ngClass]="setError(lastName)" placeholder="Nom" name="uname" >
+                <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="invalid-feedback">
+                  <div *ngIf="lastName.errors.required">Veuillez saisir le nom </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Email </b></label>
+                <input class="form-control" type="text" formControlName="email" [ngClass]="setError(email)" placeholder="example@example.sn" name="uname" >
+                <div *ngIf="email.invalid && (email.dirty || email.touched ||email.invalid)" class="invalid-feedback">
+                  <div *ngIf="email.errors.required">Veuillez saisir l'email </div>
+                  <div *ngIf="email.invalid">Email incorrect</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Profile </b></label>
+                <select class="form-control" name="" formControlName="profile" [ngClass]="setError(profile)">
+                  <option *ngFor="let profile of listProfile" value={{profile.id}}>{{profile.caption}}</option>
+                </select>
+                <div *ngIf="profile.invalid && (profile.dirty || profile.touched)" class="invalid-feedback">
+                  <div *ngIf="profile.errors.required">Veuillez sélectionner le profile </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Filiales </b></label>
+                <select class="form-control" name="" formControlName="filiale" [ngClass]="setError(filiale)">
+                  <option *ngFor="let filiale of listFiliale" value={{filiale.id}}>{{filiale.code}}</option>
+                </select>
+                <div *ngIf="filiale.invalid && (filiale.dirty || filiale.touched)" class="invalid-feedback">
+                  <div *ngIf="filiale.errors.required">Veuillez sélectionner la société </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="col-form-label"><b>Civilité</b></label>
+                <select class="form-control" name="" formControlName="civility" [ngClass]="setError(civility)">
+                  <option value="Mr">Mr</option>
+                  <option value="Mlle">Mlle</option>
+                  <option value="Mme">Mme</option>
+                </select>
+                <div *ngIf="civility.invalid && (civility.dirty || civility.touched)" class="invalid-feedback">
+                  <div *ngIf="civility.errors.required">Veuillez sélectionner la civility </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="col-form-label"><b>Status</b></label>
+            <select class="form-control" name="" formControlName="status" [ngClass]="setError(status)">
+              <option value="Actif">Actif</option>
+              <option value="Inactif">Inactif</option>
+            </select>
+            <div *ngIf="status.invalid && (status.dirty || status.touched)" class="invalid-feedback">
+              <div *ngIf="status.errors.required">Veuillez sélectionner le status </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-success mr-2">Sauvegarder</button>
+          <button type="button" class="btn" id="list" (click)="goBack()">Annuler</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+

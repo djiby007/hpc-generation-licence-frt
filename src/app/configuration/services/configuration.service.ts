@@ -24,11 +24,11 @@ export class ConfigurationService {
     return this.httpClient.post<ConfigurationModel>(this.apiUrl + this.configurationEndPoint, config);
   }
 
-  deleteConfig(id: number, config: ConfigurationModel){
+  deleteConfig(id: number, config: ConfigurationModel): Observable<any>{
     return this.httpClient.put(this.apiUrl + this.configurationEndPoint + this.deleteConfigEndPoint + id, config);
   }
 
-  updateConfig(id: number, config: ConfigurationModel){
+  updateConfig(id: number, config: ConfigurationModel): Observable<any> {
     return this.httpClient.put(this.apiUrl + this.configurationEndPoint + '/' + id, config);
   }
 
