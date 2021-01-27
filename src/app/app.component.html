@@ -1,1 +1,47 @@
-<router-outlet></router-outlet>
+<div class="contenu">
+  <div class="header">
+    <p class="entete" *ngIf="isAuthenticated()">
+      <i aria-hidden="true" class="fa fa-phone"></i> +221 33 869 62 60
+      <i aria-hidden="true" class="fa fa-envelope ml-3"></i> hpc@hpc.sn
+    </p>
+  </div>
+  <nav *ngIf="isAuthenticated()" class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="https://hpc.sn/">
+      <img alt="HPC | Vente de logiciels de gestion" class="ml-lg-4" data-actual-height="100" data-actual-width="200"
+           data-height-percentage="54" id="logo" src="https://hpc.sn/wp-content/uploads/2020/06/logo-hpc.png">
+    </a>
+    <ul class="nav navbar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuUser" data-toggle="dropdown" aria-haspopup="true"
+           aria-expanded="false">
+          Configurations
+          <div aria-labelledby="dropdownMenuUser" class="dropdown-menu sous-menu2">
+            <a *ngFor="let f of listConfiguration" [routerLink]="f.rout" class="dropdown-item">{{f.feature.caption}}</a>
+          </div>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuPermissions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Permissions
+          <div class="dropdown-menu sous-menu1" aria-labelledby="navbarDropdownMenuPermissions">
+            <a *ngFor="let f of listPermission" [routerLink]="f.rout" class="dropdown-item">{{f.feature.caption}}</a>
+          </div>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-user" aria-hidden="true"></i> {{user?.firstName}} {{user?.lastName}}
+          <div class="dropdown-menu sous-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="nav-link dropdown-item" routerLink="updatepassword">Modifier mot de passe</a>
+            <div class="dropdown-divider"></div>
+            <a class="nav-link dropdown-item" (click)="logout()">Se déconnecter</a>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <router-outlet></router-outlet>
+</div>
