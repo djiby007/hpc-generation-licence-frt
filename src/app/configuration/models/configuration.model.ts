@@ -1,12 +1,12 @@
-import {OptionModel} from '../../option/models/option.model';
+import {OptionVentEditConfigModel} from '../../option/models/optionVentEditConfig.model';
 
 export interface ConfigurationModel{
-  success: boolean;
-  message: string;
   id: number;
   valeurDebut: number;
   valeurFin: number;
   montant: number;
   status: string;
-  optionVente: OptionModel;
+  optionVente: OptionVentEditConfigModel;
+  success: boolean;
+  message: string;
 }

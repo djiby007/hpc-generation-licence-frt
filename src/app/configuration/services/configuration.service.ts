@@ -12,6 +12,8 @@ export class ConfigurationService {
   configurationEndPoint = '/configuration';
   deleteConfigEndPoint = '/delete/';
   Listeners = new Subject<any>();
+  currentConfig: ConfigurationModel;
+
   constructor(private httpClient: HttpClient) { }
 
   getConfigList(): Observable<ConfigurationModel[]> {
@@ -24,6 +26,10 @@ export class ConfigurationService {
 
   deleteConfig(id: number, config: ConfigurationModel){
     return this.httpClient.put(this.apiUrl + this.configurationEndPoint + this.deleteConfigEndPoint + id, config);
+  }
+
+  updateConfig(id: number, config: ConfigurationModel){
+    return this.httpClient.put(this.apiUrl + this.configurationEndPoint + '/' + id, config);
   }
 
   listen(): Observable<any>{

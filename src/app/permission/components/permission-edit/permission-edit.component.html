@@ -1,0 +1,42 @@
+<tr>
+  <td>{{currentPermission.profile.caption}}</td>
+  <td>{{currentPermission["feature"].caption}}</td>
+
+  <td>
+    <div data-todoapp="item">
+      <label class="todo--label2 px-0" >
+        <input type="checkbox" [(ngModel)]="edit" class="todo--input" data-todoapp="checkbox">
+      </label>
+    </div>
+  </td>
+
+  <td>
+    <div data-todoapp="item">
+      <label class="todo--label3 px-0" >
+        <input type="checkbox" [(ngModel)]="write" class="todo--input" data-todoapp="checkbox">
+      </label>
+    </div>
+  </td>
+  <td>
+    <div data-todoapp="item">
+      <label class="todo--label4 px-0" >
+        <input type="checkbox" [(ngModel)]="read" class="todo--input" data-todoapp="checkbox">
+      </label>
+    </div>
+  </td>
+  <td>
+    <div data-todoapp="item">
+      <label class="todo--label5 px-0" >
+        <input type="checkbox"  name="delete"  [(ngModel)]="delete" class="todo--input" data-todoapp="checkbox">
+      </label>
+    </div>
+  </td>
+
+  <td>
+    <div class="todo--actions">
+      <a (click)="EditPermission(currentPermission.id)"  class="btn btn-sm">
+        <i class="fa fa-floppy-o fa-lg iconBleu" aria-hidden="true"></i>
+      </a>
+    </div>
+  </td>
+</tr>

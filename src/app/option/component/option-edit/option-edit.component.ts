@@ -35,11 +35,8 @@ export class OptionEditComponent implements OnInit {
     if (this.updateOptionForm != null){
       this.updateOptionForm.reset();
     }
-    this.updateOptionForm = this.formBuilder.group({
-      caption: new  FormControl([, {validators: [Validators.required, Validators.pattern('^[A-Za-z,è,é,ê,ë,û,ù,à,ï,i]*$')],
-        updateOn: 'change'}]),
-      status: new FormControl([, { validators: [Validators.required], updateOn: 'change' }]),
-    });
+    this.updateOptionForm.controls.caption.setValidators([ Validators.required, Validators.pattern('^[A-Za-z,û,ù,ï,i]*$')]),
+      this.updateOptionForm.controls.status.setValidators([ Validators.required]);
   }
 
   get caption(){return this.updateOptionForm.get('caption'); }

@@ -20,50 +20,44 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <div style="overflow: auto">
-                  <div class="mat-elevation-z8">
-                    <mat-table multiTemplateDataRows [dataSource]="listOptions" matSort class="table-responsive">
-                      <mat-header-row *matHeaderRowDef="Columns" ></mat-header-row>
-                      <mat-row *matRowDef="let option;columns:Columns"></mat-row>
+                  <div  class="mat-elevation-z8">
+                    <table mat-table multiTemplateDataRows [dataSource]="listOptions" matSort class="table-bordred table-striped table-sm">
+                        <tr mat-header-row *matHeaderRowDef="Columns" ></tr>
+                        <tr mat-row *matRowDef="let option;columns:Columns"></tr>
 
-                      <ng-container matColumnDef="Status">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element" >
-                          <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
-                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
-                        </mat-header-cell>
-                      </ng-container>
+                        <ng-container matColumnDef="Status">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</th>
+                          <td mat-header-cell *matCellDef="let element" >
+                            <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
+                            <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
+                          </td>
+                        </ng-container>
 
-                      <ng-container matColumnDef="Code">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Code</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element" > {{element.code}}</mat-header-cell>
-                      </ng-container>
+                        <ng-container matColumnDef="Code">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Code</th>
+                          <td mat-header-cell *matCellDef="let element" > {{element.code}}</td>
+                        </ng-container>
 
-                      <ng-container matColumnDef="Caption">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Caption</mat-header-cell>
-                        <mat-header-cell *matCellDef="let element">{{element.caption}}</mat-header-cell>
-                      </ng-container>
+                        <ng-container matColumnDef="Caption">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Caption</th>
+                          <td mat-header-cell *matCellDef="let element">{{element.caption}}</td>
+                        </ng-container>
 
-                      <ng-container matColumnDef="Actions">
-                        <mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</mat-header-cell>
-                        <mat-cell *matCellDef="let option">
-                          <div class="row" class="d-flex justify-content-sm-between">
-                            <div class="col-sm-12">
+                        <ng-container matColumnDef="Actions">
+                          <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+                          <td mat-cell *matCellDef="let option" class="d-flex justify-content-sm-between">
                               <a mat-icon-button class="edit" (click)="onEditOption(option)">
                                 <mat-icon>launch</mat-icon>
                               </a>
                               <a mat-icon-button color="warn"  (click)="onDeleteOption(option)">
                                 <mat-icon>delete_outline</mat-icon>
                               </a>
-                            </div>
-                          </div>
-                        </mat-cell>
-                      </ng-container>
-                      </mat-table>
+                          </td>
+                        </ng-container>
+                      </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                   </div>
                   </div>
-                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-                </div>
               </div>
             </div>
           </div>

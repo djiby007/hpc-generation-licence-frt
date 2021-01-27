@@ -7,7 +7,8 @@
         <mat-card-content lass="d-flex justify-content-center">
           <div class="row text-center">
             <div class="col-md-6">
-              <mat-form-field class="exemple-full-width">
+              <mat-form-field class="exemple-full-width" >
+                <mat-label class="label-form">Valeur debut</mat-label>
                 <input matInput placeholder="Valeur debut"
                        formControlName="valeurDebut"
                        name="valeurDebut"
@@ -25,6 +26,7 @@
             </div>
             <div class="col-md-6">
               <mat-form-field class="exemple-full-width">
+                <mat-label class="label-form">Valeur fin</mat-label>
                 <input matInput placeholder="Valeur fin"
                        formControlName="valeurFin"
                        name="valeurFin"
@@ -40,6 +42,7 @@
           <div class="row text-center">
             <div class="col-md-6">
               <mat-form-field class="exemple-full-width">
+                <mat-label class="label-form">Montant</mat-label>
                 <input matInput placeholder="Montant"
                        formControlName="montant"
                        name="montant"
@@ -54,7 +57,7 @@
             </div>
             <div class="col-md-6">
               <mat-form-field >
-                <mat-label>Status</mat-label>
+                <mat-label class="label-form">Status</mat-label>
                 <mat-select name="status" formControlName="status">
                   <mat-option value="Actif">
                     Actif
@@ -69,7 +72,7 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field >
-                <mat-label>Option de Vente</mat-label>
+                <mat-label class="label-form">Option de Vente</mat-label>
                 <mat-select  name="optionVente"  formControlName= "optionVente">
                   <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
                 </mat-select>
