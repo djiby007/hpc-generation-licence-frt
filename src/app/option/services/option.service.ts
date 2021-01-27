@@ -33,11 +33,11 @@ export class OptionService {
     return this.httpClient.post<OptionModel>(this.apiUrl + this.optionEndPoint, option);
   }
 
-  deleteOption(id: number, option: OptionModel){
+  deleteOption(id: number, option: OptionModel): Observable<any>{
     return this.httpClient.put(this.apiUrl + this.optionEndPoint + this.deleteOptionEndPoint + id, option);
   }
 
-  updateOption(id: number, option: OptionModel){
+  updateOption(id: number, option: OptionModel): Observable<any>{
     return this.httpClient.put(this.apiUrl + this.optionEndPoint + '/' + id, option);
   }
 

@@ -1,4 +1,3 @@
-import {CompanyModel} from '../../company/models/company.model';
 import {Status} from '../../enum/status.enum';
 import {Civility} from '../../enum/civility.enum';
 import {ProfileModel} from '../../profile/models/profile.model';
