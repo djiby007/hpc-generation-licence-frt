@@ -6,8 +6,8 @@ import {ProfileListComponent} from './components/profile-list/profile-list.compo
 
 
 const routes: Routes = [
-  { path: 'create' , component: ProfileCreateComponent },
   { path: '' , component: ProfileListComponent },
+  { path: 'create' , component: ProfileCreateComponent },
   { path: 'edit/:id' , component: ProfileEditComponent }
 ];
 
