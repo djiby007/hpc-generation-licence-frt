@@ -13,10 +13,12 @@ import {CountryModule} from "./country/country.module";
 import {CityModule} from "./city/city.module";
 import {CompanyModule} from "./company/company.module";
 import {FilialeModule} from "./filiale/filiale.module";
+import { NavbarComponent } from './menu/navbar/navbar.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NavbarComponent
   ],
   imports: [
     FormsModule,
