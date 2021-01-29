@@ -1,7 +1,5 @@
 <div style="height: 100vh;
-    overflow: inherit;
-
-">
+    overflow: inherit;">
   <div class="header">
     <p class="entete" >
       <i aria-hidden="true" class="fa fa-phone"></i> +221 33 869 62 60
@@ -28,6 +26,12 @@
         <button mat-menu-item routerLink="filiale">Filiales</button>
         <button mat-menu-item routerLink="user">Utilisateurs</button>
         <button mat-menu-item routerLink="application">Applicatons</button>
+      </mat-menu>
+
+      <button mat-button [matMenuTriggerFor]="lowMenu">Licence</button>
+      <mat-menu #lowMenu="matMenu" yPosition="below">
+        <button mat-menu-item routerLink="option">Options</button>
+        <button mat-menu-item routerLink="configuration">Config-licence</button>
       </mat-menu>
 
       <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
@@ -66,6 +70,12 @@
           <button mat-menu-item routerLink="filiale">Filiales</button>
           <button mat-menu-item routerLink="user">Utilisateurs</button>
           <button mat-menu-item routerLink="application">Applicatons</button>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="lowMenu">Licence</button>
+        <mat-menu #lowMenu="matMenu" yPosition="below">
+          <button mat-menu-item routerLink="option">Options</button>
+          <button mat-menu-item routerLink="configuration">Config-licence</button>
         </mat-menu>
 
         <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>

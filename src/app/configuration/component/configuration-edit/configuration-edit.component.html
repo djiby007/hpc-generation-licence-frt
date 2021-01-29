@@ -72,23 +72,8 @@
                </mat-error>
              </mat-form-field>
              <mat-form-field>
-               <!-- <mat-label>Option de Vente</mat-label>
-                <input type="text"
-                       placeholder="Option"
-                       aria-label="Number"
-                       matInput
-                       [formControl]="myControl"
-                       [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>-->
-
-
-
                <mat-label class="label-form">Option de Vente</mat-label>
-               <mat-select  name="optionVente"  formControlName= "optionVente" [(ngModel)]="configService.currentConfig.optionVente.caption" >
+               <mat-select  name="optionVente"  formControlName= "optionVente" [(ngModel)]="configService.currentConfig.optionVente.id" >
                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
                </mat-select>
                <mat-error

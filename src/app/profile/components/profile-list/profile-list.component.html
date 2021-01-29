@@ -4,98 +4,61 @@
       <div class="col-md-12">
         <div class="card card-warning card-outline">
           <div class="card-header">
-            <h4 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES PROFILS</h4>
+            <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES PROFILES</h6>
           </div>
           <div class="card-body table-responsive pt-2 pb-3">
-            <div class="panel-body pb-4">
-              <div class="row">
-                <div class="col-sm-6">
-                  <button *ngIf="write == true" class="btn btn btn-sm btn-success mr-2 ml-2"
-                          routerLink="/profile/create">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Ajouter
-                  </button>
-                </div>
-                <div class="col-sm-6" >
-                  <form [formGroup]="searchProfileForm"  (ngSubmit)="onSearchProfile()"  class="form-inline" style="float:right">
-                    <input  type="text" formControlName="code" [ngClass]="setError(code)" name="code" class="form-control mr-sm-2" placeholder="Rechercher">
-                    <button class="btn btn-success btn-sm" type="submit" data-toggle="modal" data-target=".bd-example-modal-lg">
-                      <i class="fa fa-search" aria-hidden="true"></i> Rechercher
-                    </button>
-                    <div *ngIf="code.invalid && (code.dirty || code.touched)" class="invalid-feedback">
-                      <div *ngIf="code.errors.required">Veuillez saisir le code du profile!</div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
             <div class="table-responsive" >
-              <div *ngIf="test === true" class="panel-body">
-                <table *ngIf="listProfiles" id="mytable" class="table table-bordred table-striped table-sm">
-                  <thead>
-                  <th>Status</th>
-                  <th>Code</th>
-                  <th>Caption</th>
-                  <th>Actions</th>
-                  </thead>
-                  <tbody>
-                  <tr *ngFor="let p of listProfiles" style="font-size: small;">
-                    <td *ngIf="p.status == 'Actif'">
-                      <i class="fa fa-users fa-lg iconVert" aria-hidden="true" ></i>
-                    </td>
-                    <td *ngIf="p.status == 'Inactif'">
-                      <i class="fa fa-users fa-lg" aria-hidden="true" ></i>
-                    </td>
-                    <td>{{p.code}}</td>
-                    <td>{{p.caption}}</td>
-                    <td>
-                      <a (click)="onEditProfile(p)" *ngIf="edit == true" class="btn btn-sm">
-                        <i class="fa fa-pencil-square-o fa-lg iconBleu" aria-hidden="true"></i>
-                      </a>
-                      |
-                      <a (click)="onDeleteProfile(p)" *ngIf="delete == true" class="btn btn-sm">
-                        <i class="fa fa-trash-o fa-lg" aria-hidden="true" style="color: red;"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="panel-body" *ngIf="test === false" >
-                <table *ngIf="profileFined" class="table table-bordred table-striped table-sm" style="font-size: small;">
-                  <thead>
-                  <th >Status</th>
-                  <th >Code</th>
-                  <th >Caption</th>
-                  <th >Actions</th>
-                  </thead>
-                  <tbody>
-                  <tr >
-                    <td *ngIf="profileFined.data.status == 'Actif' && profileFined.data.status !== null">
-                      <i class="fa fa-check-square-o fa-lg iconVert" aria-hidden="true" ></i>
-                    </td>
-                    <td *ngIf="profileFined.data.status == 'Inactif' && profileFined.data.status !== null">
-                      <i class="fa fa-check-square-o fa-lg" aria-hidden="true"></i>
-                    </td>
-                    <td *ngIf="profileFined.data.status == 'Supprime' && profileFined.data.status !== null">
-                      <i class="fa fa-trash-o fa-lg" aria-hidden="true" style="color: red;"></i>
-                    </td>
-                    <td *ngIf="profileFined.data.status === null"> --- </td>
+              <div class="panel-body">
+                <div style="overflow: auto">
+                  <div class="row" class="d-flex justify-content-lg-between">
+                    <div class="col-lg-3">
+                       <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="onAddProfile()">Ajouter</a>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field >
+                        <input matInput (keyup)="applyFilterProfiles($event.target.value)" placeholder="Rechercher">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div  class="mat-elevation-z8">
+                    <table mat-table multiTemplateDataRows [dataSource]="listProfile" matSort class="table-bordred table-striped table-sm">
+                      <tr mat-header-row *matHeaderRowDef="profileColumns" ></tr>
+                      <tr mat-row *matRowDef="let option;columns:profileColumns"></tr>
 
-                    <td>{{profileFined.data.code}}</td>
-                    <td>{{profileFined.data.caption}}</td>
-                    <td *ngIf="profileFined.data.status !== null">
-                      <a class="btn btn-sm" (click)="onEditProfile(profileFined.data)">
-                        <i class="fa fa-pencil-square-o fa-lg iconBleu" aria-hidden="true" ></i>
-                      </a>
-                      |
-                      <a class="btn btn-sm" (click)="onDeleteProfile(profileFined.data)">
-                        <i class="fa fa-trash-o fa-lg" aria-hidden="true" style="color: red;"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  </tbody>
-                </table>
-                <div *ngIf="profileFined.data == null"><p>Le profil recherché n'existe pas dans votre base ou est supprimé!</p></div>
+                      <ng-container matColumnDef="Status">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</th>
+                        <td mat-header-cell *matCellDef="let element" >
+                          <i  *ngIf="element.status == 'Actif'" class="fa fa-users fa-lg iconVert" aria-hidden="true" ></i>
+                          <i *ngIf="element.status == 'Inactif'" class="fa fa-users fa-lg" aria-hidden="true"></i>
+                        </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Code">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Code</th>
+                        <td mat-header-cell *matCellDef="let element" > {{element.code}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Caption">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Caption</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.caption}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Actions">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+                        <td mat-cell *matCellDef="let option" class="d-flex justify-content-sm-between">
+                          <a mat-icon-button class="edit" (click)="onEditProfile(option)">
+                            <mat-icon>launch</mat-icon>
+                          </a>
+                          <a mat-icon-button color="warn"  (click)="onDeleteProfile(option)">
+                            <mat-icon>delete_outline</mat-icon>
+                          </a>
+                        </td>
+                      </ng-container>
+
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

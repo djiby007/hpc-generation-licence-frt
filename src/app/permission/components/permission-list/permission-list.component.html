@@ -1,4 +1,4 @@
-<div class="content-wrapper">
+<!--<div class="content-wrapper">
   <section class="container">
     <div class="row mt-3">
       <div class="col-md-12">
@@ -15,7 +15,7 @@
                   </button>
                 </div>
                 <div class="col-sm-6">
-                  <form #searchPermis="ngForm" (ngSubmit)="onChercheProfile(searchPermis.value)"  class="form-inline" style="float:right">
+               &lt;!&ndash;   <form #searchPermis="ngForm" (ngSubmit)="onChercheProfile(searchPermis.value)"  class="form-inline" style="float:right">
                     <div class="form-group mr-2">
                       <select name="code" ngModel class="form-control">
                         <option value="" selected>Profil</option>
@@ -25,7 +25,7 @@
                     <button class="btn btn-success btn-sm" type="submit" data-toggle="modal" data-target=".bd-example-modal-lg">
                       <i class="fa fa-search" aria-hidden="true"></i> Rechercher
                     </button>
-                  </form>
+                  </form>&ndash;&gt;
                 </div>
               </div>
             </div>
@@ -46,6 +46,122 @@
                   <tbody>
                 </table>
                 <div *ngIf="test === true"><p>Aucune affectation n'a encore été éffectuée pour ce profil!</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>-->
+
+<!--
+<div class="content-wrapper">
+  <section class="container">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card card-warning card-outline">
+          <div class="card-header">
+            <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES AFFECTATIONS</h6>
+          </div>
+          <div class="card-body table-responsive pt-2 pb-3">
+            <div class="table-responsive" >
+              <div class="panel-body">
+                <div style="overflow: auto">
+                  <div class="row" class="d-flex justify-content-lg-between">
+                    <div class="col-lg-3">
+                      <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="AlouerPermision()" >Alouer Permission</a>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field >
+                        <input matInput (keyup)="applyFilterProfiles($event.target.value)" placeholder="Rechercher">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                    <table >
+                      <tbody  class="table table-bordred table-striped table-sm"  matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+                        <thead>
+                          <th>Profile</th>
+                          <th>Fonctionalité</th>
+                          <th>Edit</th>
+                          <th>Write</th>
+                          <th>Read</th>
+                          <th>Delete</th>
+                          <th>Action</th>
+                        </thead>
+                        <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
+                      <tbody>
+                    </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+-->
+
+<div class="content-wrapper">
+  <section class="container">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="card card-warning card-outline">
+          <div class="card-header">
+            <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES AFFECTATIONS</h6>
+          </div>
+          <div class="card-body table-responsive pt-2 pb-3">
+            <div class="table-responsive" >
+              <div class="panel-body">
+                <div style="overflow: auto">
+                  <div class="row" class="d-flex justify-content-lg-between">
+                    <div class="col-lg-3">
+                      <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="AlouerPermision()" >Alouer Permission</a>
+                    </div>
+                    <div class="col-lg-3">
+                      <mat-form-field >
+                        <input matInput (keyup)="applyFilterProfiles($event.target.value)" placeholder="Rechercher">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div  class="mat-elevation-z8">
+             <!--       <table mat-table multiTemplateDataRows [dataSource]="listPermits" matSort class="table-bordred table-striped table-sm">
+                      <tr mat-header-row *matHeaderRowDef="permissionColumns" ></tr>
+                      <tr mat-row *matRowDef="let option;columns:permissionColumns"></tr>
+
+                      <ng-container matColumnDef="Profile">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Profile</th>
+                        <td mat-header-cell *matCellDef="let element" >{{element.profile.caption}}</td>
+                      </ng-container>
+                      <ng-container matColumnDef="Fonctionalité">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Fonctionalité</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.feature.caption}}</td>
+                      </ng-container>
+                      <ng-container *matColumnDef="let coloumn" >
+                      <app-permission-edit *matCellDef="let element" [currentPermission]="element"></app-permission-edit>
+                      </ng-container>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
+
+                  <table >
+                    <tbody  class="table table-bordred table-striped table-sm"  matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+                    <thead>
+                    <th>Profile</th>
+                    <th>Fonctionalité</th>
+                    <th>Edit</th>
+                    <th>Write</th>
+                    <th>Read</th>
+                    <th>Delete</th>
+                    <th>Action</th>
+                    </thead>
+                    <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
+                    <tbody>
+                  </table>
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

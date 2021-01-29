@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileModel} from '../../models/profile.model';
 import {ProfileService} from '../../services/profile.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import Swal from 'sweetalert2';
+import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile-edit',
@@ -11,58 +11,41 @@ import Swal from 'sweetalert2';
   styleUrls: ['./profile-edit.component.scss']
 })
 export class ProfileEditComponent implements OnInit {
-  currentProfile: ProfileModel;
   editProfileForm: FormGroup;
+  successApiMessage: string;
+  errorApiMessage: string;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   submitted = false;
   error = false;
-  successMessage: string;
-  errorMessage: string;
   statusApi: boolean;
 
-  constructor(private profileService: ProfileService, private router: Router,
+  constructor(public profileService: ProfileService,
               private formBuilder: FormBuilder,
-              private activatedRoute: ActivatedRoute) {}
-
-  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
-  });
+              private dialogue: MatDialogRef<ProfileEditComponent>,
+              private snackbar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.createForm();
     this.resetEditProfileForm();
-    this.getProfile(+this.activatedRoute.snapshot.paramMap.get('id'));
   }
 
   resetEditProfileForm(){
     if (this.editProfileForm != null){
       this.editProfileForm.reset();
     }
-    this.editProfileForm = this.formBuilder.group({
-      caption: [, { validators: [Validators.required, Validators.pattern('^[A-Za-z,è,é,ê,ë,û,ù,à,ï,i]*$') ], updateOn: 'change' },
-        Validators.minLength(4)],
-      status: [, { validators: [Validators.required], updateOn: 'change' }],
-    });
+    this.editProfileForm.controls.caption.setValidators([ Validators.required, Validators.pattern('^[A-Za-z,û,ù,ï,i]*$')]),
+      this.editProfileForm.controls.status.setValidators([ Validators.required, Validators.minLength(4)]);
   }
 
   get caption(){
     return this.editProfileForm.get('caption');
   }
-
   get status(){
     return this.editProfileForm.get('status');
   }
 
-  OnClose(){
-    this.router.navigateByUrl('/profile');
-  }
+  OnClose(){ this.dialogue.close(); this.profileService.filter('edit profile'); }
 
   createForm(){
     this.editProfileForm = new FormGroup({
@@ -71,38 +54,61 @@ export class ProfileEditComponent implements OnInit {
     });
   }
 
-  onEditProfile(){
-    const profile: ProfileModel = {
-      id: this.currentProfile.id, code: this.currentProfile.code,
-      caption: this.editProfileForm.get('caption').value, status: this.editProfileForm.get('status').value
-    };
-    if ( profile.caption.length < 4) {
-      Swal.fire('', 'Le nom de profil doit être de 4 lettres au minimum!');
-    }else{
-      this.profileService.updateProfile(this.currentProfile.id, profile)
-        .subscribe(data => {
-          // @ts-ignore
-          this.successMessage = data.message;
-          // @ts-ignore
-          this.statusApi = data.success;
-          if (this.statusApi === false) {
-            this.error === true;
-            // @ts-ignore
-            this.errorMessage = data.message;
-          } else {
-            this.Toast.fire({
-              icon: 'success',
-              title: this.successMessage,
-            });
-            this.router.navigateByUrl('/profile').then(r => {});
-          }
-        }, error => {
-          console.log(error.message);
+  onEditProfile() {
+    const currentProfile1 = this.profileService.currentProfile;
+    const pro: ProfileModel = { id: currentProfile1.id,
+      code: currentProfile1.code, success: currentProfile1.success, message: currentProfile1.message,
+      caption: this.editProfileForm.get('caption').value, status: this.editProfileForm.get('status').value};
+    this.profileService.updateProfile(pro.id, pro).subscribe( data => {
+      this.successApiMessage = data.message;
+      if ( this.statusApi === false){
+        this.errorApiMessage = data.message;
+      }else{
+        this.snackbar.open(this.successApiMessage.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
         });
-    }
+      }
+      this.OnClose();
+    }, error => {
+      console.log(error.message);
+    });
   }
 
-  getProfile(id: number) {
+ onEditProfilee(){}
+   /*   const profile: ProfileModel = {
+       id: this.currentProfile.id, code: this.currentProfile.code,
+       caption: this.editProfileForm.get('caption').value, status: this.editProfileForm.get('status').value
+     };
+     if ( profile.caption.length < 4) {
+       Swal.fire('', 'Le nom de profil doit être de 4 lettres au minimum!');
+     }else{
+       this.profileService.updateProfile(this.currentProfile.id, profile)
+         .subscribe(data => {
+           // @ts-ignore
+           this.successMessage = data.message;
+           // @ts-ignore
+           this.statusApi = data.success;
+           if (this.statusApi === false) {
+             this.error === true;
+             // @ts-ignore
+             this.errorMessage = data.message;
+           } else {
+             this.Toast.fire({
+               icon: 'success',
+               title: this.successMessage,
+             });
+             this.router.navigateByUrl('/profile').then(r => {});
+           }
+         }, error => {
+           console.log(error.message);
+         });
+     }
+   }*/
+
+/*  getProfile(id: number) {
     this.profileService.getProfileById(id)
       .subscribe(value => {
         this.currentProfile = value;
@@ -115,6 +121,6 @@ export class ProfileEditComponent implements OnInit {
 
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
-  }
+  }*/
 
 }

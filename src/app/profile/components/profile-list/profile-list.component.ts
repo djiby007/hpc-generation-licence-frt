@@ -1,133 +1,115 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { ProfileModel } from '../../models/profile.model';
 import { ProfileService } from '../../services/profile.service';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import Swal from 'sweetalert2';
-import {HttpParams} from '@angular/common/http';
-import {UserModel} from '../../../user/models/user.model';
-import {PermissionModel} from '../../../permission/models/permission.model';
-import {PermissionService} from '../../../permission/services/permission.service';
+import { HttpParams } from '@angular/common/http';
+import { UserModel } from '../../../user/models/user.model';
+import { PermissionModel } from '../../../permission/models/permission.model';
+import { PermissionService } from '../../../permission/services/permission.service';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ProfileCreateComponent } from '../profile-create/profile-create.component';
+import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
 
 @Component({
   selector: 'app-profile-list',
   templateUrl: './profile-list.component.html',
   styleUrls: ['./profile-list.component.scss']
 })
+
 export class ProfileListComponent implements OnInit {
-  listProfiles: {};
-  searchProfileForm: FormGroup;
-  submitted = false;
-  successMessage: string;
-  profileFined: any;
-  editProfileUrl = '/profile/edit/';
+  listProfile: MatTableDataSource<ProfileModel>;
+  profileColumns: string[] = [ 'Status', 'Code', 'Caption', 'Actions'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  successApiMessage: string;
+  errorApiMessage: string;
+  apiStatus: boolean;
+  status: boolean;
   delete = false;
   edit = false;
   write = false;
   test: boolean;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   currentUser: UserModel;
   permission: PermissionModel;
 
   constructor(private profileService: ProfileService, private permissionService: PermissionService,
-              private router: Router) {}
-
-  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
-  });
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar) {
+    this.profileService.listen().subscribe( (p: any) => {
+      this.refreshProfileList();
+    });
+  }
 
   ngOnInit(): void {
-    this.getProfile();
-    this.createForm();
+    this.refreshProfileList();
     this.getWritePermission();
     this.getEditPermission();
     this.getDeletePermission();
   }
 
-  get code(){
-    return this.searchProfileForm.get('code');
-  }
-
-  createForm(){
-    this.searchProfileForm = new FormGroup({
-      code: new FormControl('', Validators.required)
+  refreshProfileList(){
+    this.profileService.getProfileList().subscribe(data => {
+      this.listProfile = new MatTableDataSource<ProfileModel>(data);
+      this.delete = false;
+      this.test = true;
+      this.listProfile.sort = this.sort;
+      this.listProfile.paginator = this.paginator;
     });
   }
 
-  getProfile(){
-    this.profileService.getProfiles()
-      .subscribe(data => {
-        this.listProfiles = data;
-        this.delete = false;
-        this.test = true;
-      }, error => {
-        console.log(error);
-      });
+  onAddProfile() {
+    const dialogProfile = new MatDialogConfig();
+    dialogProfile.disableClose = true;
+    dialogProfile.autoFocus = true;
+    dialogProfile.width = '50%';
+    dialogProfile.panelClass = ['background-dialog'];
+    this.dialog.open(ProfileCreateComponent, dialogProfile);
   }
 
-  onSearchProfile(){
-    const code = this.searchProfileForm.value;
-    this.submitted = true;
-    if (this.searchProfileForm.invalid) {
-      this.getProfile();
-      return;
-    }
-    if ((code) === '') {
-      this.getProfile();
-    } else {
-      this.profileService.searchProfileKeyword(code)
-        .subscribe(data => {
-          this.listProfiles = data;
-          this.profileFined = this.listProfiles;
-          this.test = false;
-        }, error => {
-          console.log(error);
-        });
-    }
+  applyFilterProfiles(filterValue: string) {
+    this.listProfile.filter = filterValue.trim().toLocaleLowerCase();
   }
 
   onEditProfile(p: ProfileModel) {
-    this.router.navigateByUrl(this.editProfileUrl + (p.id));
+    this.profileService.currentProfile = p;
+    const dialogEditProfile = new MatDialogConfig();
+    dialogEditProfile.disableClose = true;
+    dialogEditProfile.autoFocus = true;
+    dialogEditProfile.width = '50%';
+    this.dialog.open(ProfileEditComponent, dialogEditProfile);
   }
 
-  onDeleteProfile(p: ProfileModel) {
-    if (p.id) {
-      Swal.fire({
-        html: 'Voulez-vous vraiment supprimer ce profil?',
-        showCancelButton: true,
-        confirmButtonText: `Supprimer`,
-        confirmButtonColor: '#138f46',
-        cancelButtonColor: '#2d7de0',
-        cancelButtonText: 'Annuler',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.profileService.deleteProfile(p.id, p)
-            .subscribe(data => {
-              // @ts-ignore
-              this.successMessage = data.message;
-              this.Toast.fire({
-                icon: 'success',
-                title: this.successMessage,
-              });
-              this.getProfile();
-            }, err => {
-              console.log(err);
-            });
+  onDeleteProfile(profile: ProfileModel) {
+    if (profile.id) {
+      this.profileService.deleteProfile(profile.id, profile).subscribe(resp => {
+        this.successApiMessage = resp.message;
+        this.apiStatus = Boolean(resp.success);
+        if (this.apiStatus === true) {
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
+        } else {
+          this.errorApiMessage = resp.message;
+          this.snackbar.open(this.errorApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
+        this.refreshProfileList();
+      }, err => {
+        console.log(err.message);
       });
     }
-  }
-
-
-  setError(control: AbstractControl){
-    return {'is-invalid': control.invalid && control.touched};
   }
 
   getWritePermission() {

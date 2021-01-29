@@ -6,9 +6,7 @@ import {ConfigurationService} from '../../services/configuration.service';
 import {ConfigurationModel} from '../../models/configuration.model';
 import {OptionModel} from '../../../option/models/option.model';
 import {OptionService} from '../../../option/services/option.service';
-import {map, startWith} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-configuration-edit',
@@ -17,14 +15,11 @@ import {MatTableDataSource} from '@angular/material/table';
 })
 export class ConfigurationEditComponent implements OnInit {
   listActivesOptions: OptionModel[];
-  myControl = new FormControl();
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions: Observable<string[]>;
-
   editConfigForm: FormGroup;
   successApiMessage: string;
   errorApiMessage: string;
-  successStatus: boolean;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(private dialogue: MatDialogRef<ConfigurationEditComponent>,
@@ -79,7 +74,7 @@ export class ConfigurationEditComponent implements OnInit {
       status: this.status.value,
       valeurFin: this.valeurFin.value,
       montant: this.montant.value,
-      optionVente: {id: this.optionVente.value, caption: this.optionVente.value.caption},
+      optionVente: { id: this.optionVente.value, caption: this.configService.currentConfig.optionVente.caption },
     };
     this.configService.updateConfig(configuration.id, configuration).subscribe( data => {
       this.successApiMessage = data.message;

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import {ProfileModel } from '../models/profile.model';
 
@@ -12,7 +12,8 @@ export class ProfileService {
   profileEndPoint = '/profile';
   getActiveProfileEndPoint = '/actives';
   deleteProfileEndPoint = '/delete/';
-  findProfileEndPoint = '/find_profile';
+  Listeners = new Subject<any>();
+  currentProfile: ProfileModel;
   constructor(private httpClient: HttpClient) { }
 
   saveProfile(profile: any): Observable<ProfileModel> {
@@ -22,13 +23,12 @@ export class ProfileService {
   getProfiles(): Observable<ProfileModel[]> {
     return this.httpClient.get<ProfileModel[]>(this.apiUrl + this.profileEndPoint);
   }
-
-  getActiveProfiles(): Observable<ProfileModel[]> {
-    return this.httpClient.get<ProfileModel[]>(this.apiUrl+this.profileEndPoint+this.getActiveProfileEndPoint);
+  getProfileList(): Observable<ProfileModel[]> {
+    return this.httpClient.get<ProfileModel[]>(this.apiUrl + this.profileEndPoint);
   }
 
-  getProfileById(id): Observable<ProfileModel>{
-    return this.httpClient.get<ProfileModel>(this.apiUrl + this.profileEndPoint + '/' + id);
+  getActiveProfiles(): Observable<ProfileModel[]> {
+    return this.httpClient.get<ProfileModel[]>(this.apiUrl + this.profileEndPoint + this.getActiveProfileEndPoint);
   }
 
   updateProfile(id: number, profile: ProfileModel) {
@@ -39,7 +39,11 @@ export class ProfileService {
     return this.httpClient.put(this.apiUrl + this.profileEndPoint + this.deleteProfileEndPoint + id, profile);
   }
 
-  searchProfileKeyword(codeProfile: any) {
-    return this.httpClient.post(this.apiUrl + this.profileEndPoint + this.findProfileEndPoint, codeProfile);
+  listen(): Observable<any>{
+    return this.Listeners.asObservable();
+  }
+
+  filter(filterBy: string){
+    this.Listeners.next(filterBy);
   }
 }

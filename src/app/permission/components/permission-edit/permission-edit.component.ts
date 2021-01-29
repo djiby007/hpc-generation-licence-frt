@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionModel } from '../../models/permission.model';
 import { PermissionService } from '../../services/permission.service';
-// import Swal from 'sweetalert2';
 import {UpdatePermissionModel} from '../../models/updatePermission.model';
 
 @Component({
@@ -12,26 +10,13 @@ import {UpdatePermissionModel} from '../../models/updatePermission.model';
 })
 export class PermissionEditComponent implements OnInit {
   @Input() currentPermission: PermissionModel;
-  featureCaption;
   submitted = false;
   isChecked = true;
   edit = false;
   write = false;
   delete = false;
   read = false;
-  constructor(private permissionService: PermissionService, private router: Router, private activatedRoute: ActivatedRoute) { }
-
-/*  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
-  });*/
+  constructor( private permissionService: PermissionService ) { }
 
   ngOnInit(): void {
     this.edit = this.currentPermission.edit;
