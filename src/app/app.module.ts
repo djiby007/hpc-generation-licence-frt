@@ -20,11 +20,12 @@ import {NavbarComponent} from "./menu/navbar/navbar.component";
 import {XhrInterceptorInterceptor} from "./utilities/Interceptor/xhr-interceptor.interceptor";
 import {PermissionListComponent} from "./permission/components/permission-list/permission-list.component";
 import {AuthService} from "./authentication/services/auth.service";
+import {ApplicationModule} from "./application/application.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     FormsModule,
@@ -44,6 +45,7 @@ import {AuthService} from "./authentication/services/auth.service";
     CityModule,
     CompanyModule,
     FilialeModule,
+    //  ApplicationModule
   ],
   providers: [
     PermissionListComponent, AuthService,
