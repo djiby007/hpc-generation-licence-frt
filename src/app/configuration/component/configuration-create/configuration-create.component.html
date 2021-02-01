@@ -3,21 +3,18 @@
       <h4 class="card-title">AJOUTER UNE NOUVELLE CONFIGURATION</h4>
     </div>
     <div class="card-body">
-      <form [formGroup]="configForm"  (ngSubmit)="onSaveConfiguration(configForm.value)" autocomplete="off">
+      <form [formGroup]="configForm"  (ngSubmit)="onSaveConfiguration()" autocomplete="off">
         <mat-card-content lass="d-flex justify-content-center">
           <div class="row text-center">
             <div class="col-md-6">
-              <mat-form-field class="exemple-full-width" >
+              <mat-form-field >
                 <mat-label class="label-form">Valeur debut</mat-label>
                 <input matInput placeholder="Valeur debut"
                        formControlName="valeurDebut"
                        name="valeurDebut"
                        type="number"
                        required="required" minLength="0">
-                <mat-error
-                  *ngIf="configForm.get('valeurDebut').hasError('required')">
-                  Valeur debut <strong>obligatoire</strong>
-                </mat-error>
+                <mat-error *ngIf="configForm.get('valeurDebut').hasError('required')"></mat-error>
               </mat-form-field>
             </div>
             <div class="col-md-6">
@@ -28,14 +25,10 @@
                        name="valeurFin"
                        type="number"
                        required="required" minLength="1">
-                <mat-error
-                  *ngIf="configForm.get('valeurDebut').hasError('required')">
-                  Valeur finale <strong>obligatoire</strong>
-                </mat-error>
+                <mat-error *ngIf="configForm.get('valeurDebut').hasError('required')"></mat-error>
               </mat-form-field>
             </div>
           </div>
-
           <div class="row text-center">
             <div class="col-md-6">
               <mat-form-field class="exemple-full-width" >
@@ -46,10 +39,7 @@
                        type="number"
                        required="required" minLength="0"
                        class="full-width">
-                <mat-error
-                  *ngIf="configForm.get('valeurDebut').hasError('required')">
-                  Montant <strong>obligatoire</strong>
-                </mat-error>
+                <mat-error *ngIf="configForm.get('valeurDebut').hasError('required')"></mat-error>
               </mat-form-field>
             </div>
             <div class="col-md-6">
@@ -63,10 +53,7 @@
                     Inactif
                   </mat-option>
                 </mat-select>
-                <mat-error
-                  *ngIf="configForm.get('status').hasError('required')">
-                  Le status est <strong>obligatoire</strong>
-                </mat-error>
+                <mat-error *ngIf="configForm.get('status').hasError('required')"></mat-error>
               </mat-form-field>
             </div>
           </div >
@@ -75,12 +62,9 @@
               <mat-form-field class="exemple-full-width">
                 <mat-label class="label-form">Application</mat-label>
                 <mat-select  name="application"  formControlName= "application" >
-                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
+                  <mat-option *ngFor=" let appli of listApplications" [value]="appli.id">{{appli.nom}}</mat-option>
                 </mat-select>
-                <mat-error
-                  *ngIf="configForm.get('optionVente').hasError('required')">
-                  Le status est <strong>obligatoire</strong>
-                </mat-error>
+                <mat-error *ngIf="configForm.get('optionVente').hasError('required')"></mat-error>
               </mat-form-field>
             </div>
             <div class="col-md-6">
@@ -89,104 +73,14 @@
                 <mat-select  name="optionVente"  formControlName= "optionVente" >
                   <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
                 </mat-select>
-                <mat-error
-                  *ngIf="configForm.get('optionVente').hasError('required')">
-                  Le status est <strong>obligatoire</strong>
-                </mat-error>
+                <mat-error *ngIf="configForm.get('optionVente').hasError('required')"></mat-error>
               </mat-form-field>
             </div>
           </div>
         </mat-card-content>
-       <!-- <mat-card-content lass="d-flex justify-content-center">
-          <div class="row text-center">
-            <div class="col-md-6">
-              <mat-form-field class="exemple-full-width" >
-                <mat-label class="label-form">Valeur debut</mat-label>
-                <input matInput placeholder="Valeur debut"
-                       formControlName="valeurDebut"
-                       name="valeurDebut"
-                       type="text"
-                       required="required" minLength="0">
-                <mat-error
-                  *ngIf="configForm.get('valeurDebut').hasError('required')">
-                  Valeur debut <strong>obligatoire</strong>
-                </mat-error>
-                <mat-error
-                  *ngIf="errorApiMessage">
-                  {{errorApiMessage}}
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="col-md-6">
-              <mat-form-field class="exemple-full-width">
-                <mat-label class="label-form">Valeur fin</mat-label>
-                <input matInput placeholder="Valeur fin"
-                       formControlName="valeurFin"
-                       name="valeurFin"
-                       type="text"
-                       required="required" minLength="0">
-                <mat-error
-                  *ngIf="configForm.get('valeurDebut').hasError('required')">
-                  Valeur finale <strong>obligatoire</strong>
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field >
-                <mat-label class="label-form">Application</mat-label>
-                <mat-select  name="application"  formControlName= "application">
-                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="configForm.get('application').hasError('required')">
-                  Le status est <strong>obligatoire</strong>
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-          <div class="row text-center">
-            <div class="col-md-6">
-              <mat-form-field class="exemple-full-width">
-                <mat-label class="label-form">Montant</mat-label>
-                <input matInput placeholder="Montant"
-                       formControlName="montant"
-                       name="montant"
-                       type="text"
-                       required="required" minLength="0"
-                       class="full-width">
-                <mat-error
-                  *ngIf="configForm.get('valeurDebut').hasError('required')">
-                  Montant <strong>obligatoire</strong>
-                </mat-error>
-              </mat-form-field>
-            </div>
-            <div class="col-md-6">
-              <mat-form-field >
-                <mat-label class="label-form">Status</mat-label>
-                <mat-select name="status" formControlName="status">
-                  <mat-option value="Actif">
-                    Actif
-                  </mat-option>
-                  <mat-option value="Inactif">
-                    Inactif
-                  </mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="configForm.get('status').hasError('required')">
-                  Le status est <strong>obligatoire</strong>
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field >
-                <mat-label class="label-form">Option de Vente</mat-label>
-                <mat-select  name="optionVente"  formControlName= "optionVente">
-                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
-                </mat-select>
-                <mat-error
-                  *ngIf="configForm.get('optionVente').hasError('required')">
-                  Le status est <strong>obligatoire</strong>
-                </mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-      </mat-card-content>-->
+        <mat-error *ngIf="configForm.invalid"  style="font-size: xx-small">
+          <p> (*) Tous les champs sont <strong>obligatoires!</strong> </p>
+        </mat-error>
       <mat-card-actions class="d-flex justify-content-between">
         <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="configForm.invalid">Sauvegarder</button>
         <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="Close()">Annuler</a>

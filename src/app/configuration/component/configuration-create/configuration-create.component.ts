@@ -8,6 +8,8 @@ import {OptionModule} from '../../../option/option.module';
 import {OptionModel} from '../../../option/models/option.model';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 import {ApplicationEditConfigModel} from '../../../application/models/applicationEditConfig.model';
+import {ApplicationService} from '../../../application/service/application.service';
+import {ApplicationModel} from '../../../application/models/application.model';
 
 @Component({
   selector: 'app-configuration-create',
@@ -17,6 +19,7 @@ import {ApplicationEditConfigModel} from '../../../application/models/applicatio
 export class ConfigurationCreateComponent implements OnInit {
   configForm: FormGroup;
   listActivesOptions: OptionModel[];
+  listApplications: ApplicationModel[];
   successApiMessage: string;
   errorApiMessage: string;
   successStatus: boolean;
@@ -26,10 +29,11 @@ export class ConfigurationCreateComponent implements OnInit {
   constructor(private dialogs: MatDialogRef<ConfigurationCreateComponent>,
               private configService: ConfigurationService,
               private fb: FormBuilder,
+              private applicationService: ApplicationService,
               private snackbar: MatSnackBar,
               private optionService: OptionService) { }
 
-  ngOnInit(): void { this.createConfigForm(); this.resetConfigForm(); this.OptionList(); }
+  ngOnInit(): void { this.createConfigForm(); this.resetConfigForm(); this.OptionList(); this.ApplicationList() }
 
   resetConfigForm(){
     if (this.configForm !== null){
@@ -54,8 +58,8 @@ export class ConfigurationCreateComponent implements OnInit {
   }
 
   ApplicationList(){
-    this.optionService.getActiveOptionList().subscribe(data => {
-      this.listActivesOptions = data;
+    this.applicationService.getConfigApplicationList().subscribe(resp => {
+      this.listApplications = resp.data;
     }, error => {
       console.log(error);
     });
@@ -81,14 +85,15 @@ export class ConfigurationCreateComponent implements OnInit {
 
   Close(){this.dialogs.close();  this.configService.filter('Save configuration'); }
 
-  onSaveConfiguration(config: ConfigurationModel){
-    const opt: OptionModel = this.configForm.value.optionVente;
-    const app: ApplicationEditConfigModel = this.configForm.value.application;
-    /*opt.id = this.configForm.value.optionVente;
-    app.id = this.configForm.value.application;*/
-    config.application = (app as ApplicationEditConfigModel);
-    config.optionVente = (opt as OptionModel);
-    this.configService.saveConfig(config).subscribe(res => {
+  onSaveConfiguration() {
+    const configs: {} = {
+      valeurDebut: this.valeurDebut.value,
+      valeurFin: this.valeurFin.value,
+      montant: this.montant.value,
+      status: this.status.value,
+      optionVente: { id: this.optionVente.value, caption: this.optionVente.value.caption },
+      application: { id: this.application.value, nom: this.application.value.nom } }
+    this.configService.saveConfig(configs).subscribe(res => {
       this.resetConfigForm();
       this.successApiMessage  = res.message;
       this.successStatus = res.success;

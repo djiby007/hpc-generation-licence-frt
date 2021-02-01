@@ -145,7 +145,7 @@
                     </table>
                     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
                   <table >
-                    <tbody  class="table table-bordred table-striped table-sm"  matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+                    <tbody id="list-table-perms"  class="table table-bordred table-striped table-sm"  matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
                       <thead>
                         <th>Profile</th>
                         <th>Fonctionalité</th>
@@ -155,8 +155,10 @@
                         <th>Delete</th>
                         <th>Action</th>
                       </thead>
+                    <ng-container>
                       <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
-                    <tbody>
+                    </ng-container>
+                      <tbody>
                   </table>
                   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
                   </div>

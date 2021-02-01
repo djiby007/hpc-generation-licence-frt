@@ -7,6 +7,8 @@ import {ConfigurationModel} from '../../models/configuration.model';
 import {OptionModel} from '../../../option/models/option.model';
 import {OptionService} from '../../../option/services/option.service';
 import {Observable} from 'rxjs';
+import {ApplicationModel} from '../../../application/models/application.model';
+import {ApplicationService} from '../../../application/service/application.service';
 
 @Component({
   selector: 'app-configuration-edit',
@@ -15,8 +17,7 @@ import {Observable} from 'rxjs';
 })
 export class ConfigurationEditComponent implements OnInit {
   listActivesOptions: OptionModel[];
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]>;
+  listApplicationEdit: ApplicationModel[];
   editConfigForm: FormGroup;
   successApiMessage: string;
   errorApiMessage: string;
@@ -24,11 +25,12 @@ export class ConfigurationEditComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(private dialogue: MatDialogRef<ConfigurationEditComponent>,
               public configService: ConfigurationService ,
+              private applicationService: ApplicationService,
               public optionService: OptionService ,
               private formBuilder: FormBuilder,
               private snackbar: MatSnackBar) { }
 
-  ngOnInit(): void { this.createEditForm(); this.resetEditForm(); this.OptionList();  }
+  ngOnInit(): void { this.createEditForm(); this.resetEditForm(); this.OptionList(); this.ApplicationEditList(); }
 
   createEditForm(){
     this.editConfigForm = new FormGroup({
@@ -63,6 +65,14 @@ export class ConfigurationEditComponent implements OnInit {
   OptionList(){
     this.optionService.getActiveOptionList().subscribe(data => {
       return this.listActivesOptions = data;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  ApplicationEditList(){
+    this.applicationService.getConfigApplicationList().subscribe(resp => {
+      this.listApplicationEdit = resp.data;
     }, error => {
       console.log(error);
     });

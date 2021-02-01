@@ -19,7 +19,7 @@ export class ConfigurationListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   listConfiguration: MatTableDataSource<ConfigurationModel>;
-  displayColumns: string[] = ['Status', 'Option', 'Valeur Debut', 'Valeur Fin', 'Montant', 'Actions'];
+  displayColumns: string[] = ['Status', 'Application', 'Option', 'Valeur Debut', 'Valeur Fin', 'Montant', 'Actions'];
   successApiMessage: string;
   errorApiMessage: string;
   successStatus: boolean;

@@ -34,8 +34,10 @@ export class ProfileEditComponent implements OnInit {
     if (this.editProfileForm != null){
       this.editProfileForm.reset();
     }
-    this.editProfileForm.controls.caption.setValidators([ Validators.required, Validators.pattern('^[A-Za-z,û,ù,ï,i]*$')]),
-      this.editProfileForm.controls.status.setValidators([ Validators.required, Validators.minLength(4)]);
+    this.editProfileForm.controls.caption.setValidators([ Validators.required,
+      Validators.pattern('^[A-Za-z,,û,ù,ï,i,\s]*$'),
+      Validators.minLength(4)]),
+      this.editProfileForm.controls.status.setValidators([ Validators.required ]);
   }
 
   get caption(){
