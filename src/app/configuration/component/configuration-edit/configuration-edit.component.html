@@ -37,6 +37,7 @@
              </mat-form-field>
            </div>
          </div>
+
          <div class="row text-center">
            <div class="col-md-6">
              <mat-form-field class="exemple-full-width" >
@@ -55,7 +56,7 @@
              </mat-form-field>
            </div>
            <div class="col-md-6">
-             <mat-form-field >
+             <mat-form-field class="exemple-full-width">
                <mat-label class="label-form">Status</mat-label>
                <mat-select name="status" formControlName="status"
                            [(ngModel)]="configService.currentConfig.status">
@@ -71,7 +72,23 @@
                  Le status est <strong>obligatoire</strong>
                </mat-error>
              </mat-form-field>
-             <mat-form-field>
+           </div>
+         </div >
+         <div class="row text-center">
+           <div class="col-md-6">
+             <mat-form-field class="exemple-full-width">
+               <mat-label class="label-form">Application</mat-label>
+               <mat-select  name="application"  formControlName= "application" [(ngModel)]="configService.currentConfig.application.id" >
+                 <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
+               </mat-select>
+               <mat-error
+                 *ngIf="editConfigForm.get('optionVente').hasError('required')">
+                 Le status est <strong>obligatoire</strong>
+               </mat-error>
+             </mat-form-field>
+           </div>
+           <div class="col-md-6">
+             <mat-form-field class="exemple-full-width">
                <mat-label class="label-form">Option de Vente</mat-label>
                <mat-select  name="optionVente"  formControlName= "optionVente" [(ngModel)]="configService.currentConfig.optionVente.id" >
                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>

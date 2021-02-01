@@ -36,6 +36,7 @@ export class ConfigurationEditComponent implements OnInit {
       valeurFin: new FormControl('', Validators.required),
       montant: new FormControl('', Validators.required),
       optionVente: new FormControl('', Validators.required),
+      application: new FormControl('', Validators.required),
       status: new FormControl('', Validators.required)
     });
   }
@@ -48,12 +49,14 @@ export class ConfigurationEditComponent implements OnInit {
     this.editConfigForm.controls.valeurFin.setValidators([ Validators.required, Validators.pattern('^[0-9]*$')]);
     this.editConfigForm.controls.montant.setValidators([ Validators.required,  Validators.pattern('^[0-9]*$')]);
     this.editConfigForm.controls.optionVente.setValidators([ Validators.required]);
+    this.editConfigForm.controls.application.setValidators([ Validators.required]);
     this.editConfigForm.controls.status.setValidators([ Validators.required]);
   }
 
   get valeurDebut(){return this.editConfigForm.get('valeurDebut'); }
   get valeurFin(){return this.editConfigForm.get('valeurFin'); }
   get optionVente(){return this.editConfigForm.get('optionVente'); }
+  get application(){return this.editConfigForm.get('application'); }
   get montant(){return this.editConfigForm.get('montant'); }
   get status(){return this.editConfigForm.get('status'); }
 
@@ -75,6 +78,7 @@ export class ConfigurationEditComponent implements OnInit {
       valeurFin: this.valeurFin.value,
       montant: this.montant.value,
       optionVente: { id: this.optionVente.value, caption: this.configService.currentConfig.optionVente.caption },
+      application: { id: this.application.value, nom: this.configService.currentConfig.application.nom }
     };
     this.configService.updateConfig(configuration.id, configuration).subscribe( data => {
       this.successApiMessage = data.message;

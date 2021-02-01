@@ -7,6 +7,7 @@ import {OptionService} from '../../../option/services/option.service';
 import {OptionModule} from '../../../option/option.module';
 import {OptionModel} from '../../../option/models/option.model';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import {ApplicationEditConfigModel} from '../../../application/models/applicationEditConfig.model';
 
 @Component({
   selector: 'app-configuration-create',
@@ -39,11 +40,20 @@ export class ConfigurationCreateComponent implements OnInit {
       valeurFin: [, { validators: [Validators.required, Validators.pattern('^[0-9]*$')], updateOn: 'change' }],
       montant: [, { validators: [Validators.required, Validators.pattern('^[0-9]*$')], updateOn: 'change' }],
       optionVente: [, { validators: [Validators.required], updateOn: 'change' }],
+      application: [, { validators: [Validators.required], updateOn: 'change' }],
       status: [, { validators: [Validators.required], updateOn: 'change' }],
     });
   }
 
   OptionList(){
+    this.optionService.getActiveOptionList().subscribe(data => {
+      this.listActivesOptions = data;
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  ApplicationList(){
     this.optionService.getActiveOptionList().subscribe(data => {
       this.listActivesOptions = data;
     }, error => {
@@ -57,6 +67,7 @@ export class ConfigurationCreateComponent implements OnInit {
       valeurFin: new FormControl('', Validators.required),
       montant: new FormControl('', Validators.required),
       optionVente: new FormControl('', Validators.required),
+      application: new FormControl('', Validators.required),
       status: new FormControl('', Validators.required)
     });
   }
@@ -64,14 +75,18 @@ export class ConfigurationCreateComponent implements OnInit {
   get valeurDebut(){return this.configForm.get('valeurDebut'); }
   get valeurFin(){return this.configForm.get('valeurFin'); }
   get optionVente(){return this.configForm.get('optionVente'); }
+  get application(){return this.configForm.get('application'); }
   get montant(){return this.configForm.get('montant'); }
   get status(){return this.configForm.get('status'); }
 
   Close(){this.dialogs.close();  this.configService.filter('Save configuration'); }
 
   onSaveConfiguration(config: ConfigurationModel){
-    const opt = new OptionModule();
-    opt.id = this.configForm.value.optionVente;
+    const opt: OptionModel = this.configForm.value.optionVente;
+    const app: ApplicationEditConfigModel = this.configForm.value.application;
+    /*opt.id = this.configForm.value.optionVente;
+    app.id = this.configForm.value.application;*/
+    config.application = (app as ApplicationEditConfigModel);
     config.optionVente = (opt as OptionModel);
     this.configService.saveConfig(config).subscribe(res => {
       this.resetConfigForm();
