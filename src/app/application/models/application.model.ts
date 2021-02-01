@@ -1,4 +1,3 @@
-import {CountryModel} from '../../country/models/country.model';
 import {Status} from '../../enum/status.enum';
 
 export interface ApplicationModel{
