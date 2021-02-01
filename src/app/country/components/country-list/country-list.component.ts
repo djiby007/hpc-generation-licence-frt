@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {CountryService} from '../../services/country.service';
 import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
@@ -6,6 +6,16 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {CountryModel} from '../../models/country.model';
 import {ContinentModel} from '../../../continent/models/continent.model';
 import Swal from 'sweetalert2';
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {ApplicationCreateComponent} from "../../../application/component/application-create/application-create.component";
+import {ApplicationModel} from "../../../application/models/application.model";
+import {ApplicationEditComponent} from "../../../application/component/application-edit/application-edit.component";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {MatTableDataSource} from "@angular/material/table";
+import {CountryEditComponent} from "../country-edit/country-edit.component";
+import {CountryCreateComponent} from "../country-create/country-create.component";
 
 @Component({
   selector: 'app-country-list',
@@ -13,7 +23,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./country-list.component.scss']
 })
 export class CountryListComponent implements OnInit {
-  listCountry: CountryModel[];
+  listCountry: MatTableDataSource<CountryModel>;
   countryForm: FormGroup;
   searchForm: FormGroup;
   listImportCountry: CountryModel[] = [];
@@ -23,7 +33,17 @@ export class CountryListComponent implements OnInit {
   test: boolean;
   successMessage: string;
   editCountryUrl = '/country/edit/';
-  constructor(private router: Router, private countryService: CountryService, private ngxCsvParser: NgxCsvParser) { }
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  Columns: string[] = [ 'nom', 'code', 'status', 'Actions' ];
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  constructor(private router: Router,
+              private countryService: CountryService,
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar,
+              private ngxCsvParser: NgxCsvParser) { }
 
   Toast = Swal.mixin({
     toast: true,
@@ -39,98 +59,28 @@ export class CountryListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllCountry();
-    this.createForm();
-    this.createsearchForm();
   }
 
-  createsearchForm(){
-    this.searchForm = new FormGroup({
-      code: new FormControl('', [
-        Validators.required
-      ])
-    });
+  getAllCountry(){
+    this.countryService.getCountry()
+      .subscribe(value => {
+        console.log(value);
+        this.listCountry = new MatTableDataSource<CountryModel>(value.data);
+        this.listCountry.sort = this.sort;
+        this.listCountry.paginator = this.paginator;
+      });
   }
 
   get code(){
     return this.searchForm.get('code');
   }
 
-  onSearch(){
-    const code = this.code.value;
-    this.submitted = true;
-    if (this.searchForm.invalid) {
-      this.getAllCountry();
-      return;
-    }
-    if ((code.trim()) === '') {
-      this.Toast.fire({
-        icon: 'warning',
-        title: 'Rien à recherhcer!',
-      });
-      this.getAllCountry();
-    }else{
-      this.countryService.searchCountryKeyword(code)
-        .subscribe(data => {
-          this.listCountry = data;
-          this.test = false;
-        }, error => {
-          console.log(error);
-        });
-    }
-  }
-
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
 
-
-  onEditCountry(country: CountryModel){
-    this.router.navigateByUrl(this.editCountryUrl + (country.id));
-  }
-
-  onDeleteCountry(country: CountryModel){
-   if (country.id) {
-      Swal.fire({
-        html: 'Voulez vous vraiment supprimer ce profile ?',
-        showCancelButton: true,
-        confirmButtonText: `Supprimer`,
-        confirmButtonColor: '#138f46',
-        cancelButtonColor: '#2d7de0',
-        cancelButtonText: 'Annuler',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.countryService.deleteCountry(country).subscribe( data => {
-            // @ts-ignore
-            this.successMessage = data.message;
-            this.Toast.fire({
-              icon: 'success',
-              title: this.successMessage,
-            });
-            this.getAllCountry();
-          }, err => {
-            console.log(err);
-          });
-        }
-      });
-    }
-  }
-
-
   get file(){
     return this.countryForm.get('file');
-  }
-
-  createForm(){
-    this.countryForm = new FormGroup({
-      file: new FormControl('', Validators.required)
-    });
-  }
-  getAllCountry(){
-    this.countryService.getCountry().subscribe(value => this.listCountry = value.data);
-  }
-
-  deleteCountry(country: CountryModel){
-    this.countryService.deleteCountry(country).subscribe(value => this.getAllCountry());
   }
 
   fileChangeListener($event: any): void {
@@ -152,16 +102,32 @@ export class CountryListComponent implements OnInit {
 
   }
 
-  onSubmit() {
-      this.countryService.importCountry(this.listImportCountry).subscribe(
-      (data) => {
-        this.getAllCountry();
-        this.listCountry = [];
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+
+  onAddCountry() {
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
+    this.dialog.open(CountryCreateComponent, dialogOption);
+  }
+
+  applyFilterCountry(filterValue: string) {
+    this.listCountry.filter = filterValue.trim().toLocaleLowerCase();
+  }
+
+  onEditCountry(country: CountryModel){
+    //this.applicationService.deleteApplication(application);
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.id = country.id + '';
+    this.dialog.open(CountryEditComponent, dialogOption);
+  }
+
+  onDeleteCountry(country: CountryModel){
+    this.countryService.deleteCountry(country);
   }
 
 }

@@ -10,6 +10,7 @@ import {OptionEditComponent} from "../../../option/component/option-edit/option-
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {OptionCreateComponent} from "../../../option/component/option-create/option-create.component";
 import {ApplicationCreateComponent} from "../application-create/application-create.component";
+import {ApplicationEditComponent} from "../application-edit/application-edit.component";
 
 @Component({
   selector: 'app-application-list',
@@ -19,7 +20,7 @@ import {ApplicationCreateComponent} from "../application-create/application-crea
 export class ApplicationListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  Columns: string[] = [ 'nom', 'description', 'prix', 'nombreJour', 'status' ];
+  Columns: string[] = [ 'nom', 'description', 'prix', 'nombreJour', 'status', 'Actions' ];
   listApplication: MatTableDataSource<ApplicationModel>;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -35,7 +36,6 @@ export class ApplicationListComponent implements OnInit {
   getAllApplication(){
     this.applicationService.getApplication()
       .subscribe(value => {
-        console.log(value);
         this.listApplication = new MatTableDataSource<ApplicationModel>(value.data);
         this.listApplication.sort = this.sort;
         this.listApplication.paginator = this.paginator;
@@ -56,16 +56,17 @@ export class ApplicationListComponent implements OnInit {
   }
 
   onEditApplication(application: ApplicationModel){
-    this.applicationService.deleteApplication(application);
+    //this.applicationService.deleteApplication(application);
     const dialogOption = new MatDialogConfig();
     dialogOption.disableClose = true;
     dialogOption.autoFocus = true;
     dialogOption.width = '50%';
-    this.dialog.open(OptionEditComponent, dialogOption);
+    dialogOption.id = application.id + '';
+    this.dialog.open(ApplicationEditComponent, dialogOption);
   }
 
   onDeleteApplication(application: ApplicationModel){
-
+    this.applicationService.deleteApplication(application);
   }
 
 }

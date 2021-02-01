@@ -1,34 +1,32 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatDialogRef} from "@angular/material/dialog";
-import {ApplicationService} from "../../service/application.service";
-import {Location} from "@angular/common";
 import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ApplicationCreateComponent} from "../application-create/application-create.component";
+import {Router} from "@angular/router";
+import {Location} from "@angular/common";
 import {Status} from "../../../enum/status.enum";
+import {ApplicationService} from "../../service/application.service";
 import {ApplicationModel} from "../../models/application.model";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-application-edit',
-  templateUrl: './application-edit.component.html',
-  styleUrls: ['./application-edit.component.css']
+  selector: 'app-application-create',
+  templateUrl: './application-create.component.html',
+  styleUrls: ['./application-create.component.css']
 })
-export class ApplicationEditComponent implements OnInit {
+export class ApplicationCreateComponent implements OnInit {
   applicationForm: FormGroup;
   submitted = false;
   hasError = false;
-  application: ApplicationModel;
   successApiMessage: string;
   errorApiMessage: string;
   message = '';
-  constructor(  private router: Router,
-                private dialogue: MatDialogRef<ApplicationEditComponent>,
-                private applicationService: ApplicationService,
-                private location: Location) { }
+  constructor(
+    private router: Router,
+    private dialogue: MatDialogRef<ApplicationCreateComponent>,
+    private applicationService: ApplicationService,
+    private location: Location) { }
 
   ngOnInit(): void {
     this.createForm();
-    this.findApplication(+this.dialogue.id);
   }
 
   goBack() {
@@ -96,21 +94,11 @@ export class ApplicationEditComponent implements OnInit {
     );
   }
 
-  findApplication(id: number) {
-    this.applicationService.findApplication(id).subscribe(value => {
-      this.application = value.data;
-      this.nom.setValue(this.application.nom);
-      this.description.setValue(this.application.description);
-      this.prix.setValue(this.application.prix);
-      this.nombreJour.setValue(this.application.nombreJour);
-      this.status.setValue(this.application.status);
-    });
-  }
-
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
 
 
   OnClose(){this.dialogue.close(); }
+
 }
