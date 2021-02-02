@@ -4,8 +4,9 @@ import {LicenceModel} from '../../models/licence.model';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {MatDialog} from '@angular/material/dialog';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-licence-list',
@@ -14,13 +15,13 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class LicenceListComponent implements OnInit {
   licenceList: MatTableDataSource<LicenceModel>;
-  Columns: string[] = [ 'Status', 'Clé', 'Description', 'Date début', 'Date Fin', 'Durée' ];
+  Columns: string[] = [ 'Status', 'Clé', 'Application', 'Filiale', 'Expiration', 'Actions' ];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  editLicenceUrl = '/licence/edit/';
   constructor(private dialog: MatDialog,
               private snackbar: MatSnackBar,
-              private licenceService: LicenceService) {
+              private licenceService: LicenceService, private router: Router) {
     this.licenceService.listen().subscribe( (l: any) => {
       this.getLicences();
     });
@@ -38,7 +39,11 @@ export class LicenceListComponent implements OnInit {
     });
   }
 
-  addLicence(){
+  editLicence(licence: LicenceModel){
+    this.router.navigateByUrl(this.editLicenceUrl + (licence.id));
+  }
+
+  detailLicence(licence: LicenceModel){
 
   }
 

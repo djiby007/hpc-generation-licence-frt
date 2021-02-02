@@ -6,7 +6,7 @@ import { LicenceEditComponent } from './components/licence-edit/licence-edit.com
 import { LicenceListComponent } from './components/licence-list/licence-list.component';
 import { LicenceRoutingModule } from './licence-routing.module';
 import {AppMaterialModule} from '../utilities/app-material/app-material.module';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -17,11 +17,12 @@ import {ReactiveFormsModule} from '@angular/forms';
     LicenceEditComponent,
     LicenceListComponent
   ],
-  imports: [
-    CommonModule,
-    LicenceRoutingModule,
-    AppMaterialModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        LicenceRoutingModule,
+        AppMaterialModule,
+        ReactiveFormsModule,
+        FormsModule
+    ]
 })
 export class LicenceModule { }

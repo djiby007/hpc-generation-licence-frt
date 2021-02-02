@@ -28,6 +28,8 @@ const routes: Routes = [
     loadChildren: () => import('./filiale/filiale.module').then(f => f.FilialeModule), canActivate : [AuthGuardService] },
   { path: 'licence',
     loadChildren: () => import('./licence/licence.module').then(l => l.LicenceModule), canActivate : [AuthGuardService] },
+  { path: 'application',
+    loadChildren: () => import('./application/application.module').then(l => l.ApplicationModule), canActivate : [AuthGuardService] },
 
   { path: 'home', redirectTo: '/' }
 ];

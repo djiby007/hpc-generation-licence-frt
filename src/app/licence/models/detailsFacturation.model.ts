@@ -5,6 +5,6 @@ export interface DetailsFacturationModel {
   id: number;
   nombre: number;
   montant: number;
-  option: OptionModel;
+  optionVente: OptionModel;
   licence: LicenceModel;
 }

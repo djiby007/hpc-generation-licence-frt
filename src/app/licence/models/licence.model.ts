@@ -7,8 +7,8 @@ export interface LicenceModel {
   cle: string;
   description: string;
   montant: number;
-  dateDebut: string;
-  dateFin: string;
+  dateDebut: Date ;
+  dateFin: Date ;
   duree: number;
   status: StatusLicence;
   application: ApplicationModel;

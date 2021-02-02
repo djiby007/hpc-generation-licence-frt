@@ -7,6 +7,7 @@ import {ContinentModel} from '../../../continent/models/continent.model';
 import {Location} from '@angular/common';
 import {Status} from '../../../enum/status.enum';
 import Swal from 'sweetalert2';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-country-create',
@@ -19,8 +20,12 @@ export class CountryCreateComponent implements OnInit {
   submitted = false;
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
+
   constructor(
     private router: Router,
+    private dialogue: MatDialogRef<CountryCreateComponent>,
     private countryService: CountryService,
     private continentService: ContinentService,
     private location: Location) { }
@@ -72,6 +77,8 @@ export class CountryCreateComponent implements OnInit {
   }
 
   onSubmit() {
+
+    console.log(this.continent.value);
     this.submitted = true;
     // @ts-ignore
     const country: Country = {
@@ -102,5 +109,8 @@ export class CountryCreateComponent implements OnInit {
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
+
+
+  OnClose(){this.dialogue.close(); }
 
 }

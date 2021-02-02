@@ -3,5 +3,5 @@ import {LicenceModel} from './licence.model';
 
 export interface LicenceDtoModel {
   licence: LicenceModel;
-  detailsFacturation: DetailsFacturationModel;
+  detailsFacturationList: DetailsFacturationModel[];
 }
