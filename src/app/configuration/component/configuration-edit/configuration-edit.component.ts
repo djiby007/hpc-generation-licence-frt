@@ -6,9 +6,7 @@ import {ConfigurationService} from '../../services/configuration.service';
 import {ConfigurationModel} from '../../models/configuration.model';
 import {OptionModel} from '../../../option/models/option.model';
 import {OptionService} from '../../../option/services/option.service';
-import {map, startWith} from 'rxjs/operators';
 import {Observable} from 'rxjs';
-import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-configuration-edit',

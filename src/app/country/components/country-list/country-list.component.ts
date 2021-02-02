@@ -4,7 +4,6 @@ import {CountryService} from '../../services/country.service';
 import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CountryModel} from '../../models/country.model';
-import {ContinentModel} from '../../../continent/models/continent.model';
 import Swal from 'sweetalert2';
 
 @Component({

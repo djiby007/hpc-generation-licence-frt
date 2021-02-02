@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
-import {FilialeService} from "../../services/filiale.service";
-import {NgxCsvParser, NgxCSVParserError} from "ngx-csv-parser";
-import {FilialeModel} from "../../models/filiale.model";
-import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
-import Swal from "sweetalert2";
-
+import {Router} from '@angular/router';
+import {FilialeService} from '../../services/filiale.service';
+import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
+import {FilialeModel} from '../../models/filiale.model';
+import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-filiale-list',
   templateUrl: './filiale-list.component.html',

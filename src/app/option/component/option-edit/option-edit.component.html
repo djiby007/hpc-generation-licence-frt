@@ -9,11 +9,7 @@
           <div class="col-md-6">
             <mat-form-field class="exemple-full-width" >
               <mat-label class="label-form">Caption</mat-label>
-              <input matInput placeholder="Caption"
-                     name="caption"
-                     formControlName="caption"
-                     type="text"
-                     required="required" minLength="4"
+              <input matInput placeholder="Caption" name="caption" formControlName="caption" type="text"  required="required" minLength="4"
                      [(ngModel)]="optionService.currentOption.caption">
               <mat-error
                 *ngIf="updateOptionForm.get('caption').hasError('required')">

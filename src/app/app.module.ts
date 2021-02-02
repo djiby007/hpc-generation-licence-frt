@@ -22,6 +22,7 @@ import {PermissionListComponent} from './permission/components/permission-list/p
 import {AuthService} from './authentication/services/auth.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {LoginModule} from './authentication/components/login/login.module';
+import {LicenceModule} from './licence/licence.module';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {LoginModule} from './authentication/components/login/login.module';
     CompanyModule,
     FilialeModule,
     LoginModule,
+    LicenceModule
   ],
   providers: [
     PermissionListComponent, AuthService,

@@ -4,10 +4,10 @@ import {ContinentService} from '../../services/continent.service';
 import {ContinentModel} from '../../models/continent.model';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import Swal from 'sweetalert2';
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-continent-list',

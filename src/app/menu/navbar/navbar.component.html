@@ -30,6 +30,11 @@
         <button mat-menu-item routerLink="application">Applicatons</button>
       </mat-menu>
 
+      <button mat-button [matMenuTriggerFor]="licenceMenu">Licence</button>
+      <mat-menu #licenceMenu="matMenu" yPosition="below">
+        <button mat-menu-item routerLink="licence">Licence</button>
+      </mat-menu>
+
       <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
       <mat-menu #belowMenu="matMenu" yPosition="below">
         <button mat-menu-item routerLink="profile">Profiles</button>
@@ -66,6 +71,11 @@
           <button mat-menu-item routerLink="filiale">Filiales</button>
           <button mat-menu-item routerLink="user">Utilisateurs</button>
           <button mat-menu-item routerLink="application">Applicatons</button>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="licenceMenu">Licence</button>
+        <mat-menu #licenceMenu="matMenu" yPosition="below">
+          <button mat-menu-item routerLink="licence">Licence</button>
         </mat-menu>
 
         <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
