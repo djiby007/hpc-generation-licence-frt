@@ -8,6 +8,7 @@ import {ContinentModel} from '../../../continent/models/continent.model';
 import {Location} from '@angular/common';
 import {Status} from '../../../enum/status.enum';
 import Swal from 'sweetalert2';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-country-edit',
@@ -21,8 +22,11 @@ export class CountryEditComponent implements OnInit {
   listContinent: ContinentModel[];
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(
     private router: Router,
+    private dialogue: MatDialogRef<CountryEditComponent>,
     private activatedRoute: ActivatedRoute,
     private countryService: CountryService,
     private continentService: ContinentService,
@@ -40,7 +44,7 @@ export class CountryEditComponent implements OnInit {
     }
   });
   ngOnInit(): void {
-    this.findCountry(+this.activatedRoute.snapshot.paramMap.get('id'));
+    this.findCountry(+this.dialogue.id);
     this.getAllContinent();
     this.createForm();
   }
@@ -117,5 +121,8 @@ export class CountryEditComponent implements OnInit {
       this.status.setValue(this.country.status);
     });
   }
+
+  OnClose(){this.dialogue.close(); }
+
 
 }

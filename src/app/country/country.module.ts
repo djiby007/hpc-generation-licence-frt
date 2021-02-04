@@ -8,6 +8,7 @@ import {CountryDetailsComponent} from './components/country-details/country-deta
 import {CountryEditComponent} from './components/country-edit/country-edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxCsvParserModule} from 'ngx-csv-parser';
+import {AppMaterialModule} from "../utilities/app-material/app-material.module";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {NgxCsvParserModule} from 'ngx-csv-parser';
     CommonModule,
     CountryRoutingModule,
     ReactiveFormsModule,
-    NgxCsvParserModule
+    NgxCsvParserModule,
+    AppMaterialModule
   ]
 })
 export class CountryModule { }

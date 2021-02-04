@@ -1,10 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {CityModel} from '../../models/city.model';
 import {CityService} from '../../services/city.service';
 import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import Swal from 'sweetalert2';
+import {MatTableDataSource} from "@angular/material/table";
+import {CountryModel} from "../../../country/models/country.model";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {CountryCreateComponent} from "../../../country/components/country-create/country-create.component";
+import {CityCreateComponent} from "../city-create/city-create.component";
+import {CountryEditComponent} from "../../../country/components/country-edit/country-edit.component";
+import {CityEditComponent} from "../city-edit/city-edit.component";
 
 @Component({
   selector: 'app-city-list',
@@ -13,7 +23,7 @@ import Swal from 'sweetalert2';
 })
 export class CityListComponent implements OnInit {
 
-  listCity: CityModel[];
+  listCity: MatTableDataSource<CityModel>;
   cityForm: FormGroup;
   searchForm: FormGroup;
   listImportCity: CityModel[] = [];
@@ -23,8 +33,18 @@ export class CityListComponent implements OnInit {
   test: boolean;
   successMessage: string;
   editCityUrl = '/city/edit/';
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  Columns: string[] = [ 'nom', 'code', 'status', 'Actions' ];
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private router: Router, private cityService: CityService, private ngxCsvParser: NgxCsvParser) { }
+  constructor(
+    private router: Router,
+    private cityService: CityService,
+    private ngxCsvParser: NgxCsvParser,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,) { }
 
   Toast = Swal.mixin({
     toast: true,
@@ -84,40 +104,21 @@ export class CityListComponent implements OnInit {
     return {'is-invalid': control.invalid && control.touched};
   }
 
-
-  onEditCity(city: CityModel){
-    this.router.navigateByUrl(this.editCityUrl + (city.id));
-  }
-
-  onDeleteCity(city: CityModel){
-    if (city.id) {
-      Swal.fire({
-        html: 'Voulez vous vraiment supprimer cette ville ?',
-        showCancelButton: true,
-        confirmButtonText: `Supprimer`,
-        confirmButtonColor: '#138f46',
-        cancelButtonColor: '#2d7de0',
-        cancelButtonText: 'Annuler',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.cityService.deleteCity(city).subscribe( data => {
-            // @ts-ignore
-            this.successMessage = data.message;
-            this.Toast.fire({
-              icon: 'success',
-              title: this.successMessage,
-            });
-            this.getAllCity();
-          }, err => {
-            console.log(err);
-          });
-        }
-      });
-    }
-  }
-
   getAllCity(){
-    this.cityService.getCity().subscribe(value => this.listCity = value.data);
+    this.cityService.getCity().subscribe(value => {
+      this.listCity = new MatTableDataSource<CityModel>(value.data);
+      this.listCity.sort = this.sort;
+      this.listCity.paginator = this.paginator;
+    });
+  }
+
+  onAddCity() {
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
+    this.dialog.open(CityCreateComponent, dialogOption);
   }
 
   get file(){
@@ -160,4 +161,21 @@ export class CityListComponent implements OnInit {
     );
   }
 
+  applyFilterCity(filterValue: string) {
+    this.listCity.filter = filterValue.trim().toLocaleLowerCase();
+  }
+
+  onEditCity(city: CityModel){
+    //this.applicationService.deleteApplication(application);
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.id = city.id + '';
+    this.dialog.open(CityEditComponent, dialogOption);
+  }
+
+  onDeleteCity(city: CityModel){
+    this.cityService.deleteCity(city);
+  }
 }

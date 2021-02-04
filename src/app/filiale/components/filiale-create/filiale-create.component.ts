@@ -11,6 +11,7 @@ import {Status} from "../../../enum/status.enum";
 import {TypeGeneriqueLogin} from "../../../enum/typeGeneriqueLogin.enum";
 import {FilialeModel} from "../../models/filiale.model";
 import {FilialeService} from "../../services/filiale.service";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-filiale-create',
@@ -25,10 +26,13 @@ export class FilialeCreateComponent implements OnInit {
   submitted = false;
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(
     private router: Router,
     private companyService: CompanyService,
     private cityService: CityService,
+    private dialogue: MatDialogRef<FilialeCreateComponent>,
     private location: Location, private filialeService: FilialeService) { }
   Toast = Swal.mixin({
     toast: true,
@@ -49,7 +53,6 @@ export class FilialeCreateComponent implements OnInit {
 
   getAllCompany(){
     this.companyService.getCompany().subscribe(value => {
-      console.log(value);
       this.listCompany = value.data
     });
   }
@@ -122,7 +125,7 @@ export class FilialeCreateComponent implements OnInit {
       phone: this.phone.value,
       webSite: this.webSite.value,
       status: this.status.value,
-      company: {id: this.company.value, socialReason: '', adress: '', city: null, email: '', phone: '', status: Status.Actif, typeGeneriqueLogin: TypeGeneriqueLogin.BeforeEmail, webSite:'', code: ''},
+      company: {id: this.company.value, socialReason: '', adress: '', email: '', phone: '', status: Status.Actif, webSite:'', code: ''},
       city: {id: this.city.value, status: Status.Actif, caption: '', code: '', country: null},
       typeGeneriqueLogin: this.typeGeneriqueLogin.value as TypeGeneriqueLogin
     };
@@ -147,8 +150,10 @@ export class FilialeCreateComponent implements OnInit {
     );
   }
 
-
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
+
+
+  OnClose(){this.dialogue.close(); }
 }

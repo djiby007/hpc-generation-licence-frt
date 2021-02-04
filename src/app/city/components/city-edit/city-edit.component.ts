@@ -7,6 +7,7 @@ import {CityService} from '../../services/city.service';
 import {CityModel} from '../../models/city.model';
 import {Location} from '@angular/common';
 import Swal from 'sweetalert2';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-city-edit',
@@ -20,10 +21,13 @@ export class CityEditComponent implements OnInit {
   city: CityModel;
   listCountry: CountryModel[];
   submitted = false;
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private countryService: CountryService,
               private cityService: CityService,
+              private dialogue: MatDialogRef<CityEditComponent>,
               private location: Location) { }
 
   Toast = Swal.mixin({
@@ -38,9 +42,9 @@ export class CityEditComponent implements OnInit {
     }
   });
   ngOnInit(): void {
-    this.findContinent(+this.activatedRoute.snapshot.paramMap.get('id'));
-    this.getAllCountry();
     this.createForm();
+    this.findContinent(+this.dialogue.id);
+    this.getAllCountry();
   }
 
   goBack() {
@@ -115,5 +119,8 @@ export class CityEditComponent implements OnInit {
       this.status.setValue(this.city.status);
     });
   }
+
+
+  OnClose(){this.dialogue.close(); }
 
 }

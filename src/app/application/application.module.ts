@@ -6,7 +6,7 @@ import {ApplicationListComponent} from "./component/application-list/application
 import {ApplicationEditComponent} from "./component/application-edit/application-edit.component";
 import {ApplicationCreateComponent} from "./component/application-create/application-create.component";
 import {AppMaterialModule} from "../utilities/app-material/app-material.module";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({

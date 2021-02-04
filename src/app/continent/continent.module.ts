@@ -5,8 +5,7 @@ import { ContinentRoutingModule } from './continent-routing.module';
 import {ContinentListComponent} from './components/continent-list/continent-list.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxCsvParserModule} from 'ngx-csv-parser';
-import {AppMaterialModule} from "../utilities/app-material/app-material.module";
-
+import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 
 @NgModule({
   declarations: [

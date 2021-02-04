@@ -1,17 +1,21 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AuthGuardService} from './utilities/Guard/auth-guard.service';
+import {AuthGuardService} from "./utilities/Guard/auth-guard.service";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const routes: Routes = [
-  { path: '',
+
+  { path: 'dashboard', component: DashboardComponent },
+
+  { path: 'auth',
     loadChildren: () => import('./authentication/components/login/login.module').then(m => m.LoginModule) },
 
   { path: 'configuration',
-    loadChildren: () => import('./configuration/configuration.module').then(t => t.ConfigurationModule), canActivate : [AuthGuardService] },
+    loadChildren: () => import('./configuration/configuration.module').then(c => c.ConfigurationModule), canActivate : [AuthGuardService] },
   { path: 'option',
     loadChildren: () => import('./option/option.module').then(o => o.OptionModule), canActivate : [AuthGuardService] },
   { path: 'feature',
-    loadChildren: () => import('./feature/feature.module').then(r => r.FeatureModule), canActivate : [AuthGuardService] },
+    loadChildren: () => import('./feature/feature.module').then(f => f.FeatureModule), canActivate : [AuthGuardService] },
   { path: 'profile',
     loadChildren: () => import('./profile/profile.module').then(p => p.ProfileModule), canActivate : [AuthGuardService] },
   { path: 'permission',
@@ -26,8 +30,16 @@ const routes: Routes = [
     loadChildren: () => import('./company/company.module').then(c => c.CompanyModule), canActivate : [AuthGuardService] },
   { path: 'filiale',
     loadChildren: () => import('./filiale/filiale.module').then(f => f.FilialeModule), canActivate : [AuthGuardService] },
+  { path: 'application',
+    loadChildren: () => import('./application/application.module').then(a => a.ApplicationModule), canActivate : [AuthGuardService] },
+  { path: 'user',
+    loadChildren: () => import('./user/user.module').then(u => u.UserModule), canActivate : [AuthGuardService] },
+  { path: 'licence',
+    loadChildren: () => import('./licence/licence.module').then(l => l.LicenceModule), canActivate : [AuthGuardService] },
 
-  { path: 'home', redirectTo: '/' }
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+
+  { path: '**', component: DashboardComponent },
 ];
 
 @NgModule({

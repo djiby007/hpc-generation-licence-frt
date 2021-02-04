@@ -5,7 +5,6 @@ import {CountryCreateComponent} from './components/country-create/country-create
 import {CountryDetailsComponent} from './components/country-details/country-details.component';
 import {CountryEditComponent} from './components/country-edit/country-edit.component';
 
-
 const routes: Routes = [
   {path: '', component: CountryListComponent},
   {path: 'detail/:id', component: CountryDetailsComponent },

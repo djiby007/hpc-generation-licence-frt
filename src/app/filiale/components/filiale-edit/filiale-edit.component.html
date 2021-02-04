@@ -1,126 +1,198 @@
-<div class="form-content">
-  <div class="container register-form pt-3">
-    <div class="card">
-      <h6 class="card-header">
-        Modification de Filiale
-      </h6>
-      <div class="card-body">
-        <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Société </b></label>
-                <select class="form-control" name="" formControlName="company"  required="true" >
-                  <option *ngFor="let company of listCompany" value={{company.id}}>{{company.socialReason}}</option>
-                </select>
-                <div *ngIf="company.invalid && (company.dirty || company.touched)" class="invalid-feedback">
-                  <div *ngIf="company.errors.required">Veuillez sélectionner la Société</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Ville </b></label>
-                <select class="form-control" name="" formControlName="city"  required="true" >
-                  <option *ngFor="let city of listCity" value={{city.id}}>{{city.caption}}</option>
-                </select>
-                <div *ngIf="city.invalid && (city.dirty || city.touched)" class="invalid-feedback">
-                  <div *ngIf="city.errors.required">Veuillez sélectionner la ville</div>
-                </div>
-              </div>
-            </div>
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h4 class="card-title">MODIFICATION DE FILIALE</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="filialeForm" (ngSubmit)="onSubmit()"autocomplete="off">
+      <mat-card-content class="">
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field appearance="fill" >
+              <mat-label class="label-form">Société</mat-label>
+              <mat-select name="status" formControlName="company" >
+                <mat-option *ngFor="let company of  listCompany" [value]="company.id">
+                  {{company.socialReason}}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="filialeForm.get('company').hasError('required')">
+                Société <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Nom </b></label>
-                <input class="form-control" type="text" formControlName="caption"  required="true" [ngClass]="setError(caption)" placeholder="Nom" name="uname" >
-                <div *ngIf="caption.invalid && (caption.dirty || caption.touched)" class="invalid-feedback">
-                  <div *ngIf="caption.errors.required">Veuillez saisir le Nom </div>
-                </div>
-                <div *ngIf="hasError" style="color: red; margin-top: 15px;">
-                  <i class="fa fa-info-circle" aria-hidden="true" style="font-size: x-large"></i>  {{message}}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Email </b></label>
-                <input class="form-control" type="text" formControlName="email"  required="true"  required="true" [ngClass]="setError(email)" placeholder="example@example.sn" name="uname" >
-                <div *ngIf="email.invalid && (email.dirty || email.touched || email.invalid)" class="invalid-feedback">
-                  <div *ngIf="email.errors.required">Veuillez saisir l'email </div>
-                  <div *ngIf="email.invalid">Email incorrect</div>
-                </div>
-              </div>
-            </div>
+          <div class="col-md-6">
+            <mat-form-field appearance="fill" >
+              <mat-label class="label-form">Ville</mat-label>
+              <mat-select name="status" formControlName="city" >
+                <mat-option *ngFor="let city of  listCity" [value]="city.id">
+                  {{city.caption}}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="filialeForm.get('city').hasError('required')">
+                Société <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
+        </div>
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>adresse </b></label>
-                <input class="form-control" type="text" formControlName="adress"  required="true" [ngClass]="setError(adress)" placeholder="Sacré Coeur.." name="uname" >
-                <div *ngIf="adress.invalid && (adress.dirty || adress.touched)" class="invalid-feedback">
-                  <div *ngIf="adress.errors.required">Veuillez saisir l'adresse </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Phone </b></label>
-                <input class="form-control" pattern="(?=.*\d)" type="text" formControlName="phone"  required="true" [ngClass]="setError(phone)" placeholder="77..." name="uname" >
-                <div *ngIf="phone.invalid && (phone.dirty || phone.touched)" class="invalid-feedback">
-                  <div *ngIf="phone.errors.required">Veuillez saisir le phone </div>
-                  <div *ngIf="phone.errors">{{phone.errors}} </div>
-                </div>
-              </div>
-            </div>
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Nom</mat-label>
+              <input matInput placeholder="Nom"
+                     formControlName="caption"
+                     type="text"
+                     required="required">
+              <mat-error
+                *ngIf="filialeForm.get('caption').hasError('required')">
+                Nom <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
-
-          <div class="form-group">
-            <label class="col-form-label"><b>Site Web </b></label>
-            <input class="form-control" type="text" formControlName="webSite"  required="true" [ngClass]="setError(webSite)" placeholder="hpc.sn" name="uname" >
-            <div *ngIf="webSite.invalid && (webSite.dirty || webSite.touched)" class="invalid-feedback">
-              <div *ngIf="webSite.errors.required">Veuillez saisir le site web </div>
-            </div>
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Email</mat-label>
+              <input matInput placeholder="Email"
+                     formControlName="email"
+                     type="text"
+                     required="required">
+              <mat-error
+                *ngIf="filialeForm.get('email').hasError('required')">
+                Email <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
+        </div>
 
-
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Status</b></label>
-                <select class="form-control" name="" formControlName="status"  required="true"  [ngClass]="setError(status)">
-                  <option value="Actif">Actif</option>
-                  <option value="Inactif">Inactif</option>
-                </select>
-                <div *ngIf="status.invalid && (status.dirty || status.touched)" class="invalid-feedback">
-                  <div *ngIf="status.errors.required">Veuillez sélectionner le status </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Type de génération du login</b></label>
-                <select class="form-control" name="" formControlName="typeGeneriqueLogin"  required="true" [ngClass]="setError(typeGeneriqueLogin)">
-                  <option value="FirstLetterOfFirstNameAndLastName">1 ière lettre du Prénom + Nom</option>
-                  <option value="FirstLetterOfLastNameAndFirstName">1 ière lettre du Nom + Prénom</option>
-                  <option value="FirstNameAndFirstLetterOfLastName">Prénom + 1 ière lettre du Nom </option>
-                  <option value="TwoLettersOfFirstNameAndTreeLetterOfLastName">2 premières lettre du Prénom + 3 premières lettre du Nom</option>
-                  <option value="BeforeEmail">Avant @</option>
-                </select>
-                <div *ngIf="typeGeneriqueLogin.invalid && (typeGeneriqueLogin.dirty || typeGeneriqueLogin.touched)" class="invalid-feedback">
-                  <div *ngIf="typeGeneriqueLogin.errors.required">Veuillez séletionner le type de génération </div>
-                </div>
-              </div>
-            </div>
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Adresse</mat-label>
+              <input matInput placeholder="adress"
+                     formControlName="adress"
+                     type="text"
+                     required="required">
+              <mat-error
+                *ngIf="filialeForm.get('adress').hasError('required')">
+                Adresse <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Phone</mat-label>
+              <input matInput placeholder="phone"
+                     formControlName="phone"
+                     type="text"
+                     required="required">
+              <mat-error
+                *ngIf="filialeForm.get('phone').hasError('required')">
+                Phone <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Site web</mat-label>
+              <input matInput placeholder="webSite"
+                     formControlName="webSite"
+                     type="text"
+                     required="required">
+              <mat-error
+                *ngIf="filialeForm.get('webSite').hasError('required')">
+                Site web <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field >
+              <mat-label class="label-form">Status</mat-label>
+              <mat-select name="status" formControlName="status" >
+                <mat-option value="Actif">
+                  Actif
+                </mat-option>
+                <mat-option value="Inactif">
+                  Inactif
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="filialeForm.get('status').hasError('required')">
+                Status <strong>obligatoire</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
 
-          <button type="submit" class="btn btn-success mr-2" >Sauvegarder</button>
-          <button type="button" class="btn" id="list" (click)="goBack()">Annuler</button>
-        </form>
-      </div>
-    </div>
+        <div class="text-center">
+          <mat-form-field >
+            <mat-label class="label-form">Status</mat-label>
+            <mat-select formControlName="typeGeneriqueLogin" >
+              <mat-option value="FirstLetterOfFirstNameAndLastName">
+                1 ière lettre du Prénom + Nom
+              </mat-option>
+              <mat-option value="FirstLetterOfLastNameAndFirstName">
+                1 ière lettre du Nom + Prénom
+              </mat-option>
+              <mat-option value="FirstNameAndFirstLetterOfLastName">
+                Prénom + 1 ière lettre du Nom
+              </mat-option>
+              <mat-option value="TwoLettersOfFirstNameAndTreeLetterOfLastName">
+                2 premières lettre du Prénom + 3 premières lettre du Nom
+              </mat-option>
+              <mat-option value="BeforeEmail">
+                Avant @
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="filialeForm.get('status').hasError('required')">
+              Status <strong>obligatoire</strong>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+      <mat-card-actions class="">
+        <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="filialeForm.invalid" >Sauvegarder</button>
+        <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
+      </mat-card-actions>
+    </form>
   </div>
 </div>
+
+
+
+
+
+
 

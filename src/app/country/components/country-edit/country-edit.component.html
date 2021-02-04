@@ -1,45 +1,80 @@
-<div class="col-md-6 offset-md-3 mt-5">
-  <div class="card">
-    <h6 class="card-header">Modification de Pays</h6>
-    <div class="card-body">
-      <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
 
-        <div class="form-group">
-          <label class="col-form-label"><b>Nom </b></label>
-          <input class="form-control" type="text" formControlName="caption"  required="true" [ngClass]="setError(caption)" placeholder="Nom" name="uname" >
-          <div *ngIf="caption.invalid && (caption.dirty || caption.touched)" class="invalid-feedback">
-            <div *ngIf="caption.errors.required">Veuillez saisir le nom </div>
-            <div *ngIf="caption.errors.minlength">Le nom doit contenir au moins 4 caratères </div>
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h4 class="card-title">AJOUTER DE PAYS</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="countryForm" (ngSubmit)="onSubmit()"autocomplete="off">
+      <mat-card-content class="">
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Nom</mat-label>
+              <input matInput placeholder="Nom"
+                     formControlName="caption"
+                     type="text"
+                     required="required">
+              <mat-error
+                *ngIf="countryForm.get('caption').hasError('required')">
+                Nom <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
-          <div *ngIf="hasError" style="color: red; margin-top: 15px;">
-            <i class="fa fa-info-circle" aria-hidden="true" style="font-size: x-large"></i>  {{message}}
+          <div class="col-md-6">
+            <mat-form-field >
+              <mat-label class="label-form">Status</mat-label>
+              <mat-select name="status" formControlName="status" >
+                <mat-option value="Actif">
+                  Actif
+                </mat-option>
+                <mat-option value="Inactif">
+                  Inactif
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="countryForm.get('status').hasError('required')">
+                Status <strong>obligatoire</strong>
+              </mat-error>
+            </mat-form-field>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="col-form-label"><b>Continent </b></label>
-          <select class="form-control" name="" formControlName="continent"  required="true" [ngClass]="setError(continent)">
-            <option *ngFor="let continent of listContinent" value={{continent.id}}>{{continent.caption}}</option>
-          </select>
-          <div *ngIf="continent.invalid && (continent.dirty || continent.touched)" class="invalid-feedback">
-            <div *ngIf="continent.errors.required">Veuillez sélectionner le continent </div>
+        <div class="row text-center">
+          <div class="col">
+            <mat-form-field appearance="fill" >
+              <mat-label class="label-form">Continent</mat-label>
+              <mat-select name="status" formControlName="continent" >
+                <mat-option *ngFor="let continent of  listContinent" [value]="continent.id">
+                  {{continent.caption}}
+                </mat-option>
+              </mat-select>
+              <textarea matInput formControlName="continent"  [minLength]="2" required="required"></textarea>
+              <mat-error
+                *ngIf="countryForm.get('continent').hasError('required')">
+                Continent <strong>obligatoire</strong>
+              </mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="col-form-label"><b>Status</b></label>
-          <select class="form-control" name="" formControlName="status"  required="true" [ngClass]="setError(status)">
-            <option value="Actif">Actif</option>
-            <option value="Inactif">Inactif</option>
-          </select>
-          <div *ngIf="status.invalid && (status.dirty || status.touched)" class="invalid-feedback">
-            <div *ngIf="status.errors.required">Veuillez sélectionner le status </div>
-          </div>
-        </div>
 
-        <button type="submit" class="btn btn-success mr-2">Sauvegarder</button>
-        <button type="reset" class="btn" id="list" (click)="goBack()">Annuler</button>
-      </form>
-    </div>
+      </mat-card-content>
+      <mat-card-actions class="">
+        <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="countryForm.invalid" >Sauvegarder</button>
+        <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
+      </mat-card-actions>
+    </form>
   </div>
 </div>
+
+
+
+

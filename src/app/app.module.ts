@@ -30,11 +30,14 @@ import { OptionEditComponent } from './option/component/option-edit/option-edit.
 import { OptionCreateComponent } from './option/component/option-create/option-create.component';
 import { ProfileEditComponent } from './profile/components/profile-edit/profile-edit.component';
 import { ProfileCreateComponent } from './profile/components/profile-create/profile-create.component';
+import {LicenceModule} from "./licence/licence.module";
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent
+    NavbarComponent,
+    DashboardComponent
   ],
   imports: [
     FormsModule,
@@ -56,6 +59,7 @@ import { ProfileCreateComponent } from './profile/components/profile-create/prof
     CompanyModule,
     FilialeModule,
     LoginModule,
+    LicenceModule,
     ConfirmationModule
   ],
   providers: [

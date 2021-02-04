@@ -11,15 +11,20 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: white;
   text-decoration: none !important;
 }
-.option_icon_active{
+.iconVert{
   color: #095806;
 }
 .option_icon_inactive{
   color: black;
 }
+.icon_Expiree{
+  color: red;
+}
+.icon_Renouvelee{
+  color: mediumblue;
+}
 .green-snackbar {
   background: 	rgb(244,245,246)!important;
-  /*color: #095806;*/
   color: rgb(5,67,110);
   font-size: medium;
   font-weight: bold;

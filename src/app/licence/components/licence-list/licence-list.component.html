@@ -1,0 +1,66 @@
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h4 class="card-title">Liste des licences</h4>
+  </div>
+  <div class="card-body">
+    <div style="overflow: auto">
+      <div class="row" class="d-flex justify-content-lg-between">
+        <div class="col-lg-3">
+          <a mat-raised-button color="accent" class="btn-sm save" routerLink="/licence/create">Ajouter</a>
+        </div>
+        <div class="col-lg-3">
+          <mat-form-field >
+            <input matInput (keyup)="applyFilterLicences($event.target.value)" placeholder="Rechercher">
+          </mat-form-field>
+        </div>
+      </div>
+      <div  class="mat-elevation-z8">
+        <table mat-table multiTemplateDataRows [dataSource]="licenceList" matSort class="table-bordred table-striped table-sm">
+          <tr mat-header-row *matHeaderRowDef="Columns" ></tr>
+          <tr mat-row *matRowDef="let coLicence;columns:Columns"></tr>
+          <ng-container matColumnDef="Status">
+            <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</th>
+            <td mat-header-cell *matCellDef="let licence" >
+              <mat-icon *ngIf="licence.status == 'Active'" class="iconVert">task_alt</mat-icon>
+              <mat-icon *ngIf="licence.status == 'Inactive'" class="option_icon_inactive">cancel</mat-icon>
+              <mat-icon *ngIf="licence.status == 'Expirée'" class="icon_Expiree">cancel</mat-icon>
+              <mat-icon *ngIf="licence.status == 'Renouvelée'" class="icon_Renouvelee">cancel</mat-icon>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Clé">
+            <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Clé</th>
+            <td mat-header-cell *matCellDef="let licence">{{licence.cle}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Application">
+            <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Application</th>
+            <td mat-header-cell *matCellDef="let licence">{{licence.application.nom}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Filiale">
+            <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Filiale</th>
+            <td mat-header-cell *matCellDef="let licence">{{licence.filiale.caption}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Expiration">
+            <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Expiration</th>
+            <td mat-header-cell *matCellDef="let licence">{{licence.dateFin}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Actions">
+            <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+            <td mat-cell *matCellDef="let licence" class="d-flex justify-content-sm-between">
+              <a mat-icon-button class="edit" (click)="editLicence(licence)">
+                <mat-icon>launch</mat-icon>
+              </a>
+              <a mat-icon-button color="warn"  (click)="detailLicence(licence)">
+                <mat-icon>delete_outline</mat-icon>
+              </a>
+            </td>
+          </ng-container>
+        </table>
+        <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

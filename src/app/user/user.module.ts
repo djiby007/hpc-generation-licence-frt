@@ -7,6 +7,7 @@ import {UserDetailsComponent} from './components/user-details/user-details.compo
 import {UserCreateComponent} from './components/user-create/user-create.component';
 import {UserEditComponent} from './components/user-edit/user-edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {AppMaterialModule} from "../utilities/app-material/app-material.module";
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import {ReactiveFormsModule} from '@angular/forms';
   imports: [
     CommonModule,
     UserRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AppMaterialModule
   ]
 })
 export class UserModule { }
