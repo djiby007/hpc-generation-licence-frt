@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import {AuthService} from "./authentication/services/auth.service";
-import {Router} from "@angular/router";
-import {PermissionService} from "./permission/services/permission.service";
+import {AuthService} from './authentication/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,8 +9,7 @@ import {PermissionService} from "./permission/services/permission.service";
 export class AppComponent {
   title = 'hpc-generation-licence-front';
 
-  constructor(private authService: AuthService,
-              private router: Router) { }
+  constructor(private authService: AuthService) { }
 
   isAuthenticated() { return this.authService.isAuthenticated(); }
 }

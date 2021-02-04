@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CountryModel} from '../../models/country.model';
 import {CountryService} from '../../services/country.service';
-import {CityService} from '../../../city/services/city.service';
 import {Location} from '@angular/common';
 
 @Component({

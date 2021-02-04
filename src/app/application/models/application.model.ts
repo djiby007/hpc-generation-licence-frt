@@ -1,3 +1,4 @@
+
 import {Status} from '../../enum/status.enum';
 
 export interface ApplicationModel{

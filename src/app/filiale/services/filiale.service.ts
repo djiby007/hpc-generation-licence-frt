@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {FilialeModel} from "../../filiale/models/filiale.model";
+import {environment} from '../../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {FilialeModel} from '../models/filiale.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FilialeService {
-
   apiUrl = environment.apiUrl;
   importfilialeEndPoint = '/import_filiale';
   filialeEndPoint = '/filiale';
