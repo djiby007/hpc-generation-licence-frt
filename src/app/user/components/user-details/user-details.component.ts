@@ -20,13 +20,10 @@ export class UserDetailsComponent implements OnInit {
     private location: Location) { }
 
   ngOnInit(): void {
-    this.getUser();
+
   }
 
-  getUser(){
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.userService.findUser(id).subscribe(value => this.user = value);
-  }
+
 
   goBack() {
     this.location.back();

@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {AuthGuardService} from "./utilities/Guard/auth-guard.service";
+import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const routes: Routes = [
-  { path: '',
+
+  { path: 'dashboard', component: DashboardComponent },
+
+  { path: 'auth',
     loadChildren: () => import('./authentication/components/login/login.module').then(m => m.LoginModule) },
 
   { path: 'configuration',
@@ -33,8 +37,9 @@ const routes: Routes = [
   { path: 'licence',
     loadChildren: () => import('./licence/licence.module').then(l => l.LicenceModule), canActivate : [AuthGuardService] },
 
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-  { path: 'home', redirectTo: '/', canActivate : [AuthGuardService] }
+  { path: '**', component: DashboardComponent },
 ];
 
 @NgModule({
