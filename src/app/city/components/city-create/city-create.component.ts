@@ -7,6 +7,7 @@ import {CityService} from '../../services/city.service';
 import {CityModel} from '../../models/city.model';
 import {Location} from '@angular/common';
 import Swal from 'sweetalert2';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-city-create',
@@ -20,8 +21,11 @@ export class CityCreateComponent implements OnInit {
   submitted = false;
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(
       private router: Router,
+      private dialogue: MatDialogRef<CityCreateComponent>,
       private countryService: CountryService,
       private cityService: CityService,
       private location: Location) { }
@@ -103,5 +107,7 @@ export class CityCreateComponent implements OnInit {
     return {'is-invalid': control.invalid && control.touched};
   }
 
+
+  OnClose(){this.dialogue.close(); }
 
 }

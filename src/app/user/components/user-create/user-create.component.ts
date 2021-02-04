@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {CompanyService} from '../../../company/services/company.service';
 import {UserService} from '../../services/user.service';
 import {ProfileModel} from '../../../profile/models/profile.model';
 import {ProfileService} from '../../../profile/services/profile.service';
-import {CompanyModel} from '../../../company/models/company.model';
 import {Location} from '@angular/common';
 import {Status} from '../../../enum/status.enum';
 import {Civility} from '../../../enum/civility.enum';
 import Swal from 'sweetalert2';
 import {FilialeService} from '../../../filiale/services/filiale.service';
 import {FilialeModel} from '../../../filiale/models/filiale.model';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-user-create',
@@ -24,12 +23,15 @@ export class UserCreateComponent implements OnInit {
   listFiliale: FilialeModel[];
   listProfile: ProfileModel[];
   submitted = false;
+  successApiMessage: string;
+  errorApiMessage: string;
 
   constructor(
     private router: Router,
     private filialeService: FilialeService,
     private userService: UserService,
     private profileService: ProfileService,
+    private dialogue: MatDialogRef<UserCreateComponent>,
     private location: Location) { }
 
   Toast = Swal.mixin({
@@ -94,8 +96,8 @@ export class UserCreateComponent implements OnInit {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      civility: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required),
+      civility: new FormControl(Civility.Mr, Validators.required),
+      status: new FormControl(Status.Actif, Validators.required),
       profile: new FormControl('', Validators.required),
       filiale: new FormControl('', Validators.required)
     });
@@ -141,4 +143,5 @@ export class UserCreateComponent implements OnInit {
   }
 
 
+  OnClose(){this.dialogue.close(); }
 }

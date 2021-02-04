@@ -9,6 +9,7 @@ import {Location} from '@angular/common';
 import {TypeGeneriqueLogin} from '../../../enum/typeGeneriqueLogin.enum';
 import {Status} from '../../../enum/status.enum';
 import Swal from 'sweetalert2';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-company-create',
@@ -18,14 +19,15 @@ import Swal from 'sweetalert2';
 export class CompanyCreateComponent implements OnInit {
 
   companyForm: FormGroup;
-  listCity: CityModel[];
   submitted = false;
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(
     private router: Router,
+    private dialogue: MatDialogRef<CompanyCreateComponent>,
     private companyService: CompanyService,
-    private cityService: CityService,
     private location: Location
   ) { }
   Toast = Swal.mixin({
@@ -40,7 +42,6 @@ export class CompanyCreateComponent implements OnInit {
     }
   });
   ngOnInit(): void {
-    this.getAllCity();
     this.createForm();
   }
 
@@ -68,21 +69,8 @@ export class CompanyCreateComponent implements OnInit {
     return this.companyForm.get('webSite');
   }
 
-  get city(){
-    return this.companyForm.get('city');
-  }
-
-
-  get typeGeneriqueLogin(){
-    return this.companyForm.get('typeGeneriqueLogin');
-  }
-
   get status(){
     return this.companyForm.get('status');
-  }
-
-  getAllCity(){
-    this.cityService.getCity().subscribe(value => this.listCity = value.data);
   }
 
   createForm(){
@@ -92,9 +80,7 @@ export class CompanyCreateComponent implements OnInit {
       adress: new FormControl('', Validators.required),
       phone: new FormControl('', [Validators.required, /*Validators.pattern('(?=.*\\d)')*/]),
       webSite: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
       status: new FormControl('', Validators.required),
-      typeGeneriqueLogin: new FormControl('', Validators.required)
     });
   }
 
@@ -108,8 +94,6 @@ export class CompanyCreateComponent implements OnInit {
       phone: this.phone.value,
       webSite: this.webSite.value,
       status: this.status.value,
-      city: {id: this.city.value, status: Status.Actif, caption: '', code: '', country: null},
-      typeGeneriqueLogin: this.typeGeneriqueLogin.value as TypeGeneriqueLogin
     };
 
     this.companyService.addCompany(company).subscribe(
@@ -132,8 +116,12 @@ export class CompanyCreateComponent implements OnInit {
     );
   }
 
+
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
+
+
+  OnClose(){this.dialogue.close(); }
 
 }

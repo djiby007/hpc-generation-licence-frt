@@ -8,6 +8,7 @@ import {CityDetailsComponent} from './components/city-details/city-details.compo
 import {CityEditComponent} from './components/city-edit/city-edit.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxCsvParserModule} from 'ngx-csv-parser';
+import {AppMaterialModule} from "../utilities/app-material/app-material.module";
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {NgxCsvParserModule} from 'ngx-csv-parser';
     CommonModule,
     CityRoutingModule,
     ReactiveFormsModule,
-    NgxCsvParserModule
+    NgxCsvParserModule,
+    AppMaterialModule
   ]
 })
 export class CityModule { }

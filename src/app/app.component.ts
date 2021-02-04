@@ -14,5 +14,5 @@ export class AppComponent {
   constructor(private authService: AuthService,
               private router: Router) { }
 
-  isAuthenticated() {return this.authService.isAuthenticated(); }
+  isAuthenticated() { return this.authService.isAuthenticated(); }
 }

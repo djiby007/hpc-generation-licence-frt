@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import {FilialeModel} from "../../models/filiale.model";
 import {Status} from "../../../enum/status.enum";
 import {TypeGeneriqueLogin} from "../../../enum/typeGeneriqueLogin.enum";
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-filiale-edit',
@@ -26,13 +27,16 @@ export class FilialeEditComponent implements OnInit {
   submitted = false;
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(
     private router: Router,
     private companyService: CompanyService,
     private cityService: CityService,
     private location: Location,
     private filialeService: FilialeService,
-    private activatedRoute: ActivatedRoute,) { }
+    private activatedRoute: ActivatedRoute,
+    private dialogue: MatDialogRef<FilialeEditComponent>,) { }
   Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -46,7 +50,7 @@ export class FilialeEditComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.findFiliale(+this.activatedRoute.snapshot.paramMap.get('id'));
+    this.findFiliale(+this.dialogue.id);
     this.getAllCompany();
     this.getAllCity();
     this.createForm();
@@ -69,7 +73,6 @@ export class FilialeEditComponent implements OnInit {
 
   getAllCompany(){
     this.companyService.getCompany().subscribe(value => {
-      console.log(value);
       this.listCompany = value.data
     });
   }
@@ -143,7 +146,7 @@ export class FilialeEditComponent implements OnInit {
       phone: this.phone.value,
       webSite: this.webSite.value,
       status: this.status.value,
-      company: {id: this.company.value, socialReason: '', adress: '', city: null, email: '', phone: '', status: Status.Actif, typeGeneriqueLogin: TypeGeneriqueLogin.BeforeEmail, webSite:'', code: ''},
+      company: {id: this.company.value, socialReason: '', adress: '', email: '', phone: '', status: Status.Actif, webSite:'', code: ''},
       city: {id: this.city.value, status: Status.Actif, caption: '', code: '', country: null},
       typeGeneriqueLogin: this.typeGeneriqueLogin.value as TypeGeneriqueLogin
     };
@@ -172,4 +175,7 @@ export class FilialeEditComponent implements OnInit {
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
+
+
+  OnClose(){this.dialogue.close(); }
 }

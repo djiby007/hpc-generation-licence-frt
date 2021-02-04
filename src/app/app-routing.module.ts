@@ -28,8 +28,10 @@ const routes: Routes = [
     loadChildren: () => import('./filiale/filiale.module').then(f => f.FilialeModule), canActivate : [AuthGuardService] },
   { path: 'application',
     loadChildren: () => import('./application/application.module').then(a => a.ApplicationModule), canActivate : [AuthGuardService] },
+  { path: 'user',
+    loadChildren: () => import('./user/user.module').then(u => u.UserModule), canActivate : [AuthGuardService] },
 
-  { path: 'home', redirectTo: '/' }
+  { path: 'home', redirectTo: '/', canActivate : [AuthGuardService] }
 ];
 
 @NgModule({

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {UserModel} from '../../models/user.model';
@@ -6,8 +6,18 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import Swal from 'sweetalert2';
 import {HttpParams} from '@angular/common/http';
-import {PermissionService} from '../../../permission/services/permission.service';
-import {PermissionModel} from '../../../permission/models/permission.model';
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {MatTableDataSource} from "@angular/material/table";
+import {PermissionModel} from "../../../permission/models/permission.model";
+import {PermissionService} from "../../../permission/services/permission.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {FilialeModel} from "../../../filiale/models/filiale.model";
+import {FilialeCreateComponent} from "../../../filiale/components/filiale-create/filiale-create.component";
+import {FilialeEditComponent} from "../../../filiale/components/filiale-edit/filiale-edit.component";
+import {UserEditComponent} from "../user-edit/user-edit.component";
+import {UserCreateComponent} from "../user-create/user-create.component";
 
 @Component({
   selector: 'app-user-list',
@@ -15,7 +25,7 @@ import {PermissionModel} from '../../../permission/models/permission.model';
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-  listUser: UserModel[];
+  listUser: MatTableDataSource<UserModel>;
   userForm: FormGroup;
   searchForm: FormGroup;
   listImportUser: UserModel[] = [];
@@ -28,12 +38,18 @@ export class UserListComponent implements OnInit {
   successMessage: string;
   editUserUrl = '/user/edit/';
   currentUser: UserModel;
-  permission: PermissionModel;
+  permission: PermissionModel;  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  Columns: string[] = [ 'Civilité', 'Login', 'Prénom', 'Nom', 'Email', 'Profile', 'Filiale', 'Actions' ];
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(private router: Router,
               private userService: UserService,
               private permissionService: PermissionService,
-              private ngxCsvParser: NgxCsvParser) {
+              private ngxCsvParser: NgxCsvParser,
+              private dialog: MatDialog,
+              private snackbar: MatSnackBar) {
   }
 
   Toast = Swal.mixin({
@@ -69,68 +85,16 @@ export class UserListComponent implements OnInit {
     return this.searchForm.get('code');
   }
 
-  onSearch(){
-    const code = this.code.value;
-    this.submitted = true;
-    if (this.searchForm.invalid) {
-      this.getAllUser();
-      return;
-    }
-    if ((code.trim()) === '') {
-      this.Toast.fire({
-        icon: 'warning',
-        title: 'Rien à recherhcer!',
-      });
-      this.getAllUser();
-    }else{
-      this.userService.searchUserKeyword(code)
-        .subscribe(data => {
-          this.listUser = data;
-          this.test = false;
-        }, error => {
-          console.log(error);
-        });
-    }
-  }
-
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
 
-
-  onEditUser(user: UserModel){
-    this.router.navigateByUrl(this.editUserUrl + (user.id));
-  }
-
-  onDeleteUser(user: UserModel){
-   if (user.id) {
-      Swal.fire({
-        html: 'Voulez-vous vraiment supprimer cet utilisateur ?',
-        showCancelButton: true,
-        confirmButtonText: `Supprimer`,
-        confirmButtonColor: '#138f46',
-        cancelButtonColor: '#2d7de0',
-        cancelButtonText: 'Annuler',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.userService.deleteUser(user).subscribe( data => {
-            // @ts-ignore
-            this.successMessage = data.message;
-            this.Toast.fire({
-              icon: 'success',
-              title: this.successMessage,
-            });
-            this.getAllUser();
-          }, err => {
-            console.log(err);
-          });
-        }
-      });
-    }
-  }
-
-  getAllUser(){
-    this.userService.getUser().subscribe(value => this.listUser = value.data);
+  getAllUser() {
+    this.userService.getUser().subscribe(value => {
+      this.listUser = new MatTableDataSource<UserModel>(value.data);
+      this.listUser.sort = this.sort;
+      this.listUser.paginator = this.paginator;
+    });
   }
 
   get file(){
@@ -219,4 +183,55 @@ export class UserListComponent implements OnInit {
       });
     }
   }
+
+
+  applyFilterUser(filterValue: string) {
+    this.listUser.filter = filterValue.trim().toLocaleLowerCase();
+  }
+
+  onAddUser() {
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
+    this.dialog.open(UserCreateComponent, dialogOption);
+  }
+
+  onEditUser(user: UserModel){
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.id = user.id + '';
+    this.dialog.open(UserEditComponent, dialogOption);
+  }
+
+  onDeleteUser(user: UserModel){
+    if (user.id) {
+      Swal.fire({
+        html: 'Voulez vous vraiment supprimer cette société ?',
+        showCancelButton: true,
+        confirmButtonText: `Supprimer`,
+        confirmButtonColor: '#138f46',
+        cancelButtonColor: '#2d7de0',
+        cancelButtonText: 'Annuler',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.userService.deleteUser(user).subscribe( data => {
+            // @ts-ignore
+            this.successMessage = data.message;
+            this.Toast.fire({
+              icon: 'success',
+              title: this.successMessage,
+            });
+            this.getAllUser();
+          }, err => {
+            console.log(err);
+          });
+        }
+      });
+    }
+  }
+
 }

@@ -43,8 +43,8 @@
           </div>
         </div>
 
-        <div class="row text-center">
-          <div class="col">
+        <div class="text-center">
+          <div class="">
             <mat-form-field appearance="fill" >
               <mat-label class="label-form">Continent</mat-label>
               <mat-select name="status" formControlName="continent" >
@@ -52,7 +52,6 @@
                   {{continent.caption}}
                 </mat-option>
               </mat-select>
-              <textarea matInput formControlName="continent"  [minLength]="2" required="required"></textarea>
               <mat-error
                 *ngIf="countryForm.get('continent').hasError('required')">
                 Continent <strong>obligatoire</strong>

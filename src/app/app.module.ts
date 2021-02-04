@@ -21,6 +21,7 @@ import {XhrInterceptorInterceptor} from "./utilities/Interceptor/xhr-interceptor
 import {PermissionListComponent} from "./permission/components/permission-list/permission-list.component";
 import {AuthService} from "./authentication/services/auth.service";
 import {ApplicationModule} from "./application/application.module";
+import {AuthGuardService} from "./utilities/Guard/auth-guard.service";
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +48,7 @@ import {ApplicationModule} from "./application/application.module";
     ApplicationModule
   ],
   providers: [
-    PermissionListComponent, AuthService,
+    PermissionListComponent, AuthService, AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: XhrInterceptorInterceptor,
