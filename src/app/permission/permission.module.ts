@@ -5,8 +5,6 @@ import {PermissionListComponent} from './components/permission-list/permission-l
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PermissionRoutingModule} from './permission-routing.module';
 import {AppMaterialModule} from '../utilities/app-material/app-material.module';
-import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions} from '@angular/material/checkbox';
-
 
 
 @NgModule({
@@ -21,8 +19,6 @@ import {MAT_CHECKBOX_DEFAULT_OPTIONS, MatCheckboxDefaultOptions} from '@angular/
         PermissionRoutingModule,
         AppMaterialModule
     ],
-/*  providers: [
-    {provide: MAT_CHECKBOX_DEFAULT_OPTIONS, useValue: { clickAction: 'noop' } as MatCheckboxDefaultOptions}
-  ]*/
+    entryComponents: [ PermissionEditComponent ]
 })
 export class PermissionModule { }

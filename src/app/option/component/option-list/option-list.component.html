@@ -17,7 +17,9 @@
                     <div class="col-lg-3 d-flex justify-content-lg-between">
                       <mat-form-field>
                         <input matInput (keyup)="applyFilterOptions($event.target.value)" placeholder="Rechercher">
-                        <mat-icon class="float-right">manage_search</mat-icon>
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                          <mat-icon style="font-size: medium">search</mat-icon>
+                        </button>
                       </mat-form-field>
                     </div>
                   </div>

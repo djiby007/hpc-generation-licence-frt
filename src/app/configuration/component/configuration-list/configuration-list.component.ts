@@ -1,13 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {ConfigurationModel} from '../../models/configuration.model';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {ConfigurationCreateComponent} from '../configuration-create/configuration-create.component';
-import {ConfigurationService} from '../../services/configuration.service';
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
-import {ConfigurationEditComponent} from '../configuration-edit/configuration-edit.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { ConfigurationModel } from '../../models/configuration.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ConfigurationCreateComponent } from '../configuration-create/configuration-create.component';
+import { ConfigurationService } from '../../services/configuration.service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { ConfigurationEditComponent } from '../configuration-edit/configuration-edit.component';
+import { ConfirmationService } from '../../../utilities/confirmation/services/confirmation.service';
 
 @Component({
   selector: 'app-configuration-list',
@@ -27,6 +28,7 @@ export class ConfigurationListComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(private dialog: MatDialog,
               private snackbar: MatSnackBar,
+              private confirmService: ConfirmationService,
               private configService: ConfigurationService) {
     this.configService.listen().subscribe( (c: any) => {
       this.refreshConfigList();
@@ -53,36 +55,40 @@ export class ConfigurationListComponent implements OnInit {
   }
 
   onDeleteConfig(config: ConfigurationModel){
-    if (config.id){
-      this.configService.deleteConfig(config.id, config).subscribe(response => {
-        this.successApiMessage = response.message;
-        this.successStatus = Boolean(response.success);
-        if (this.successStatus === true){
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
-          });
-        }else {
-          this.errorApiMessage = response.message;
-          this.snackbar.open(this.errorApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
+    this.confirmService.openConfirmDialog('Êtes-vous sûr de vouloir supprimer cette configuration?')
+      .afterClosed().subscribe(resp => {
+      if (resp){
+        if (config.id){
+          this.configService.deleteConfig(config.id, config).subscribe(response => {
+            this.successApiMessage = response.message;
+            this.successStatus = Boolean(response.success);
+            if (this.successStatus === true){
+              this.snackbar.open(this.successApiMessage.toString(), '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+            }else {
+              this.errorApiMessage = response.message;
+              this.snackbar.open(this.errorApiMessage.toString(), '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+            }
+            this.refreshConfigList();
+          }, err => {
+            console.log(err.message);
           });
         }
-        this.refreshConfigList();
-      }, err => {
-        console.log(err.message);
-      });
-    }
+      }
+    });
   }
 
   applyFilter(filterValue: string) {
     this.listConfiguration.filter = filterValue.trim().toLocaleLowerCase();
-    console.log(filterValue);
   }
 
   onAdd() {

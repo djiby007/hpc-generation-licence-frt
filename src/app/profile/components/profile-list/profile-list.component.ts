@@ -12,6 +12,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { ProfileCreateComponent } from '../profile-create/profile-create.component';
 import { ProfileEditComponent } from '../profile-edit/profile-edit.component';
+import { ConfirmationService } from '../../../utilities/confirmation/services/confirmation.service';
 
 @Component({
   selector: 'app-profile-list',
@@ -37,7 +38,9 @@ export class ProfileListComponent implements OnInit {
   currentUser: UserModel;
   permission: PermissionModel;
 
-  constructor(private profileService: ProfileService, private permissionService: PermissionService,
+  constructor(private profileService: ProfileService,
+              private confirmServices: ConfirmationService,
+              private permissionService: PermissionService,
               private dialog: MatDialog,
               private snackbar: MatSnackBar) {
     this.profileService.listen().subscribe( (p: any) => {
@@ -85,31 +88,36 @@ export class ProfileListComponent implements OnInit {
   }
 
   onDeleteProfile(profile: ProfileModel) {
-    if (profile.id) {
-      this.profileService.deleteProfile(profile.id, profile).subscribe(resp => {
-        this.successApiMessage = resp.message;
-        this.apiStatus = Boolean(resp.success);
-        if (this.apiStatus === true) {
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
-          });
-        } else {
-          this.errorApiMessage = resp.message;
-          this.snackbar.open(this.errorApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
-          });
+    this.confirmServices.openConfirmDialog('Êtes-vous sûr de vouloir supprimer ce profil?')
+      .afterClosed().subscribe(data => {
+        if (data){
+          if (profile.id) {
+            this.profileService.deleteProfile(profile.id, profile).subscribe(resp => {
+              this.successApiMessage = resp.message;
+              this.apiStatus = Boolean(resp.success);
+              if (this.apiStatus === true) {
+                this.snackbar.open(this.successApiMessage.toString(), '', {
+                  duration: 4000,
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  panelClass: ['green-snackbar']
+                });
+              } else {
+                this.errorApiMessage = resp.message;
+                this.snackbar.open(this.errorApiMessage.toString(), '', {
+                  duration: 4000,
+                  horizontalPosition: this.horizontalPosition,
+                  verticalPosition: this.verticalPosition,
+                  panelClass: ['green-snackbar']
+                });
+              }
+              this.refreshProfileList();
+            }, err => {
+              console.log(err.message);
+            });
+          }
         }
-        this.refreshProfileList();
-      }, err => {
-        console.log(err.message);
-      });
-    }
+    });
   }
 
   getWritePermission() {

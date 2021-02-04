@@ -24,7 +24,6 @@ export class PermissionListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   test: boolean;
-  // currentPermission: PermissionModel;
   featureCaption;
   checkMe = 'N';
   isChecked = true;

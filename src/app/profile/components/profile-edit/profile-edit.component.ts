@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ProfileModel} from '../../models/profile.model';
-import {ProfileService} from '../../services/profile.service';
-import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
-import {MatDialogRef} from '@angular/material/dialog';
+import { ProfileModel } from '../../models/profile.model';
+import { ProfileService } from '../../services/profile.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile-edit',
@@ -35,7 +35,7 @@ export class ProfileEditComponent implements OnInit {
       this.editProfileForm.reset();
     }
     this.editProfileForm.controls.caption.setValidators([ Validators.required,
-      Validators.pattern('^[A-Za-z,,û,ù,ï,i,\s]*$'),
+      Validators.pattern('^[A-Za-z,,û,ù,ï,i]*$'),
       Validators.minLength(4)]),
       this.editProfileForm.controls.status.setValidators([ Validators.required ]);
   }
@@ -65,7 +65,7 @@ export class ProfileEditComponent implements OnInit {
       this.successApiMessage = data.message;
       if ( this.statusApi === false){
         this.errorApiMessage = data.message;
-      }else{
+      } else {
         this.snackbar.open(this.successApiMessage.toString(), '', {
           duration: 4000,
           horizontalPosition: this.horizontalPosition,
@@ -78,51 +78,4 @@ export class ProfileEditComponent implements OnInit {
       console.log(error.message);
     });
   }
-
- onEditProfilee(){}
-   /*   const profile: ProfileModel = {
-       id: this.currentProfile.id, code: this.currentProfile.code,
-       caption: this.editProfileForm.get('caption').value, status: this.editProfileForm.get('status').value
-     };
-     if ( profile.caption.length < 4) {
-       Swal.fire('', 'Le nom de profil doit être de 4 lettres au minimum!');
-     }else{
-       this.profileService.updateProfile(this.currentProfile.id, profile)
-         .subscribe(data => {
-           // @ts-ignore
-           this.successMessage = data.message;
-           // @ts-ignore
-           this.statusApi = data.success;
-           if (this.statusApi === false) {
-             this.error === true;
-             // @ts-ignore
-             this.errorMessage = data.message;
-           } else {
-             this.Toast.fire({
-               icon: 'success',
-               title: this.successMessage,
-             });
-             this.router.navigateByUrl('/profile').then(r => {});
-           }
-         }, error => {
-           console.log(error.message);
-         });
-     }
-   }*/
-
-/*  getProfile(id: number) {
-    this.profileService.getProfileById(id)
-      .subscribe(value => {
-        this.currentProfile = value;
-        this.caption.setValue(this.currentProfile.caption);
-        this.status.setValue(this.currentProfile.status);
-      }, err => {
-        console.log(err);
-      });
-  }
-
-  setError(control: AbstractControl){
-    return {'is-invalid': control.invalid && control.touched};
-  }*/
-
 }

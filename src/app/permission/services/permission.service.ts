@@ -17,7 +17,6 @@ export class PermissionService {
   editPermissionEndPoint = '/getEditPermission';
   deletePermissionEndPoint = '/getDeletePermission';
   writePermissionEndPoint = '/getWritePermission';
-  currentPermission: PermissionModel;
 
   constructor(private httpClient: HttpClient) {
   }

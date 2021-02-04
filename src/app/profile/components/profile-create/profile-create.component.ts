@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../services/profile.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ProfileModel} from '../../models/profile.model';
-import {MatDialogRef} from '@angular/material/dialog';
-import {OptionService} from '../../../option/services/option.service';
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import { FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { ProfileModel } from '../../models/profile.model';
+import { MatDialogRef } from '@angular/material/dialog';
+import { OptionService } from '../../../option/services/option.service';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile-create',
@@ -49,9 +49,7 @@ export class ProfileCreateComponent implements OnInit {
     });
   }
 
-  get caption(){
-    return this.profileForm.get('caption');
-  }
+  get caption(){ return this.profileForm.get('caption'); }
   get status(){ return this.profileForm.get('status'); }
 
   OnClose(){ this.dialogue.close(); this.profileService.filter('Save profile'); }
@@ -83,39 +81,5 @@ export class ProfileCreateComponent implements OnInit {
     }, err => {
       console.log(err.message);
     });
-  }
-
-/*  onSaveProfile(){
-    this.submitted = true;
-    let profile: ProfileModel;
-    profile = this.profileForm.value;
-    if ( profile.caption.length < 4) {
-      Swal.fire('', 'Le nom de profil doit être de 4 lettres au  minimum!');
-    } else {
-      this.profileService.saveProfile(profile)
-        .subscribe( response => {
-          // @ts-ignore
-          this.successMessage = response.message;
-          // @ts-ignore
-          this.statusApi = response.success;
-          if (this.statusApi === false) {
-            this.error === true;
-            // @ts-ignore
-            this.errorMessage = response.message;
-          } else {
-            this.Toast.fire({
-              icon: 'success',
-              title: this.successMessage,
-            });
-            this.router.navigateByUrl('/profile').then(r => {});
-          }
-        },err => {
-          console.log(err.message);
-        });
-    }
-  }*/
-
-  setError(control: AbstractControl){
-    return {'is-invalid': control.invalid && control.touched};
   }
 }
