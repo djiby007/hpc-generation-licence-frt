@@ -17,6 +17,9 @@
                     <div class="col-lg-3">
                       <mat-form-field >
                         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Rechercher">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                          <mat-icon style="font-size: medium">search</mat-icon>
+                        </button>
                       </mat-form-field>
                     </div>
                   </div>
@@ -26,12 +29,17 @@
                       <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
                       <tr mat-row *matRowDef="let row;columns: displayColumns"></tr>
 
-                      <ng-container matColumnDef="Status">
+                        <ng-container matColumnDef="Status">
                         <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Status</th>
                         <td mat-header-cell *matCellDef="let element" style="margin-right: 70%">
                           <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">miscellaneous_services</mat-icon>
                           <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">miscellaneous_services</mat-icon>
                         </td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="Application">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Application</th>
+                        <td mat-header-cell *matCellDef="let element">{{element.application.nom}}</td>
                       </ng-container>
 
                       <ng-container matColumnDef="Option">

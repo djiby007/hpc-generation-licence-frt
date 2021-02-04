@@ -10,16 +10,19 @@ import {UpdadePasswordComponent} from '../updade-password/updade-password.compon
 
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    ForgotPasswordComponent,
-    ResetPasswordComponent,
-    UpdadePasswordComponent
-  ],
-  imports: [
-    CommonModule,
-    LoginRoutingModule,
-    ReactiveFormsModule
-  ]
+    declarations: [
+        LoginComponent,
+        ForgotPasswordComponent,
+        ResetPasswordComponent,
+        UpdadePasswordComponent
+    ],
+    exports: [
+        LoginComponent
+    ],
+    imports: [
+        CommonModule,
+        LoginRoutingModule,
+        ReactiveFormsModule
+    ]
 })
 export class LoginModule { }

@@ -20,7 +20,7 @@ export class ConfigurationService {
     return this.httpClient.get<ConfigurationModel[]>(this.apiUrl + this. configurationEndPoint);
   }
 
-  saveConfig(config: ConfigurationModel): Observable<ConfigurationModel> {
+  saveConfig(config: {}): Observable<ConfigurationModel> {
     return this.httpClient.post<ConfigurationModel>(this.apiUrl + this.configurationEndPoint, config);
   }
 

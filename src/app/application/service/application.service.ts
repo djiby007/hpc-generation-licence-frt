@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {environment} from "../../../environments/environment";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {ApplicationModel} from "../models/application.model";
+import {environment} from '../../../environments/environment';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {ApplicationModel} from '../models/application.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,10 @@ export class ApplicationService {
 
   getApplication(): Observable<any>{
    return this.http.get<any>(this.apiUrl + this.applicationEndPoint);
+  }
+
+  getConfigApplicationList(): Observable<any>{
+    return this.http.get<any>(this.apiUrl + this.applicationEndPoint);
   }
 
   findApplication(id: number): Observable<any>{

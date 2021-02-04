@@ -1,1 +1,52 @@
-<p>profile-edit works!</p>
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h4 class="card-title">MODIFIER UN PROFILE</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="editProfileForm"  (ngSubmit)="onEditProfile()" autocomplete="off">
+      <mat-card-content class="d-flex justify-content-center">
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Caption</mat-label>
+              <input matInput placeholder="Caption"
+                     name="caption"
+                     formControlName="caption"
+                     type="text"
+                     required="required" minLength="4"
+                     [(ngModel)]="profileService.currentProfile.caption">
+              <mat-error *ngIf="editProfileForm.get('caption').hasError('required')"></mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field >
+              <mat-label class="label-form">Status</mat-label>
+              <mat-select name="status"
+                          formControlName="status"
+                          [(ngModel)] = "profileService.currentProfile.status">
+                <mat-option value="Actif">
+                  Actif
+                </mat-option>
+                <mat-option value="Inactif">
+                  Inactif
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="editProfileForm.get('status').hasError('required')"></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-error *ngIf="editProfileForm.invalid"  style="font-size: xx-small">
+        <p> (*) Tous les champs sont <strong>obligatoires!</strong> </p>
+      </mat-error>
+      <mat-card-actions class="d-flex justify-content-between">
+        <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="editProfileForm.invalid" >Sauvegarder</button>
+        <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
+      </mat-card-actions>
+    </form>
+  </div>
+</div>

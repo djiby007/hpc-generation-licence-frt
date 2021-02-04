@@ -1,40 +1,103 @@
-<mat-toolbar>
-  <a href="https://hpc.sn/">
-    <img alt="HPC | Vente de logiciels de gestion" class="ml-lg-4" data-actual-height="70" data-actual-width="180"
-         data-height-percentage="50" id="logo" src="https://hpc.sn/wp-content/uploads/2020/06/logo-hpc.png">
-  </a>
-  <span class="example-spacer"></span>
-  <button mat-button [matMenuTriggerFor]="aboveMenu">Configuration</button>
-  <mat-menu #aboveMenu="matMenu" yPosition="above">
-    <button mat-menu-item routerLink="continent">Continent</button>
-    <button mat-menu-item routerLink="country">Pays</button>
-    <button mat-menu-item routerLink="city">Villes</button>
-    <button mat-menu-item routerLink="company">Sociétés</button>
-    <button mat-menu-item routerLink="filiale">Filiales</button>
-    <button mat-menu-item routerLink="user">Utilisateurs</button>
-    <button mat-menu-item [matMenuTriggerFor]="invertebrates">Configurations des applications</button>
+<div style="height: 100vh;
+    overflow: inherit;">
+  <div class="header">
+    <p class="entete" >
+      <i aria-hidden="true" class="fa fa-phone"></i> +221 33 869 62 60
+      <i aria-hidden="true" class="fa fa-envelope ml-3"></i> hpc@hpc.sn
+    </p>
+  </div>
+  <mat-toolbar style="height: 7vh;">
+    <span>
+      <a href="https://hpc.sn/">
+        <img alt="HPC | Vente de logiciels de gestion"  class="ml-lg-4" data-actual-height="70" data-actual-width="180"
+           data-height-percentage="50" id="logo" src="https://hpc.sn/wp-content/uploads/2020/06/logo-hpc.png">
+      </a>
+    </span>
 
-    <mat-menu #invertebrates="matMenu">
-      <button mat-menu-item routerLink="configuration">Configurations</button>
-      <button mat-menu-item routerLink="option">Options</button>
-      <button mat-menu-item routerLink="application">Applicatons</button>
-    </mat-menu>
-  </mat-menu>
+    <span class="example-spacer"></span>
 
+    <div fxShow="true" fxHide.lt-md="true">
+      <button mat-button [matMenuTriggerFor]="aboveMenu">Configuration</button>
+      <mat-menu #aboveMenu="matMenu" yPosition="above">
+        <button mat-menu-item routerLink="continent">Continent</button>
+        <button mat-menu-item routerLink="country">Pays</button>
+        <button mat-menu-item routerLink="city">Villes</button>
+        <button mat-menu-item routerLink="company">Sociétés</button>
+        <button mat-menu-item routerLink="filiale">Filiales</button>
+        <button mat-menu-item routerLink="user">Utilisateurs</button>
+        <button mat-menu-item routerLink="application">Applicatons</button>
+      </mat-menu>
 
-  <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
-  <mat-menu #belowMenu="matMenu" yPosition="below">
-    <button mat-menu-item routerLink="profile">Profiles</button>
-    <button mat-menu-item routerLink="permission">Permissions</button>
-    <button mat-menu-item routerLink="feature">Fonctionnalités</button>
-  </mat-menu>
+      <button mat-button [matMenuTriggerFor]="lowMenu">Licence</button>
+      <mat-menu #lowMenu="matMenu" yPosition="below">
+        <button mat-menu-item routerLink="option">Options</button>
+        <button mat-menu-item routerLink="configuration">Config-licence</button>
+      </mat-menu>
 
-  <button mat-button [matMenuTriggerFor]="beforeMenu">
-    <i class="fa fa-user" aria-hidden="true"></i> {{currentUser?.firstName}} {{currentUser?.lastName}}
-  </button>
-  <mat-menu #beforeMenu="matMenu" xPosition="before">
-    <button mat-menu-item routerLink="updatepassword">Modifier mot de passe</button>
-    <button mat-menu-item (click)="logout()">Se déconnecter</button>
-  </mat-menu>
+      <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
+      <mat-menu #belowMenu="matMenu" yPosition="below">
+        <button mat-menu-item routerLink="profile">Profiles</button>
+        <button mat-menu-item routerLink="permission">Permissions</button>
+        <button mat-menu-item routerLink="feature">Fonctionnalités</button>
+      </mat-menu>
 
-</mat-toolbar>
+      <button mat-button [matMenuTriggerFor]="beforeMenu">
+        <i class="fa fa-user" aria-hidden="true"></i> {{currentUser?.firstName}} {{currentUser?.lastName}}
+      </button>
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <button mat-menu-item routerLink="updatepassword">Modifier mot de passe</button>
+        <button mat-menu-item (click)="logout()">Se déconnecter</button>
+      </mat-menu>
+    </div>
+
+    <div fxShow="true" fxHide.gt-sm="true">
+      <a mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </a>
+    </div>
+  </mat-toolbar>
+
+  <mat-sidenav-container fxFlexFill class="example-container">
+    <mat-sidenav #sidenav fxLayout="column">
+      <div fxLayout="column">
+        <a (click)="sidenav.toggle()" href="#" mat-button>Menu</a>
+        <button mat-button [matMenuTriggerFor]="aboveMenu">Configuration</button>
+        <mat-menu #aboveMenu="matMenu" yPosition="above">
+          <button mat-menu-item routerLink="continent">Continent</button>
+          <button mat-menu-item routerLink="country">Pays</button>
+          <button mat-menu-item routerLink="city">Villes</button>
+          <button mat-menu-item routerLink="company">Sociétés</button>
+          <button mat-menu-item routerLink="filiale">Filiales</button>
+          <button mat-menu-item routerLink="user">Utilisateurs</button>
+          <button mat-menu-item routerLink="application">Applicatons</button>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="lowMenu">Licence</button>
+        <mat-menu #lowMenu="matMenu" yPosition="below">
+          <button mat-menu-item routerLink="option">Options</button>
+          <button mat-menu-item routerLink="configuration">Config-licence</button>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
+        <mat-menu #belowMenu="matMenu" yPosition="below">
+          <button mat-menu-item routerLink="profile">Profiles</button>
+          <button mat-menu-item routerLink="permission">Permissions</button>
+          <button mat-menu-item routerLink="feature">Fonctionnalités</button>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="beforeMenu">
+          <i class="fa fa-user" aria-hidden="true"></i> {{currentUser?.firstName}} {{currentUser?.lastName}}
+        </button>
+        <mat-menu #beforeMenu="matMenu" xPosition="before">
+          <button mat-menu-item routerLink="updatepassword">Modifier mot de passe</button>
+          <button mat-menu-item (click)="logout()">Se déconnecter</button>
+        </mat-menu>
+      </div>
+    </mat-sidenav>
+    <mat-sidenav-content fxFlexFill>
+      <div class="container-fluid">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

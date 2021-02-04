@@ -33,6 +33,22 @@ table{
   width: 100%;
 }
 td, th {
-  width: 20%;
+  width: 15%;
 }
-
+#list{
+  background-color: #05436e;
+  color:white
+}
+.iconVert{
+  color:#138f46;
+}
+.iconBleu{
+  color:#05436e;
+}
+.errorControl{
+  color: red;
+}
+.edit{
+  color:#05436e;
+  text-decoration: none !important;
+}

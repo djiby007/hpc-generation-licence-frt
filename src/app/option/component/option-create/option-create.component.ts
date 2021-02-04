@@ -36,7 +36,7 @@ export class OptionCreateComponent implements OnInit {
       this.optionForm.reset();
     }
     this.optionForm = this.formBuilder.group({
-      caption: [, { validators: [Validators.required, Validators.pattern('^[A-Za-z,è,é,ê,ë,û,ù,à,ï,i]*$') ],
+      caption: [, { validators: [Validators.required, Validators.pattern('^[A-Za-z,ï,i]*$') ],
         updateOn: 'change' }],
       status: [, { validators: [Validators.required], updateOn: 'change' }],
     });
@@ -45,7 +45,7 @@ export class OptionCreateComponent implements OnInit {
   get caption(){return this.optionForm.get('caption'); }
   get status(){return this.optionForm.get('status'); }
 
-  OnClose(){this.dialogue.close(); this.optionService.filter('Save option'); }
+  OnClose(){ this.dialogue.close(); this.optionService.filter('Save option'); }
 
   onSaveOption(option: OptionModel){
     option = this.optionForm.value;

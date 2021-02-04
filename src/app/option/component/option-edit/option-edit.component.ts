@@ -50,12 +50,16 @@ export class OptionEditComponent implements OnInit {
       caption: this.updateOptionForm.get('caption').value, status: this.updateOptionForm.get('status').value};
     this.optionService.updateOption(option.id, option).subscribe( data => {
       this.successApiMessage = data.message;
-      this.snackbar.open(this.successApiMessage.toString(), '', {
-        duration: 4000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        panelClass: ['green-snackbar']
-      });
+      if ( this.successStatus === false){
+        this.errorApiMessage = data.message;
+      }else{
+        this.snackbar.open(this.successApiMessage.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+      }
       this.OnClose();
     }, error => {
       console.log(error.message);
