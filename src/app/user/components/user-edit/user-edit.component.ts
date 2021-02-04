@@ -133,7 +133,7 @@ export class UserEditComponent implements OnInit {
       email: this.email.value,
       // tslint:disable-next-line:max-line-length
       filiale: {id: this.filiale.value, company: null, caption: '', adress: '', city: null, email: '', phone: '', status: Status.Actif, typeGeneriqueLogin: TypeGeneriqueLogin.BeforeEmail, webSite: '', code: ''},
-      profile: {id: this.profile.value, caption: '', code: '', status: Status.Actif},
+      profile: {id: this.profile.value, caption: '', code: '', status: Status.Actif, message: '', success: true},
       civility: this.civility.value as Civility,
       status: this.status.value as Status
     };

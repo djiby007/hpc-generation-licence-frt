@@ -31,11 +31,11 @@ export class ProfileService {
     return this.httpClient.get<ProfileModel[]>(this.apiUrl + this.profileEndPoint + this.getActiveProfileEndPoint);
   }
 
-  updateProfile(id: number, profile: ProfileModel) {
+  updateProfile(id: number, profile: ProfileModel): Observable<any> {
     return this.httpClient.put(this.apiUrl + this.profileEndPoint + '/' + id, profile);
   }
 
-  deleteProfile(id: number, profile: ProfileModel){
+  deleteProfile(id: number, profile: ProfileModel): Observable<any>{
     return this.httpClient.put(this.apiUrl + this.profileEndPoint + this.deleteProfileEndPoint + id, profile);
   }
 

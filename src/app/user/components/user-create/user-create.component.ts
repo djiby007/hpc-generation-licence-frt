@@ -84,7 +84,10 @@ export class UserCreateComponent implements OnInit {
   }
 
   getAllProfile() {
-    this.profileService.getProfiles().subscribe(value => this.listProfile = value);
+    this.profileService.getProfiles().subscribe(value => {
+      console.log(value);
+      this.listProfile = value;
+    });
   }
 
   getAllFiliale(){
