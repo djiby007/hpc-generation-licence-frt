@@ -2,13 +2,27 @@
   text-align: center;
 }
 
-.body{
-  padding-top : 50px;
-  padding-left: 130px;
-  padding-right: 130px;
-}
-
 .card{
   box-shadow: 10px 5px 5px 5px 	#cce7e8;
+  margin-top: auto;
+  margin-bottom: auto;
+  bottom: 50%;
+  display: flex;
+  justify-content: center;
 }
 
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+.mat-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+
+mat-card-title,
+mat-card-content {
+  display: flex;
+  justify-content: center;
+}
