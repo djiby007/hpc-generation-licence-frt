@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import {FilialeModel} from '../../../filiale/models/filiale.model';
 import {FilialeService} from '../../../filiale/services/filiale.service';
 import {TypeGeneriqueLogin} from '../../../enum/typeGeneriqueLogin.enum';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-user-edit',
@@ -24,6 +25,8 @@ export class UserEditComponent implements OnInit {
   listProfile: ProfileModel[];
   user: UserModel;
   submitted = false;
+  successApiMessage: string;
+  errorApiMessage: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,7 +34,8 @@ export class UserEditComponent implements OnInit {
     private filialeService: FilialeService,
     private userService: UserService,
     private profileService: ProfileService,
-    private location: Location) { }
+    private location: Location,
+    private dialogue: MatDialogRef<UserEditComponent>) { }
 
   Toast = Swal.mixin({
     toast: true,
@@ -45,7 +49,7 @@ export class UserEditComponent implements OnInit {
     }
   });
   ngOnInit(): void {
-    this.findUser(+this.activatedRoute.snapshot.paramMap.get('id'));
+    this.findUser(+this.dialogue.id);
     this.getAllFiliale();
     this.getAllProfile();
     this.createForm();
@@ -129,7 +133,7 @@ export class UserEditComponent implements OnInit {
       email: this.email.value,
       // tslint:disable-next-line:max-line-length
       filiale: {id: this.filiale.value, company: null, caption: '', adress: '', city: null, email: '', phone: '', status: Status.Actif, typeGeneriqueLogin: TypeGeneriqueLogin.BeforeEmail, webSite: '', code: ''},
-      profile: {id: this.profile.value, caption: '', code: '', status: Status.Actif},
+      profile: {id: this.profile.value, caption: '', code: '', status: Status.Actif, message: '', success: true},
       civility: this.civility.value as Civility,
       status: this.status.value as Status
     };
@@ -160,5 +164,7 @@ export class UserEditComponent implements OnInit {
   setError(control: AbstractControl){
     return {'is-invalid': control.invalid && control.touched};
   }
+
+  OnClose(){this.dialogue.close(); }
 
 }

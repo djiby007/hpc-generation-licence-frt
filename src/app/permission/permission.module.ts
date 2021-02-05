@@ -4,7 +4,7 @@ import {PermissionEditComponent} from './components/permission-edit/permission-e
 import {PermissionListComponent} from './components/permission-list/permission-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {PermissionRoutingModule} from './permission-routing.module';
-
+import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 
 
 @NgModule({
@@ -12,11 +12,13 @@ import {PermissionRoutingModule} from './permission-routing.module';
     PermissionEditComponent,
     PermissionListComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PermissionRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        PermissionRoutingModule,
+        AppMaterialModule
+    ],
+    entryComponents: [ PermissionEditComponent ]
 })
 export class PermissionModule { }

@@ -1,9 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { PermissionModel } from '../../models/permission.model';
 import { PermissionService } from '../../services/permission.service';
-// import Swal from 'sweetalert2';
-import {UpdatePermissionModel} from '../../models/updatePermission.model';
+import { UpdatePermissionModel } from '../../models/updatePermission.model';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-permission-edit',
@@ -12,26 +11,19 @@ import {UpdatePermissionModel} from '../../models/updatePermission.model';
 })
 export class PermissionEditComponent implements OnInit {
   @Input() currentPermission: PermissionModel;
-  featureCaption;
   submitted = false;
   isChecked = true;
   edit = false;
   write = false;
   delete = false;
   read = false;
-  constructor(private permissionService: PermissionService, private router: Router, private activatedRoute: ActivatedRoute) { }
-
-/*  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
-  });*/
+  successApiMessage: string;
+  errorApiMessage: string;
+  Status: boolean;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor( private permissionService: PermissionService,
+               private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.edit = this.currentPermission.edit;
@@ -54,14 +46,24 @@ export class PermissionEditComponent implements OnInit {
     this.currentPermission.delete = this.delete;
     this.permissionService.updatePermission(idPermission, permission)
       .subscribe(data => {
-        console.log(data);
-        // @ts-ignore
-        const message02 = data.message;
-      /*  this.Toast.fire({
-          icon: 'success',
-          title: message02,
-        });*/
-        // location.reload();
+        this.successApiMessage  = data.message;
+        this.Status = Boolean(data.success);
+        if (this.Status === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
+        } else {
+          this.errorApiMessage = data.message;
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
+        }
       }, error => {
         console.log(error);
       });

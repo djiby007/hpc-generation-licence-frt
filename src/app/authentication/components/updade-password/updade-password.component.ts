@@ -13,6 +13,7 @@ import {UserModel} from 'src/app/user/models/user.model';
 export class UpdadePasswordComponent implements OnInit {
   updateForm: FormGroup;
   error = '';
+  hide = true;
   submitted = false;
   verif = false;
   token = '';

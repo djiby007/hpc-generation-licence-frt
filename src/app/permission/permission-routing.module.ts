@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {PermissionListComponent} from './components/permission-list/permission-list.component';
 import {PermissionEditComponent} from './components/permission-edit/permission-edit.component';

@@ -6,8 +6,8 @@ import {CityService} from '../../../city/services/city.service';
 import {CompanyModel} from '../../models/company.model';
 import {CityModel} from '../../../city/models/city.model';
 import {Location} from '@angular/common';
-import {TypeGeneriqueLogin} from '../../../enum/typeGeneriqueLogin.enum';
 import Swal from 'sweetalert2';
+import {MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-company-edit',
@@ -19,15 +19,16 @@ export class CompanyEditComponent implements OnInit {
 
   companyForm: FormGroup;
   company: CompanyModel;
-  listCity: CityModel[];
   submitted = false;
   hasError = false;
   message = '';
+  successApiMessage: string;
+  errorApiMessage: string;
   constructor(
     private router: Router,
+    private dialogue: MatDialogRef<CompanyEditComponent>,
     private activatedRoute: ActivatedRoute,
     private companyService: CompanyService,
-    private cityService: CityService,
     private location: Location) { }
 
   Toast = Swal.mixin({
@@ -42,8 +43,7 @@ export class CompanyEditComponent implements OnInit {
     }
   });
   ngOnInit(): void {
-    this.findContinent(+this.activatedRoute.snapshot.paramMap.get('id'));
-    this.getAllCity();
+    this.findContinent(+this.dialogue.id);
     this.createForm();
   }
 
@@ -71,21 +71,8 @@ export class CompanyEditComponent implements OnInit {
     return this.companyForm.get('webSite');
   }
 
-  get city(){
-    return this.companyForm.get('city');
-  }
-
-  get typeGeneriqueLogin(){
-    return this.companyForm.get('typeGeneriqueLogin');
-  }
-
   get status(){
     return this.companyForm.get('status');
-  }
-
-
-  getAllCity(){
-    this.cityService.getCity().subscribe(value => this.listCity = value.data);
   }
 
   createForm(){
@@ -112,8 +99,6 @@ export class CompanyEditComponent implements OnInit {
       phone: this.phone.value,
       webSite: this.webSite.value,
       status: this.status.value,
-      city: {id: this.city.value},
-      typeGeneriqueLogin: this.typeGeneriqueLogin.value as TypeGeneriqueLogin
     };
 
     this.companyService.updateCompany(company).subscribe(
@@ -145,8 +130,6 @@ export class CompanyEditComponent implements OnInit {
       this.phone.setValue(this.company.phone);
       this.webSite.setValue(this.company.webSite);
       this.status.setValue(this.company.status);
-      this.city.setValue(this.company.city.id);
-      this.typeGeneriqueLogin.setValue(this.company.typeGeneriqueLogin);
     });
   }
 
@@ -154,6 +137,6 @@ export class CompanyEditComponent implements OnInit {
     return {'is-invalid': control.invalid && control.touched};
   }
 
-
+  OnClose(){this.dialogue.close(); }
 
 }

@@ -72,7 +72,7 @@ export class CountryCreateComponent implements OnInit {
         Validators.minLength(4)
       ]),
       continent: new FormControl('', Validators.required),
-      status: new FormControl('', Validators.required)
+      status: new FormControl(Status.Actif, Validators.required)
     });
   }
 

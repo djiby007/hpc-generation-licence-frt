@@ -7,6 +7,7 @@ import {ForgotPasswordComponent} from '../forgot-password/forgot-password.compon
 import {ResetPasswordComponent} from '../reset-password/reset-password.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {UpdadePasswordComponent} from '../updade-password/updade-password.component';
+import {AppMaterialModule} from '../../../utilities/app-material/app-material.module';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {UpdadePasswordComponent} from '../updade-password/updade-password.compon
     imports: [
         CommonModule,
         LoginRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        AppMaterialModule
     ]
 })
 export class LoginModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {CompanyService} from '../../services/company.service';
 import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
@@ -6,6 +6,15 @@ import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import {CompanyModel} from '../../models/company.model';
 import {CityModel} from '../../../city/models/city.model';
 import Swal from 'sweetalert2';
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {CityEditComponent} from "../../../city/components/city-edit/city-edit.component";
+import {CompanyEditComponent} from "../company-edit/company-edit.component";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatTableDataSource} from "@angular/material/table";
+import {CityCreateComponent} from "../../../city/components/city-create/city-create.component";
+import {CompanyCreateComponent} from "../company-create/company-create.component";
 
 @Component({
   selector: 'app-company-list',
@@ -13,18 +22,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./company-list.component.scss']
 })
 export class CompanyListComponent implements OnInit {
-
-  constructor(private router: Router, private companyService: CompanyService, private ngxCsvParser: NgxCsvParser) { }
-
-  get code(){
-    return this.searchForm.get('code');
-  }
-
-  get file(){
-    return this.companyForm.get('file');
-  }
-
-  listCompany: CompanyModel[];
+  listCompany: MatTableDataSource<CompanyModel>;
   companyForm: FormGroup;
   searchForm: FormGroup;
   listImportCompany: CompanyModel[] = [];
@@ -46,6 +44,26 @@ export class CompanyListComponent implements OnInit {
       toast.addEventListener('mouseleave', Swal.resumeTimer);
     }
   });
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  Columns: string[] = [ 'socialReason', 'email', 'adress', 'phone', 'webSite', 'Actions' ];
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor(
+    private router: Router,
+    private companyService: CompanyService,
+    private ngxCsvParser: NgxCsvParser,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar) { }
+
+  get code(){
+    return this.searchForm.get('code');
+  }
+
+  get file(){
+    return this.companyForm.get('file');
+  }
 
   ngOnInit(): void {
     this.getAllCompany();
@@ -89,9 +107,26 @@ export class CompanyListComponent implements OnInit {
     return {'is-invalid': control.invalid && control.touched};
   }
 
+  applyFilterCompany(filterValue: string) {
+    this.listCompany.filter = filterValue.trim().toLocaleLowerCase();
+  }
+
+  onAddCompany() {
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
+    this.dialog.open(CompanyCreateComponent, dialogOption);
+  }
 
   onEditCompany(company: CompanyModel){
-    this.router.navigateByUrl(this.editCompanyUrl + (company.id));
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.id = company.id + '';
+    this.dialog.open(CompanyEditComponent, dialogOption);
   }
 
   onDeleteCompany(company: CompanyModel){

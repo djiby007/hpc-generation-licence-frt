@@ -1,45 +1,52 @@
-<div class="form-content">
-  <div class="container register-form pt-3">
-    <div class="card">
-      <h6 class="card-header">AJOUTER UN NOUVEAU PROFILE</h6>
-      <div class="card-body">
-        <form [formGroup]="profileForm"  (ngSubmit)="onSaveProfile()">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Caption </b></label>
-                <input [ngClass]="setError(caption)" class="form-control" formControlName="caption" name="caption"
-                       required="true" type="text"/>
-                <div *ngIf="caption.invalid && (caption.dirty || caption.touched)" class="invalid-feedback">
-                  <div *ngIf="caption.errors.required">Veuillez saisir  le nom du profil</div>
-                  <div *ngIf="caption.errors.minlength">Le nom du profil doit contenir au moins 4 lettres </div>
-                  <div *ngIf="caption.invalid">Le nom du profil doit être alphabétique </div>
-                </div>
-                <div *ngIf="error" style="color: red; margin-top: 15px;">
-                  <i class="fa fa-info-circle"></i>  {{errorMessage}}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label class="col-form-label"><b>Status </b></label>
-                <select [ngClass]="setError(status)" class="form-control" formControlName="status" name="status">
-                  <option value="Actif">Actif</option>
-                  <option value="Inactif">Inactif</option>
-                </select>
-                <div *ngIf="status.invalid && (status.dirty || status.touched)" class="invalid-feedback">
-                  <div *ngIf="status.errors.required">Le status du profil est obligatoire! </div>
-                </div>
-              </div>
-              <div class="form-group" *ngIf="errorMessage" style="color: #DC143C;font-size: x-small;">
-                <i class="fa fa-info-circle"></i> {{errorMessage}}
-              </div>
-            </div>
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h4 class="card-title">AJOUTER UN NOUVEAU PROFILE</h4>
+  </div>
+  <div class="card-body">
+    <form [formGroup]="profileForm"  (ngSubmit)="onSaveProfile(profileForm.value)" autocomplete="off">
+      <mat-card-content class="d-flex justify-content-center">
+        <div class="row text-center">
+          <div class="col-md-6">
+            <mat-form-field class="exemple-full-width" >
+              <mat-label class="label-form">Caption</mat-label>
+              <input matInput placeholder="Caption"
+                     name="caption"
+                     formControlName="caption"
+                     type="text"
+                     required="required" minLength="4">
+              <mat-error *ngIf="profileForm.get('caption').hasError('required')"></mat-error>
+              <mat-error
+                *ngIf="errorApiMessage">
+                {{errorApiMessage}}
+              </mat-error>
+            </mat-form-field>
           </div>
-          <button type="submit" class="btn btn-success mr-2" [disabled]="profileForm.invalid">Savegarder</button>
-          <button type="button" class="btn btn-primary" (click)="OnClose()" >Annuler</button>
-        </form>
-      </div>
-    </div>
+          <div class="col-md-6">
+            <mat-form-field >
+              <mat-label class="label-form">Status</mat-label>
+              <mat-select name="status" formControlName="status" >
+                <mat-option value="Actif">
+                  Actif
+                </mat-option>
+                <mat-option value="Inactif">
+                  Inactif
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="profileForm.get('status').hasError('required')"></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-error *ngIf="profileForm.invalid"  style="font-size: xx-small">
+        <p> (*) Tous les champs sont <strong>obligatoires!</strong> </p>
+      </mat-error>
+      <mat-card-actions class="d-flex justify-content-between">
+        <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="profileForm.invalid" >Sauvegarder</button>
+        <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
+      </mat-card-actions>
+    </form>
   </div>
 </div>
+
+
+

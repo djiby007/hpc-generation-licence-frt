@@ -15,10 +15,7 @@
                       type="number"
                       required="required" minLength="0"
                       [(ngModel)]="configService.currentConfig.valeurDebut">
-               <mat-error
-                 *ngIf="editConfigForm.get('valeurDebut').hasError('required')">
-                 Valeur debut <strong>obligatoire</strong>
-               </mat-error>
+               <mat-error *ngIf="editConfigForm.get('valeurDebut').hasError('required')"></mat-error>
              </mat-form-field>
            </div>
            <div class="col-md-6">
@@ -30,13 +27,11 @@
                       type="number"
                       required="required" minLength="1"
                       [(ngModel)]="configService.currentConfig.valeurFin">
-               <mat-error
-                 *ngIf="editConfigForm.get('valeurDebut').hasError('required')">
-                 Valeur finale <strong>obligatoire</strong>
-               </mat-error>
+               <mat-error *ngIf="editConfigForm.get('valeurDebut').hasError('required')"></mat-error>
              </mat-form-field>
            </div>
          </div>
+
          <div class="row text-center">
            <div class="col-md-6">
              <mat-form-field class="exemple-full-width" >
@@ -48,14 +43,11 @@
                       required="required" minLength="0"
                       class="full-width"
                       [(ngModel)]="configService.currentConfig.montant">
-               <mat-error
-                 *ngIf="editConfigForm.get('valeurDebut').hasError('required')">
-                 Montant <strong>obligatoire</strong>
-               </mat-error>
+               <mat-error *ngIf="editConfigForm.get('valeurDebut').hasError('required')"></mat-error>
              </mat-form-field>
            </div>
            <div class="col-md-6">
-             <mat-form-field >
+             <mat-form-field class="exemple-full-width">
                <mat-label class="label-form">Status</mat-label>
                <mat-select name="status" formControlName="status"
                            [(ngModel)]="configService.currentConfig.status">
@@ -66,39 +58,34 @@
                    Inactif
                  </mat-option>
                </mat-select>
-               <mat-error
-                 *ngIf="editConfigForm.get('status').hasError('required')">
-                 Le status est <strong>obligatoire</strong>
-               </mat-error>
+               <mat-error *ngIf="editConfigForm.get('status').hasError('required')"></mat-error>
              </mat-form-field>
-             <mat-form-field>
-               <!-- <mat-label>Option de Vente</mat-label>
-                <input type="text"
-                       placeholder="Option"
-                       aria-label="Number"
-                       matInput
-                       [formControl]="myControl"
-                       [matAutocomplete]="auto">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>-->
-
-
-
+           </div>
+         </div >
+         <div class="row text-center">
+           <div class="col-md-6">
+             <mat-form-field class="exemple-full-width">
+               <mat-label class="label-form">Application</mat-label>
+               <mat-select  name="application"  formControlName= "application" [(ngModel)]="configService.currentConfig.application.id" >
+                 <mat-option *ngFor=" let app of listApplicationEdit" [value]="app.id">{{app.nom}}</mat-option>
+               </mat-select>
+               <mat-error *ngIf="editConfigForm.get('optionVente').hasError('required')"></mat-error>
+             </mat-form-field>
+           </div>
+           <div class="col-md-6">
+             <mat-form-field class="exemple-full-width">
                <mat-label class="label-form">Option de Vente</mat-label>
-               <mat-select  name="optionVente"  formControlName= "optionVente" [(ngModel)]="configService.currentConfig.optionVente.caption" >
+               <mat-select  name="optionVente"  formControlName= "optionVente" [(ngModel)]="configService.currentConfig.optionVente.id" >
                  <mat-option *ngFor=" let option of listActivesOptions" [value]="option.id">{{option.caption}}</mat-option>
                </mat-select>
-               <mat-error
-                 *ngIf="editConfigForm.get('optionVente').hasError('required')">
-                 Le status est <strong>obligatoire</strong>
-               </mat-error>
+               <mat-error *ngIf="editConfigForm.get('optionVente').hasError('required')"></mat-error>
              </mat-form-field>
            </div>
          </div>
        </mat-card-content>
+      <mat-error *ngIf="editConfigForm.invalid"  style="font-size: xx-small">
+        <p> (*) Tous les champs sont <strong>obligatoires!</strong> </p>
+      </mat-error>
        <mat-card-actions class="d-flex justify-content-between">
          <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="editConfigForm.invalid">Sauvegarder</button>
          <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="Close()">Annuler</a>

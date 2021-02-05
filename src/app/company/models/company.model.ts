@@ -10,7 +10,5 @@ export interface CompanyModel{
   adress: string;
   phone: string;
   webSite: string;
-  city: CityModel;
   status: Status;
-  typeGeneriqueLogin: TypeGeneriqueLogin;
 }

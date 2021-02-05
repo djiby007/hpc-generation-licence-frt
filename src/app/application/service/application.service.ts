@@ -19,6 +19,10 @@ export class ApplicationService {
    return this.http.get<any>(this.apiUrl + this.applicationEndPoint);
   }
 
+  getConfigApplicationList(): Observable<any>{
+    return this.http.get<any>(this.apiUrl + this.applicationEndPoint);
+  }
+
   findApplication(id: number): Observable<any>{
     return this.http.get<any>(this.apiUrl + this.applicationEndPoint + '/' + id);
   }

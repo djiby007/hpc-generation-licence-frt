@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FeatureRoutingModule } from './feature-routing.module';
 import { FeatureListComponent } from './components/feature-list/feature-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    FeatureRoutingModule
+    FeatureRoutingModule,
+    AppMaterialModule
   ]
 })
 export class FeatureModule { }

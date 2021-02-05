@@ -12,6 +12,7 @@ export class UserService {
   frontUrl = environment.frontUrl;
   importUserEndPoint = '/import_users';
   userEndPoint = '/user';
+  userDetailEndPoint = '/details';
   deleteEndPoint = '/delete';
   findUserEndPoint = '/find_user';
 
@@ -44,5 +45,9 @@ export class UserService {
 
   deleteUser(user: UserModel): Observable<UserModel>{
     return this.http.delete<UserModel>(this.apiUrl + this.userEndPoint + this.deleteEndPoint + '/' + user.id);
+  }
+
+  findUserByUsername(username: string): Observable<UserModel>{
+    return this.http.get<UserModel>(this.apiUrl + this.userEndPoint + this.userDetailEndPoint + '/' + username);
   }
 }

@@ -1,13 +1,14 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from '@angular/material/table';
-import {MatDialog, MatDialogConfig} from '@angular/material/dialog';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {OptionService} from '../../services/option.service';
-import {OptionModel} from '../../models/option.model';
-import {OptionCreateComponent} from '../option-create/option-create.component';
-import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
-import {OptionEditComponent} from '../option-edit/option-edit.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { OptionService } from '../../services/option.service';
+import { OptionModel } from '../../models/option.model';
+import { OptionCreateComponent } from '../option-create/option-create.component';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { OptionEditComponent } from '../option-edit/option-edit.component';
+import { ConfirmationService } from '../../../utilities/confirmation/services/confirmation.service';
 
 @Component({
   selector: 'app-option-list',
@@ -26,6 +27,7 @@ export class OptionListComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(private dialog: MatDialog,
               private snackbar: MatSnackBar,
+              private confirmService: ConfirmationService,
               private optionService: OptionService) {
     this.optionService.listen().subscribe( (l: any) => {
       this.refreshOptionList();
@@ -52,31 +54,36 @@ export class OptionListComponent implements OnInit {
   }
 
   onDeleteOption(option: OptionModel){
-    if (option.id){
-      this.optionService.deleteOption(option.id, option).subscribe(response => {
-        this.successStatus = Boolean(response.success);
-        this.successApiMessage = response.message;
-        if (this.successStatus === true){
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
-          });
-        }else {
-          this.errorApiMessage = response.message;
-          this.snackbar.open(this.errorApiMessage .toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
-          });
+    this.confirmService.openConfirmDialog( 'Êtes-vous sûr de vouloir supprimer cette option?')
+      .afterClosed().subscribe(res => {
+        if (res){
+           if (option.id){
+           this.optionService.deleteOption(option.id, option).subscribe(response => {
+             this.successStatus = Boolean(response.success);
+             this.successApiMessage = response.message;
+             if (this.successStatus === true){
+               this.snackbar.open(this.successApiMessage.toString(), '', {
+                 duration: 4000,
+                 horizontalPosition: this.horizontalPosition,
+                 verticalPosition: this.verticalPosition,
+                 panelClass: ['green-snackbar']
+               });
+             }else {
+               this.errorApiMessage = response.message;
+               this.snackbar.open(this.errorApiMessage .toString(), '', {
+                 duration: 4000,
+                 horizontalPosition: this.horizontalPosition,
+                 verticalPosition: this.verticalPosition,
+                 panelClass: ['green-snackbar']
+               });
+             }
+             this.refreshOptionList();
+           }, err => {
+             console.log(err.message);
+           });
+         }
         }
-        this.refreshOptionList();
-      }, err => {
-        console.log(err.message);
-      });
-    }
+    });
   }
 
   applyFilterOptions(filterValue: string) {

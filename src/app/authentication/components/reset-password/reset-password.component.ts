@@ -12,6 +12,7 @@ import {ResetModel} from '../../models/reset.model';
 export class ResetPasswordComponent implements OnInit {
   resetForm: FormGroup;
   error = '';
+  hide = true;
   submitted = false;
   verif = false;
   token = '';

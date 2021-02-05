@@ -13,6 +13,7 @@ import {UserModel} from '../../../user/models/user.model';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
+  hide = true;
   error = false;
   loading = false;
   submitted = false;

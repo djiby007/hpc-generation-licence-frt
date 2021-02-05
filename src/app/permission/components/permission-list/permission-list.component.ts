@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ProfileService} from 'src/app/profile/services/profile.service';
 import {PermissionModel} from '../../models/permission.model';
 import {PermissionService} from '../../services/permission.service';
 import {Location} from '@angular/common';
-/*import Swal from 'sweetalert2';*/
 import {UserModel} from '../../../user/models/user.model';
 import {HttpParams} from '@angular/common/http';
+import {MatTableDataSource} from '@angular/material/table';
+import {ProfileModel} from '../../../profile/models/profile.model';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-permission-list',
@@ -14,10 +16,14 @@ import {HttpParams} from '@angular/common/http';
   styleUrls: ['./permission-list.component.scss']
 })
 export class PermissionListComponent implements OnInit {
-  listPermissions: {};
+  listPermissions: PermissionModel[];
+  listPermits: MatTableDataSource<PermissionModel>;
   profiles: {};
+  listProfileActives: MatTableDataSource<ProfileModel>;
+  permissionColumns: string[] = [ 'Profile', 'Fonctionalité', 'Edit', 'Write', 'Read', 'Delete', 'Actions'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   test: boolean;
-  currentPermission: PermissionModel;
   featureCaption;
   checkMe = 'N';
   isChecked = true;
@@ -27,47 +33,62 @@ export class PermissionListComponent implements OnInit {
   currentUser: UserModel;
   permission: PermissionModel;
 
+  @Input() currentPermission: PermissionModel;
+  submitted = false;
+  edit = false;
+  write = false;
+  delete = false;
+  read = false;
+
   constructor(private location: Location,
               private permissionService: PermissionService,
-              private profileService: ProfileService,
-              private router: Router) {
+              private profileService: ProfileService ) {
   }
-/*  Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.addEventListener('mouseenter', Swal.stopTimer);
-      toast.addEventListener('mouseleave', Swal.resumeTimer);
-    }
-  });*/
 
   ngOnInit(): void {
     this.getPermissions();
-    // this.getProfile();
+    this.getListPermissions();
     this.getWritePermission();
     this.getEditPermission();
+    this.refreshProfileActiveList();
+  }
+
+  getListPermissions(){
+    this.permissionService.getPermissionsList()
+      .subscribe( data => {
+        this.listPermits = new MatTableDataSource<PermissionModel>(data);
+        this.listPermissions = data;
+        this.test = false;
+        this.listPermits.sort = this.sort;
+        this.listPermits.paginator = this.paginator;
+      }, error => {
+        console.log(error);
+      });
   }
 
   getPermissions(){
     this.permissionService.getPermissions()
       .subscribe( data => {
         this.listPermissions = data;
+        // @ts-ignore
+        this.listPermissions.sort = this.sort;
+        // @ts-ignore
+        this.listPermissions.paginator = this.paginator;
         this.test = false;
       }, error => {
         console.log(error);
       });
   }
 
-/*  getProfile(){
-    this.profileService.getActiveProfiles()
-      .subscribe( data => {
-        this.profiles = data;
-      }, error => {
-      });
-  }*/
+  refreshProfileActiveList(){
+    this.profileService.getActiveProfiles().subscribe(data => {
+      this.listProfileActives = new MatTableDataSource<ProfileModel>(data);
+    });
+  }
+
+  applyFilterProfiles(filterValue: string) {
+    this.listProfileActives.filter = filterValue.trim().toLocaleLowerCase();
+  }
 
   AlouerPermision(){
     this.permissionService.savePermission()
@@ -78,16 +99,14 @@ export class PermissionListComponent implements OnInit {
           icon: 'success',
           title: message03,
         });*/
-        this.getPermissions();
+        // this.getPermissions();
       }, error => {
       });
   }
 
-  onChercheProfile(code: any){
+/*  onChercheProfile(code: any){
     if ((code.code) === '') {
-/*
       Swal.fire('', 'Veuillez selectioner un profil!');
-*/
       this.getPermissions();
     } else
     {
@@ -101,7 +120,7 @@ export class PermissionListComponent implements OnInit {
           console.log(error);
         });
     }
-  }
+  }*/
 
   getWritePermission() {
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));

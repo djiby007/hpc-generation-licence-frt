@@ -11,6 +11,7 @@ export class ConfigurationService {
   apiUrl = environment.apiUrl;
   configurationEndPoint = '/configuration';
   deleteConfigEndPoint = '/delete/';
+  getIntervalEndPoint = '/int';
   Listeners = new Subject<any>();
   currentConfig: ConfigurationModel;
 
@@ -20,7 +21,11 @@ export class ConfigurationService {
     return this.httpClient.get<ConfigurationModel[]>(this.apiUrl + this. configurationEndPoint);
   }
 
-  saveConfig(config: ConfigurationModel): Observable<ConfigurationModel> {
+  getIntervalConfig(): Observable<ConfigurationModel[]> {
+    return this.httpClient.get<ConfigurationModel[]>(this.apiUrl + this. configurationEndPoint + this.getIntervalEndPoint );
+  }
+
+  saveConfig(config: {}): Observable<ConfigurationModel> {
     return this.httpClient.post<ConfigurationModel>(this.apiUrl + this.configurationEndPoint, config);
   }
 

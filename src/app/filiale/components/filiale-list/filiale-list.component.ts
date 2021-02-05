@@ -1,10 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
-import {FilialeService} from '../../services/filiale.service';
-import {NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
-import {FilialeModel} from '../../models/filiale.model';
-import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/forms';
-import Swal from 'sweetalert2';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Router} from "@angular/router";
+import {FilialeService} from "../../services/filiale.service";
+import {NgxCsvParser, NgxCSVParserError} from "ngx-csv-parser";
+import {FilialeModel} from "../../models/filiale.model";
+import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
+import Swal from "sweetalert2";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {CityCreateComponent} from "../../../city/components/city-create/city-create.component";
+import {FilialeCreateComponent} from "../filiale-create/filiale-create.component";
+import {CityEditComponent} from "../../../city/components/city-edit/city-edit.component";
+import {FilialeEditComponent} from "../filiale-edit/filiale-edit.component";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import {MatTableDataSource} from "@angular/material/table";
+import {CityModel} from "../../../city/models/city.model";
+
 @Component({
   selector: 'app-filiale-list',
   templateUrl: './filiale-list.component.html',
@@ -12,17 +23,13 @@ import Swal from 'sweetalert2';
 })
 export class FilialeListComponent implements OnInit {
 
-  constructor(private router: Router, private filialeService: FilialeService, private ngxCsvParser: NgxCsvParser) { }
-
-  get code(){
-    return this.searchForm.get('code');
-  }
-
-  get file(){
-    return this.filialeForm.get('file');
-  }
-
-  listFiliale: FilialeModel[];
+  successMessage: string;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  Columns: string[] = [ 'nom', 'email', 'adress', 'phone', 'webSite', 'city', 'typeGeneriqueLogin', 'Actions' ];
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  listFiliale: MatTableDataSource<FilialeModel>;
   filialeForm: FormGroup;
   searchForm: FormGroup;
   listImportFiliale: FilialeModel[] = [];
@@ -30,8 +37,6 @@ export class FilialeListComponent implements OnInit {
   delete = false;
   submitted = false;
   test: boolean;
-  successMessage: string;
-  editFilialeUrl = '/filiale/edit/';
 
   Toast = Swal.mixin({
     toast: true,
@@ -44,6 +49,22 @@ export class FilialeListComponent implements OnInit {
       toast.addEventListener('mouseleave', Swal.resumeTimer);
     }
   });
+
+
+  constructor(
+    private router: Router,
+    private filialeService: FilialeService,
+    private ngxCsvParser: NgxCsvParser,
+    private dialog: MatDialog,
+    private snackbar: MatSnackBar,) { }
+
+  get code(){
+    return this.searchForm.get('code');
+  }
+
+  get file(){
+    return this.filialeForm.get('file');
+  }
 
   ngOnInit(): void {
     this.getAllFiliale();
@@ -87,9 +108,26 @@ export class FilialeListComponent implements OnInit {
     return {'is-invalid': control.invalid && control.touched};
   }
 
+  applyFilterFiliale(filterValue: string) {
+    this.listFiliale.filter = filterValue.trim().toLocaleLowerCase();
+  }
+
+  onAddFiliale() {
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
+    this.dialog.open(FilialeCreateComponent, dialogOption);
+  }
 
   onEditFiliale(filiale: FilialeModel){
-    this.router.navigateByUrl(this.editFilialeUrl + (filiale.id));
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.id = filiale.id + '';
+    this.dialog.open(FilialeEditComponent, dialogOption);
   }
 
   onDeleteFiliale(filiale: FilialeModel){
@@ -120,7 +158,11 @@ export class FilialeListComponent implements OnInit {
   }
 
   getAllFiliale(){
-    this.filialeService.getFiliale().subscribe(value => this.listFiliale = value.data);
+    this.filialeService.getFiliale().subscribe(value => {
+      this.listFiliale = new MatTableDataSource<FilialeModel>(value.data);
+      this.listFiliale.sort = this.sort;
+      this.listFiliale.paginator = this.paginator;
+    });
   }
 
   createForm(){

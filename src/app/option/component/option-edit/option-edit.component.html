@@ -11,10 +11,7 @@
               <mat-label class="label-form">Caption</mat-label>
               <input matInput placeholder="Caption" name="caption" formControlName="caption" type="text"  required="required" minLength="4"
                      [(ngModel)]="optionService.currentOption.caption">
-              <mat-error
-                *ngIf="updateOptionForm.get('caption').hasError('required')">
-                Caption <strong>obligatoire</strong>
-              </mat-error>
+              <mat-error *ngIf="updateOptionForm.get('caption').hasError('required')"></mat-error>
               <mat-error
                 *ngIf="errorApiMessage">
                 {{errorApiMessage}}
@@ -34,14 +31,14 @@
                   Inactif
                 </mat-option>
               </mat-select>
-              <mat-error
-                *ngIf="updateOptionForm.get('status').hasError('required')">
-                Le status est <strong>obligatoire</strong>
-              </mat-error>
+              <mat-error *ngIf="updateOptionForm.get('status').hasError('required')"></mat-error>
             </mat-form-field>
           </div>
         </div>
       </mat-card-content>
+      <mat-error *ngIf="updateOptionForm.invalid"  style="font-size: xx-small">
+        <p> (*) Tous les champs sont <strong>obligatoires!</strong> </p>
+      </mat-error>
       <mat-card-actions class="d-flex justify-content-between">
         <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="updateOptionForm.invalid" >Sauvegarder</button>
         <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>

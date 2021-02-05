@@ -1,0 +1,13 @@
+.refuse{
+  background-color: blue;
+  color: white;
+  text-decoration: none !important;
+}
+.save{
+  background: green;
+  color: white;
+  text-decoration: none !important;
+}
+#list-table-perms{
+  width: 100%;
+}

@@ -25,8 +25,12 @@ export class PermissionService {
     return this.httpClient.post(this.apiUrl + this.permissionEndPoint, null);
   }
 
-  getPermissions() {
-    return this.httpClient.get(this.apiUrl + this.permissionEndPoint);
+  getPermissionsList(): Observable<PermissionModel[]> {
+    return this.httpClient.get<PermissionModel[]>(this.apiUrl + this.permissionEndPoint);
+  }
+
+  getPermissions(): Observable<PermissionModel[]> {
+    return this.httpClient.get<PermissionModel[]>(this.apiUrl + this.permissionEndPoint);
   }
 
   getPermissionById(id): Observable<PermissionModel>{
