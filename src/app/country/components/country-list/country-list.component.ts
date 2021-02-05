@@ -6,9 +6,6 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {CountryModel} from '../../models/country.model';
 import Swal from 'sweetalert2';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {ApplicationCreateComponent} from "../../../application/component/application-create/application-create.component";
-import {ApplicationModel} from "../../../application/models/application.model";
-import {ApplicationEditComponent} from "../../../application/component/application-edit/application-edit.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
@@ -30,8 +27,6 @@ export class CountryListComponent implements OnInit {
   delete = false;
   submitted = false;
   test: boolean;
-  successMessage: string;
-  editCountryUrl = '/country/edit/';
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   Columns: string[] = [ 'nom', 'code', 'status', 'Actions' ];

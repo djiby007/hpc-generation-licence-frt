@@ -21,7 +21,7 @@ export class ContinentListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   listContinent:  MatTableDataSource<ContinentModel>;
-  displayColumns: string[] = ['Code', 'Libellé'];
+  Columns: string[] = ['Code', 'Libellé'];
 
   constructor(
     private router: Router,

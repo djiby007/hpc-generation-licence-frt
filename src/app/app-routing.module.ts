@@ -5,7 +5,7 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 
 const routes: Routes = [
 
-  { path: 'dashboard', component: DashboardComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate : [AuthGuardService]  },
 
   { path: 'auth',
     loadChildren: () => import('./authentication/components/login/login.module').then(m => m.LoginModule) },

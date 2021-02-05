@@ -37,7 +37,7 @@ export class PermissionService {
     return this.httpClient.get<PermissionModel>(this.apiUrl + this.permissionEndPoint + '/' + id);
   }
 
-  updatePermission(id: number, affectation: UpdatePermissionModel) {
+  updatePermission(id: number, affectation: UpdatePermissionModel):Observable<any> {
     return this.httpClient.put(this.apiUrl + this.permissionEndPoint + '/' + id, affectation);
   }
 
