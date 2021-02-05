@@ -7,7 +7,7 @@ import {UserModel} from '../../../user/models/user.model';
 import {HttpParams} from '@angular/common/http';
 import {MatTableDataSource} from '@angular/material/table';
 import {ProfileModel} from '../../../profile/models/profile.model';
-import {MatPaginator} from '@angular/material/paginator';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 
 @Component({
@@ -151,4 +151,5 @@ export class PermissionListComponent implements OnInit {
       });
     }
   }
+
 }
