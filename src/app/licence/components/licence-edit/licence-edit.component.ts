@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {OptionModel} from '../../../option/models/option.model';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
-import {MatDialogRef} from '@angular/material/dialog';
 import {OptionService} from '../../../option/services/option.service';
 import {LicenceService} from '../../services/licence.service';
 import {FilialeService} from '../../../filiale/services/filiale.service';
@@ -28,10 +27,15 @@ export class LicenceEditComponent implements OnInit {
   detailsFacture: DetailsFacturationModel;
   detailsFactureList: DetailsFacturationModel[];
   currentApplication: ApplicationModel;
-  currentFiliale: FilialeModel;
   currentOption: OptionModel;
   selectedUnite = 'jour';
   licence: LicenceModel;
+  detailsForm: FormGroup;
+  value = this.formBuilder.group({
+    nombre: ['', Validators.required],
+    montant: ['', Validators.required],
+    optionVente: ['', Validators.required]
+  });
   successStatus: boolean;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -45,7 +49,9 @@ export class LicenceEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.findLicence(+this.activatedRoute.snapshot.paramMap.get('id'));
+    this.findDetails(+this.activatedRoute.snapshot.paramMap.get('id'));
     this.createForm();
+    this.createDetailsForm();
     this.getApplicationList();
     this.getFilialeList();
     this.getOptionList();
@@ -55,10 +61,17 @@ export class LicenceEditComponent implements OnInit {
     this.updateLicenceForm = new FormGroup({
       application: new FormControl('', Validators.required),
       filiale: new FormControl('', Validators.required),
-      montant: new FormControl('', Validators.required),
+      montant: new FormControl({value: 0, disabled: true}),
       description: new FormControl('', Validators.required),
       dateDebut: new FormControl('', Validators.required),
       duree: new FormControl('', Validators.required)
+    });
+  }
+
+  createDetailsForm(){
+    this.detailsForm = this.formBuilder.group({
+      details: this.formBuilder.array([
+      ])
     });
   }
 
@@ -78,14 +91,39 @@ export class LicenceEditComponent implements OnInit {
     return this.updateLicenceForm.get('duree');
   }
 
+  get montant(){
+    return this.updateLicenceForm.get('montant');
+  }
+
+  get details(){
+    return this.detailsForm.get('details');
+  }
+
   findLicence(id: number) {
     this.licenceService.findLicence(id).subscribe(value => {
       this.licence = value.data;
       this.application.setValue(this.licence.application.id);
+      this.montant.setValue(this.licence.application.prix);
       this.filiale.setValue(this.licence.filiale.id);
       this.description.setValue(this.licence.description);
       this.dateDebut.setValue(this.licence.dateDebut);
       this.duree.setValue(this.licence.duree);
+    });
+  }
+
+  findDetails(idLicence: number) {
+    this.licenceService.findDetails(idLicence).subscribe(data => {
+      this.detailsFactureList = data;
+      const detailsForm = this.detailsForm.get('details') as FormArray;
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < this.detailsFactureList.length; i++){
+        const val = this.formBuilder.group({
+          nombre: [{value: this.detailsFactureList[i].nombre}],
+          montant: [{value: this.detailsFactureList[i].montant}],
+          optionVente: [{value: this.detailsFactureList[i].optionVente.id}]
+        });
+        detailsForm.push(val);
+      }
     });
   }
 
@@ -107,12 +145,8 @@ export class LicenceEditComponent implements OnInit {
     });
   }
 
-  getFilialeSelected(obj){
-    this.currentFiliale = obj.value;
-  }
-
   getApplicationSelected(obj){
-    this.currentApplication = obj.value;
+    this.currentApplication = this.listApplications.find(element => element.id === obj.value);
     this.updateLicenceForm.patchValue({montant: this.currentApplication.prix});
   }
 
@@ -122,6 +156,25 @@ export class LicenceEditComponent implements OnInit {
 
   getSelectedUnite(obj){
     this.selectedUnite = obj.value;
+  }
+
+  addDetailsForm(){
+    const val = this.formBuilder.group({
+      nombre: ['', Validators.required],
+      montant: ['', Validators.required],
+      optionVente: ['', Validators.required]
+    });
+    const detailsForm = this.detailsForm.get('details') as FormArray;
+    detailsForm.push(val);
+  }
+
+  removeGroup(index) {
+    const detailsForm = this.detailsForm.get('details') as FormArray;
+    detailsForm.removeAt(index);
+  }
+
+  trackByFn(index: any, item: any) {
+    return index;
   }
 
   updateLicence() {

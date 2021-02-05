@@ -166,18 +166,6 @@ export class LicenceCreateComponent implements OnInit {
 
   saveLicence(){
     this.detailsFactureList = this.detailsForm.get('details').value as DetailsFacturationModel[];
-    /*this.licence = this.licenceForm.value;
-    const duree = this.licenceForm.get('duree').value;
-    console.log(this.selectedUnite);
-    if (this.selectedUnite === 'jour'){
-      this.licence.dateFin = moment(this.licenceForm.get('dateDebut').value).add(duree, 'days').toDate();
-    }
-    if (this.selectedUnite === 'mois'){
-      this.licence.dateFin = moment(this.licenceForm.get('dateDebut').value).add(duree, 'months').toDate();
-    }
-    if (this.selectedUnite === 'an'){
-      this.licence.dateFin = moment(this.licenceForm.get('dateDebut').value).add(duree, 'years').toDate();
-    }*/
     const a = moment(this.licence.dateFin);
     const b = moment(this.licence.dateDebut);
     this.licence.duree = a.diff(b, 'days');
@@ -185,7 +173,6 @@ export class LicenceCreateComponent implements OnInit {
       licence: this.licence,
       detailsFacturationList: this.detailsFactureList
     };
-    console.log(licenceDto);
     this.licenceService.addLicence(licenceDto).subscribe(
       (value) => {
         if (value.data === null){
@@ -204,15 +191,5 @@ export class LicenceCreateComponent implements OnInit {
         console.log(error);
       }
     );
-  }
-
-  getDaysInMonth(month, year) {
-    const date = new Date(year, month, 1);
-    const days = [];
-    while (date.getMonth() === month) {
-      days.push(new Date(date));
-      date.setDate(date.getDate() + 1);
-    }
-    console.log(days);
   }
 }
