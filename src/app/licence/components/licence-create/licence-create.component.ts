@@ -107,6 +107,7 @@ export class LicenceCreateComponent implements OnInit {
   createResumeForm(){
     this.detailsFactureList = this.detailsForm.get('details').value as DetailsFacturationModel[];
     this.licence = this.licenceForm.value;
+    this.licence.montant = this.licence.application.prix;
     const duree = this.licenceForm.get('duree').value;
     /// console.log(this.selectedUnite);
     if (this.selectedUnite === 'jour'){
@@ -165,7 +166,6 @@ export class LicenceCreateComponent implements OnInit {
   }
 
   saveLicence(){
-    this.detailsFactureList = this.detailsForm.get('details').value as DetailsFacturationModel[];
     const a = moment(this.licence.dateFin);
     const b = moment(this.licence.dateDebut);
     this.licence.duree = a.diff(b, 'days');

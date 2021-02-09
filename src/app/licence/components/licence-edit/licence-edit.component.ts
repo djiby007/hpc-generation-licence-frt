@@ -11,6 +11,11 @@ import {ApplicationModel} from '../../../application/models/application.model';
 import {DetailsFacturationModel} from '../../models/detailsFacturation.model';
 import {ActivatedRoute} from '@angular/router';
 import {LicenceModel} from '../../models/licence.model';
+import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
+import {DetailsFacturationEditComponent} from '../details-facturation-edit/details-facturation-edit.component';
+import {OptionEditComponent} from '../../../option/component/option-edit/option-edit.component';
+import {OptionCreateComponent} from '../../../option/component/option-create/option-create.component';
+import {MatTableDataSource} from '@angular/material/table';
 
 @Component({
   selector: 'app-licence-edit',
@@ -25,21 +30,24 @@ export class LicenceEditComponent implements OnInit {
   listFiliales: FilialeModel[];
   listApplications: ApplicationModel[];
   detailsFacture: DetailsFacturationModel;
-  detailsFactureList: DetailsFacturationModel[];
+  detailsFactureList: MatTableDataSource<DetailsFacturationModel>;
   currentApplication: ApplicationModel;
   currentOption: OptionModel;
   selectedUnite = 'jour';
   licence: LicenceModel;
+  Columns: string[] = [ 'Option', 'Nombre', 'Montant', 'Actions' ];
   detailsForm: FormGroup;
   value = this.formBuilder.group({
     nombre: ['', Validators.required],
     montant: ['', Validators.required],
     optionVente: ['', Validators.required]
   });
+  details: FormArray;
   successStatus: boolean;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  constructor(private activatedRoute: ActivatedRoute,
+  constructor(private dialog: MatDialog,
+              private activatedRoute: ActivatedRoute,
               private licenceService: LicenceService,
               private filialeService: FilialeService,
               private applicationService: ApplicationService,
@@ -51,7 +59,6 @@ export class LicenceEditComponent implements OnInit {
     this.findLicence(+this.activatedRoute.snapshot.paramMap.get('id'));
     this.findDetails(+this.activatedRoute.snapshot.paramMap.get('id'));
     this.createForm();
-    this.createDetailsForm();
     this.getApplicationList();
     this.getFilialeList();
     this.getOptionList();
@@ -68,11 +75,22 @@ export class LicenceEditComponent implements OnInit {
     });
   }
 
-  createDetailsForm(){
-    this.detailsForm = this.formBuilder.group({
-      details: this.formBuilder.array([
-      ])
-    });
+  editDetails(Details: DetailsFacturationModel){
+    this.licenceService.currentDetail = Details;
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    this.dialog.open(DetailsFacturationEditComponent, dialogOption);
+  }
+
+  addDetails() {
+    const dialogOption = new MatDialogConfig();
+    dialogOption.disableClose = true;
+    dialogOption.autoFocus = true;
+    dialogOption.width = '50%';
+    dialogOption.panelClass = ['background-dialog'];
+    this.dialog.open(OptionCreateComponent, dialogOption);
   }
 
   get application(){
@@ -95,10 +113,6 @@ export class LicenceEditComponent implements OnInit {
     return this.updateLicenceForm.get('montant');
   }
 
-  get details(){
-    return this.detailsForm.get('details');
-  }
-
   findLicence(id: number) {
     this.licenceService.findLicence(id).subscribe(value => {
       this.licence = value.data;
@@ -113,17 +127,7 @@ export class LicenceEditComponent implements OnInit {
 
   findDetails(idLicence: number) {
     this.licenceService.findDetails(idLicence).subscribe(data => {
-      this.detailsFactureList = data;
-      const detailsForm = this.detailsForm.get('details') as FormArray;
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.detailsFactureList.length; i++){
-        const val = this.formBuilder.group({
-          nombre: [{value: this.detailsFactureList[i].nombre}],
-          montant: [{value: this.detailsFactureList[i].montant}],
-          optionVente: [{value: this.detailsFactureList[i].optionVente.id}]
-        });
-        detailsForm.push(val);
-      }
+      this.detailsFactureList = new MatTableDataSource<DetailsFacturationModel>(data);
     });
   }
 
@@ -158,19 +162,8 @@ export class LicenceEditComponent implements OnInit {
     this.selectedUnite = obj.value;
   }
 
-  addDetailsForm(){
-    const val = this.formBuilder.group({
-      nombre: ['', Validators.required],
-      montant: ['', Validators.required],
-      optionVente: ['', Validators.required]
-    });
-    const detailsForm = this.detailsForm.get('details') as FormArray;
-    detailsForm.push(val);
-  }
-
   removeGroup(index) {
-    const detailsForm = this.detailsForm.get('details') as FormArray;
-    detailsForm.removeAt(index);
+    /*this.detailsFactureList.splice(index);*/
   }
 
   trackByFn(index: any, item: any) {

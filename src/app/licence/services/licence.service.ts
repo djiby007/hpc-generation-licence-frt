@@ -4,6 +4,7 @@ import {Observable, Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {LicenceDtoModel} from '../models/licenceDto.model';
 import {LicenceModel} from '../models/licence.model';
+import {DetailsFacturationModel} from '../models/detailsFacturation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class LicenceService {
   apiUrl = environment.apiUrl;
   licenceEndPoint = '/licence';
   Listeners = new Subject<any>();
+  currentDetail: DetailsFacturationModel;
   constructor(private httpClient: HttpClient) { }
 
   getAllLicence(): Observable<any>{
