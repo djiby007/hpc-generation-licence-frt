@@ -112,6 +112,7 @@ export class CompanyCreateComponent implements OnInit {
             verticalPosition: this.verticalPosition,
             panelClass: ['green-snackbar']
           });
+          this.OnClose();
         } else {
           this.errorApiMessage = data.message;
           this.snackbar.open(this.successApiMessage.toString(), '', {
