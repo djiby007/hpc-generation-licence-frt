@@ -1,12 +1,12 @@
 
 <div class="card card-warning card-outline">
   <div class="card-header">
-    <h4 class="card-title">AJOUTER DE VILLE</h4>
+    <h4 class="card-title">MODIFICATION DE VILLE</h4>
   </div>
   <div class="card-body">
     <form [formGroup]="cityForm" (ngSubmit)="onSubmit()"autocomplete="off">
       <mat-card-content class="">
-        <div class="row text-center">
+        <div class="row">
           <div class="col-md-6">
             <mat-form-field class="exemple-full-width" >
               <mat-label class="label-form">Nom</mat-label>
@@ -43,11 +43,11 @@
           </div>
         </div>
 
-        <div class="row text-center">
+        <div class="row">
           <div class="col">
-            <mat-form-field appearance="fill" >
+            <mat-form-field>
               <mat-label class="label-form">Pays</mat-label>
-              <mat-select formControlName="country" >
+              <mat-select name="status" formControlName="country" >
                 <mat-option *ngFor="let country of  listCountry" [value]="country.id">
                   {{country.caption}}
                 </mat-option>
@@ -66,6 +66,8 @@
 
 
       </mat-card-content>
+      <br>
+      <br>
       <mat-card-actions class="">
         <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="cityForm.invalid" >Sauvegarder</button>
         <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>

@@ -9,3 +9,14 @@
 .box{
   font-size: 14px;
 }
+
+.refuse{
+  background-color: blue;
+  color: white;
+  text-decoration: none !important;
+}
+.save{
+  background: green;
+  color: white;
+  text-decoration: none !important;
+}

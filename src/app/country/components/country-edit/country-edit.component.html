@@ -6,7 +6,7 @@
   <div class="card-body">
     <form [formGroup]="countryForm" (ngSubmit)="onSubmit()"autocomplete="off">
       <mat-card-content class="">
-        <div class="row text-center">
+        <div class="row">
           <div class="col-md-6">
             <mat-form-field class="exemple-full-width" >
               <mat-label class="label-form">Nom</mat-label>
@@ -43,16 +43,15 @@
           </div>
         </div>
 
-        <div class="row text-center">
-          <div class="col">
-            <mat-form-field appearance="fill" >
+        <div class="">
+          <div class="">
+            <mat-form-field >
               <mat-label class="label-form">Continent</mat-label>
               <mat-select name="status" formControlName="continent" >
                 <mat-option *ngFor="let continent of  listContinent" [value]="continent.id">
                   {{continent.caption}}
                 </mat-option>
               </mat-select>
-              <textarea matInput formControlName="continent"  [minLength]="2" required="required"></textarea>
               <mat-error
                 *ngIf="countryForm.get('continent').hasError('required')">
                 Continent <strong>obligatoire</strong>
@@ -67,6 +66,8 @@
 
 
       </mat-card-content>
+      <br>
+      <br>
       <mat-card-actions class="">
         <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="countryForm.invalid" >Sauvegarder</button>
         <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
