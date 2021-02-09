@@ -119,6 +119,9 @@ export class CityListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(CityCreateComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllCity();
+    });
   }
 
   get file(){
@@ -173,9 +176,29 @@ export class CityListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.id = city.id + '';
     this.dialog.open(CityEditComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllCity();
+    });
   }
 
   onDeleteCity(city: CityModel){
-    this.cityService.deleteCity(city);
+    this.cityService.deleteCity(city).subscribe(data=>{
+      if (data.success === true){
+        this.snackbar.open(data.message, '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+        this.getAllCity();
+      } else {
+        this.snackbar.open(data.message.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+      }
+    });
   }
 }

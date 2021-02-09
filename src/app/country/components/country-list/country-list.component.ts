@@ -104,6 +104,9 @@ export class CountryListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(CountryCreateComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllCountry();
+    });
   }
 
   applyFilterCountry(filterValue: string) {
@@ -118,10 +121,30 @@ export class CountryListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.id = country.id + '';
     this.dialog.open(CountryEditComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllCountry();
+    });
   }
 
   onDeleteCountry(country: CountryModel){
-    this.countryService.deleteCountry(country);
+    this.countryService.deleteCountry(country).subscribe(data=>{
+      if (data.success === true){
+        this.snackbar.open(data.message, '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+        this.getAllCountry();
+      } else {
+        this.snackbar.open(data.message.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+      }
+    });
   }
 
 }

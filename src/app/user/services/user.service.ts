@@ -43,7 +43,7 @@ export class UserService {
     return this.http.put<any>(this.apiUrl + this.userEndPoint + '/' + user.id, user);
   }
 
-  deleteUser(user: UserModel): Observable<UserModel>{
+  deleteUser(user: UserModel): Observable<any>{
     return this.http.delete<UserModel>(this.apiUrl + this.userEndPoint + this.deleteEndPoint + '/' + user.id);
   }
 

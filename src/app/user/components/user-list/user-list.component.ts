@@ -196,6 +196,9 @@ export class UserListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(UserCreateComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllUser();
+    });
   }
 
   onEditUser(user: UserModel){
@@ -205,6 +208,9 @@ export class UserListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.id = user.id + '';
     this.dialog.open(UserEditComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllUser();
+    });
   }
 
   onDeleteUser(user: UserModel){
@@ -219,6 +225,21 @@ export class UserListComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
           this.userService.deleteUser(user).subscribe( data => {
+            if (data.success === true){
+              this.snackbar.open(data.message, '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+            } else {
+              this.snackbar.open(data.message.toString(), '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+            }
             // @ts-ignore
             this.successMessage = data.message;
             this.Toast.fire({

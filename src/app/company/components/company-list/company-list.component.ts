@@ -118,6 +118,9 @@ export class CompanyListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(CompanyCreateComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllCompany();
+    });
   }
 
   onEditCompany(company: CompanyModel){
@@ -127,6 +130,9 @@ export class CompanyListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.id = company.id + '';
     this.dialog.open(CompanyEditComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllCompany();
+    });
   }
 
   onDeleteCompany(company: CompanyModel){
@@ -142,12 +148,22 @@ export class CompanyListComponent implements OnInit {
         if (result.isConfirmed) {
           this.companyService.deleteCompany(company).subscribe( data => {
               // @ts-ignore
-              this.successMessage = data.message;
-              this.Toast.fire({
-                icon: 'success',
-                title: this.successMessage,
+            if (data.success === true){
+              this.snackbar.open(data.message, '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
               });
               this.getAllCompany();
+            } else {
+              this.snackbar.open(data.message.toString(), '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+            }
             }, err => {
               console.log(err);
             });

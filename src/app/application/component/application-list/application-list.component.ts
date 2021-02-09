@@ -49,6 +49,9 @@ export class ApplicationListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(ApplicationCreateComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllApplication();
+    });
   }
 
   applyFilterApplications(filterValue: string) {
@@ -63,10 +66,30 @@ export class ApplicationListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.id = application.id + '';
     this.dialog.open(ApplicationEditComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllApplication();
+    });
   }
 
   onDeleteApplication(application: ApplicationModel){
-    this.applicationService.deleteApplication(application);
+    this.applicationService.deleteApplication(application).subscribe(data=>{
+      if (data.success === true){
+        this.snackbar.open(data.message, '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+        this.getAllApplication();
+      } else {
+        this.snackbar.open(data.message.toString(), '', {
+          duration: 4000,
+          horizontalPosition: this.horizontalPosition,
+          verticalPosition: this.verticalPosition,
+          panelClass: ['green-snackbar']
+        });
+      }
+    });
   }
 
 }

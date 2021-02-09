@@ -116,6 +116,9 @@ export class FilialeListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
     this.dialog.open(FilialeCreateComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllFiliale();
+    });
   }
 
   onEditFiliale(filiale: FilialeModel){
@@ -125,6 +128,9 @@ export class FilialeListComponent implements OnInit {
     dialogOption.width = '50%';
     dialogOption.id = filiale.id + '';
     this.dialog.open(FilialeEditComponent, dialogOption);
+    this.dialog.afterAllClosed.subscribe(()=>{
+      this.getAllFiliale();
+    });
   }
 
   onDeleteFiliale(filiale: FilialeModel){
@@ -139,13 +145,22 @@ export class FilialeListComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
           this.filialeService.deleteFiliale(filiale).subscribe( data => {
-            // @ts-ignore
-            this.successMessage = data.message;
-            this.Toast.fire({
-              icon: 'success',
-              title: this.successMessage,
-            });
-            this.getAllFiliale();
+            if (data.success === true){
+              this.snackbar.open(data.message, '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+              this.getAllFiliale();
+            } else {
+              this.snackbar.open(data.message.toString(), '', {
+                duration: 4000,
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                panelClass: ['green-snackbar']
+              });
+            }
           }, err => {
             console.log(err);
           });
