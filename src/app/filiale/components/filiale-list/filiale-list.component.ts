@@ -6,15 +6,12 @@ import {FilialeModel} from "../../models/filiale.model";
 import {AbstractControl, FormControl, FormGroup, Validators} from "@angular/forms";
 import Swal from "sweetalert2";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
-import {CityCreateComponent} from "../../../city/components/city-create/city-create.component";
 import {FilialeCreateComponent} from "../filiale-create/filiale-create.component";
-import {CityEditComponent} from "../../../city/components/city-edit/city-edit.component";
 import {FilialeEditComponent} from "../filiale-edit/filiale-edit.component";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 import {MatTableDataSource} from "@angular/material/table";
-import {CityModel} from "../../../city/models/city.model";
 
 @Component({
   selector: 'app-filiale-list',
@@ -26,7 +23,7 @@ export class FilialeListComponent implements OnInit {
   successMessage: string;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  Columns: string[] = [ 'nom', 'email', 'adress', 'phone', 'webSite', 'city', 'typeGeneriqueLogin', 'Actions' ];
+  Columns: string[] = [ 'nom', 'adress', 'email', 'phone', 'webSite', 'city', 'Actions' ];
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   listFiliale: MatTableDataSource<FilialeModel>;

@@ -14,6 +14,9 @@
                     <div class="col-lg-3">
                       <mat-form-field >
                         <input matInput (keyup)="applyFilterFiliale($event.target.value)" placeholder="Rechercher">
+                        <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                          <mat-icon style="font-size: medium">search</mat-icon>
+                        </button>
                       </mat-form-field>
                     </div>
                   </div>
@@ -28,14 +31,14 @@
                         <td mat-header-cell *matCellDef="let element">{{element.caption}}</td>
                       </ng-container>
 
-                      <ng-container matColumnDef="email">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Email</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.email}}</td>
-                      </ng-container>
-
                       <ng-container matColumnDef="adress">
                         <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Adresse</th>
                         <td mat-header-cell *matCellDef="let element" > {{element.adress}}</td>
+                      </ng-container>
+
+                      <ng-container matColumnDef="email">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Email</th>
+                        <td mat-header-cell *matCellDef="let element" > {{element.email}}</td>
                       </ng-container>
 
                       <ng-container matColumnDef="phone">
@@ -53,7 +56,7 @@
                         <td mat-header-cell *matCellDef="let element" > {{element.city.caption}}</td>
                       </ng-container>
 
-                      <ng-container matColumnDef="typeGeneriqueLogin">
+                      <!--<ng-container matColumnDef="typeGeneriqueLogin">
                         <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Type de Generation de Login</th>
                         <td mat-header-cell *matCellDef="let filiale" >
                             <span *ngIf="filiale.typeGeneriqueLogin==='FirstLetterOfFirstNameAndLastName'">1 ière lettre du Prénom + Nom</span>
@@ -63,7 +66,7 @@
                             <span *ngIf="filiale.typeGeneriqueLogin==='BeforeEmail'">Avant @</span>
 
                         </td>
-                      </ng-container>
+                      </ng-container>-->
 
                       <ng-container matColumnDef="Actions">
                         <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>

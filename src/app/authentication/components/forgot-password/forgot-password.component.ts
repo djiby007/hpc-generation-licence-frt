@@ -29,7 +29,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   OnClose() {
-    this.router.navigateByUrl('login');
+    this.router.navigateByUrl('auth/login');
   }
 
   createForm(){
