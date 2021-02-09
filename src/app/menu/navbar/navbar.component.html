@@ -6,7 +6,7 @@
       <i aria-hidden="true" class="fa fa-envelope ml-3"></i> hpc@hpc.sn
     </p>
   </div>
-  <mat-toolbar style="height: 7vh;">
+  <mat-toolbar style="height: 10vh;">
     <span>
       <a routerLink="">
         <img alt="HPC | Vente de logiciels de gestion"  class="ml-lg-4" data-actual-height="70" data-actual-width="180"
@@ -32,6 +32,7 @@
       <mat-menu #lowMenu="matMenu" yPosition="below">
         <button mat-menu-item routerLink="option">Options</button>
         <button mat-menu-item routerLink="configuration">Config-licence</button>
+        <button mat-menu-item routerLink="licence">Licence</button>
       </mat-menu>
 
       <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
@@ -77,6 +78,7 @@
         <mat-menu #lowMenu="matMenu" yPosition="below">
           <button mat-menu-item routerLink="option">Options</button>
           <button mat-menu-item routerLink="configuration">Config-licence</button>
+          <button mat-menu-item routerLink="licence">Licence</button>
         </mat-menu>
 
         <button mat-button [matMenuTriggerFor]="belowMenu">Permission</button>
@@ -97,7 +99,7 @@
       </div>
     </mat-sidenav>
     <mat-sidenav-content fxFlexFill>
-      <div class="container-fluid">
+      <div class="container-fluid mt-3">
         <router-outlet></router-outlet>
       </div>
     </mat-sidenav-content>

@@ -7,6 +7,7 @@ import { LicenceListComponent } from './components/licence-list/licence-list.com
 import { LicenceRoutingModule } from './licence-routing.module';
 import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { DetailsFacturationEditComponent } from './components/details-facturation-edit/details-facturation-edit.component';
 
 
 
@@ -15,7 +16,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     LicenceCreateComponent,
     LicenceDetailsComponent,
     LicenceEditComponent,
-    LicenceListComponent
+    LicenceListComponent,
+    DetailsFacturationEditComponent
   ],
     imports: [
         CommonModule,
