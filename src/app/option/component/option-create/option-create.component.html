@@ -4,16 +4,12 @@
     </div>
     <div class="card-body">
       <form [formGroup]="optionForm"  (ngSubmit)="onSaveOption(optionForm.value)" autocomplete="off">
-        <mat-card-content class="d-flex justify-content-center">
-          <div class="row text-center">
+        <mat-card-content class="d-flex justify-content-start">
+          <div class="row">
             <div class="col-md-6">
               <mat-form-field class="exemple-full-width" >
                 <mat-label class="label-form">Caption</mat-label>
-                <input matInput placeholder="Caption"
-                   name="caption"
-                   formControlName="caption"
-                   type="text"
-                   required="required" minLength="4">
+                <input matInput placeholder="Caption" name="caption" formControlName="caption" type="text" required="required" minLength="4">
                 <mat-error *ngIf="optionForm.get('caption').hasError('required')"></mat-error>
                 <mat-error
                   *ngIf="errorApiMessage">
@@ -40,7 +36,7 @@
         <mat-error *ngIf="optionForm.invalid"  style="font-size: xx-small">
           <p> (*) Tous les champs sont <strong>obligatoires!</strong> </p>
         </mat-error>
-        <mat-card-actions class="d-flex justify-content-between">
+        <mat-card-actions class="d-flex justify-content-start">
           <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="optionForm.invalid" >Sauvegarder</button>
           <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
         </mat-card-actions>
