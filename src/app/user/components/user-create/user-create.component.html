@@ -80,8 +80,6 @@
             </mat-form-field>
           </div>
         </div>
-
-
         <div class="row">
           <div class="col-md-6">
             <mat-form-field>
@@ -122,30 +120,19 @@
             </mat-form-field>
           </div>
         </div>
-
-        <div class="">
+        <div class="col-md-6">
           <mat-form-field >
             <mat-label class="label-form">Status</mat-label>
-            <mat-select formControlName="status" >
-              <mat-option value="FirstLetterOfFirstNameAndLastName">
-                1 ière lettre du Prénom + Nom
+            <mat-select name="status" formControlName="status" >
+              <mat-option value="Actif">
+                Actif
               </mat-option>
-              <mat-option value="FirstLetterOfLastNameAndFirstName">
-                1 ière lettre du Nom + Prénom
-              </mat-option>
-              <mat-option value="FirstNameAndFirstLetterOfLastName">
-                Prénom + 1 ière lettre du Nom
-              </mat-option>
-              <mat-option value="TwoLettersOfFirstNameAndTreeLetterOfLastName">
-                2 premières lettre du Prénom + 3 premières lettre du Nom
-              </mat-option>
-              <mat-option value="BeforeEmail">
-                Avant @
+              <mat-option value="Inactif">
+                Inactif
               </mat-option>
             </mat-select>
             <mat-error
               *ngIf="userForm.get('status').hasError('required')">
-              Status <strong>obligatoire</strong>
             </mat-error>
           </mat-form-field>
         </div>
