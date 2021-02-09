@@ -29,7 +29,7 @@ export class CountryListComponent implements OnInit {
   test: boolean;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  Columns: string[] = [ 'nom', 'code', 'status', 'Actions' ];
+  Columns: string[] = [ 'status', 'nom', 'code', 'Actions' ];
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 

@@ -26,6 +26,13 @@
                       <tr mat-header-row *matHeaderRowDef="Columns" ></tr>
                       <tr mat-row *matRowDef="let country;columns:Columns"></tr>
 
+                      <ng-container matColumnDef="status">
+                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</th>
+                        <td mat-header-cell *matCellDef="let element" >
+                          <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
+                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
+                        </td>
+                      </ng-container>
 
                       <ng-container matColumnDef="code">
                         <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Code</th>
@@ -35,15 +42,6 @@
                       <ng-container matColumnDef="nom">
                         <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Nom</th>
                         <td mat-header-cell *matCellDef="let element" > {{element.caption}}</td>
-                      </ng-container>
-
-
-                      <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Status</th>
-                        <td mat-header-cell *matCellDef="let element" >
-                          <mat-icon *ngIf="element.status == 'Actif'" class="option_icon_active">task_alt</mat-icon>
-                          <mat-icon *ngIf="element.status == 'Inactif'" class="option_icon_inactive">cancel</mat-icon>
-                        </td>
                       </ng-container>
 
                       <ng-container matColumnDef="Actions">

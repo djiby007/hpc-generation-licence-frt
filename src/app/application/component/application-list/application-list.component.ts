@@ -20,7 +20,7 @@ import {ApplicationEditComponent} from "../application-edit/application-edit.com
 export class ApplicationListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  Columns: string[] = [ 'nom', 'description', 'prix', 'nombreJour', 'status', 'Actions' ];
+  Columns: string[] = [ 'status', 'nom', 'description', 'prix', 'nombreJour', 'Actions' ];
   listApplication: MatTableDataSource<ApplicationModel>;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';

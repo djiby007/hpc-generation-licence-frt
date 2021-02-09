@@ -35,7 +35,7 @@ export class CityListComponent implements OnInit {
   editCityUrl = '/city/edit/';
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  Columns: string[] = [ 'nom', 'code', 'status', 'Actions' ];
+  Columns: string[] = [  'status', 'nom', 'code', 'Actions' ];
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
