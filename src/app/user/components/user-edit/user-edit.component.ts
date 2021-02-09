@@ -13,6 +13,7 @@ import {FilialeModel} from '../../../filiale/models/filiale.model';
 import {FilialeService} from '../../../filiale/services/filiale.service';
 import {TypeGeneriqueLogin} from '../../../enum/typeGeneriqueLogin.enum';
 import {MatDialogRef} from "@angular/material/dialog";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-user-edit',
@@ -27,9 +28,13 @@ export class UserEditComponent implements OnInit {
   submitted = false;
   successApiMessage: string;
   errorApiMessage: string;
+  Status = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private snackbar: MatSnackBar,
     private router: Router,
     private filialeService: FilialeService,
     private userService: UserService,
@@ -139,26 +144,29 @@ export class UserEditComponent implements OnInit {
     };
 
 
-    this.userService.updateUser(user).subscribe(
-      (data) => {
-        if (data.data === null){
-          this.Toast.fire({
-            icon: 'error',
-            title: data.message,
+    this.userService.updateUser(user)
+      .subscribe(data => {
+        this.successApiMessage  = data.message;
+        this.Status = Boolean(data.success);
+        if (this.Status === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
+        } else {
+          this.errorApiMessage = data.message;
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
           });
         }
-        else {
-          this.Toast.fire({
-            icon: 'success',
-            title: data.message,
-          });
-          this.router.navigateByUrl('/user');
-        }
-      },
-      (error) => {
+      }, error => {
         console.log(error);
-      }
-    );
+      });
   }
 
   setError(control: AbstractControl){

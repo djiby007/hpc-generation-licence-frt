@@ -12,6 +12,7 @@ import {FilialeModel} from "../../models/filiale.model";
 import {Status} from "../../../enum/status.enum";
 import {TypeGeneriqueLogin} from "../../../enum/typeGeneriqueLogin.enum";
 import {MatDialogRef} from "@angular/material/dialog";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-filiale-edit',
@@ -29,8 +30,12 @@ export class FilialeEditComponent implements OnInit {
   message = '';
   successApiMessage: string;
   errorApiMessage: string;
+  Status = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(
     private router: Router,
+    private snackbar: MatSnackBar,
     private companyService: CompanyService,
     private cityService: CityService,
     private location: Location,
@@ -151,24 +156,29 @@ export class FilialeEditComponent implements OnInit {
       typeGeneriqueLogin: this.typeGeneriqueLogin.value as TypeGeneriqueLogin
     };
 
-    this.filialeService.updateFiliale(filiale).subscribe(
-      (data) => {
-        if (data.data === null){
-          this.hasError = true;
-          this.message = data.message;
-        }
-        else {
-          this.Toast.fire({
-            icon: 'success',
-            title: data.message,
+    this.filialeService.updateFiliale(filiale)
+      .subscribe(data => {
+        this.successApiMessage  = data.message;
+        this.Status = Boolean(data.success);
+        if (this.Status === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
           });
-          this.router.navigateByUrl('/filiale');
+        } else {
+          this.errorApiMessage = data.message;
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
-      },
-      (error) => {
+      }, error => {
         console.log(error);
-      }
-    );
+      });
   }
 
 

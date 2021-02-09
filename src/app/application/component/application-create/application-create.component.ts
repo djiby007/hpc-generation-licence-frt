@@ -6,6 +6,7 @@ import {Status} from "../../../enum/status.enum";
 import {ApplicationService} from "../../service/application.service";
 import {ApplicationModel} from "../../models/application.model";
 import {MatDialogRef} from "@angular/material/dialog";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-application-create',
@@ -16,11 +17,15 @@ export class ApplicationCreateComponent implements OnInit {
   applicationForm: FormGroup;
   submitted = false;
   hasError = false;
+  Status = false;
   successApiMessage: string;
   errorApiMessage: string;
   message = '';
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(
     private router: Router,
+    private snackbar: MatSnackBar,
     private dialogue: MatDialogRef<ApplicationCreateComponent>,
     private applicationService: ApplicationService,
     private location: Location) { }
@@ -77,21 +82,29 @@ export class ApplicationCreateComponent implements OnInit {
       status: this.status.value as Status,
     }
 
-    this.applicationService.addApplication(applicationModel).subscribe(
-      (data) => {
-        if (data.data === null){
-          this.hasError = true;
-          this.message = data.message;
+    this.applicationService.addApplication(applicationModel)
+      .subscribe(data => {
+        this.successApiMessage  = data.message;
+        this.Status = Boolean(data.success);
+        if (this.Status === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
+        } else {
+          this.errorApiMessage = data.message;
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
-        else {
-
-          this.router.navigateByUrl('/application');
-        }
-      },
-      (error) => {
+      }, error => {
         console.log(error);
-      }
-    );
+      });
   }
 
   setError(control: AbstractControl){

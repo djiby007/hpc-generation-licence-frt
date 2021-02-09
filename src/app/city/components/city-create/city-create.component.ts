@@ -8,6 +8,7 @@ import {CityModel} from '../../models/city.model';
 import {Location} from '@angular/common';
 import Swal from 'sweetalert2';
 import {MatDialogRef} from "@angular/material/dialog";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-city-create',
@@ -23,8 +24,12 @@ export class CityCreateComponent implements OnInit {
   message = '';
   successApiMessage: string;
   errorApiMessage: string;
+  Status = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(
       private router: Router,
+      private snackbar: MatSnackBar,
       private dialogue: MatDialogRef<CityCreateComponent>,
       private countryService: CountryService,
       private cityService: CityService,
@@ -82,25 +87,29 @@ export class CityCreateComponent implements OnInit {
     this.submitted = true;
     // @ts-ignore
     const city: CityModel = {caption: this.caption.value, status: this.status.value, country: {id: this.country.value}};
-    this.cityService.addCity(city).subscribe(
-      (data) => {
-        if (data.data === null){
-          this.hasError = true;
-          this.message = data.message;
-
-        }
-        else {
-          this.Toast.fire({
-            icon: 'success',
-            title: data.message,
+    this.cityService.addCity(city)
+      .subscribe(data => {
+        this.successApiMessage  = data.message;
+        this.Status = Boolean(data.success);
+        if (this.Status === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
           });
-          this.router.navigateByUrl('/city');
+        } else {
+          this.errorApiMessage = data.message;
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
-      },
-      (error) => {
+      }, error => {
         console.log(error);
-      }
-    );
+      });
   }
 
   setError(control: AbstractControl){

@@ -8,6 +8,7 @@ import {CityModel} from '../../../city/models/city.model';
 import {Location} from '@angular/common';
 import Swal from 'sweetalert2';
 import {MatDialogRef} from "@angular/material/dialog";
+import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-company-edit',
@@ -24,8 +25,12 @@ export class CompanyEditComponent implements OnInit {
   message = '';
   successApiMessage: string;
   errorApiMessage: string;
+  Status = false;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   constructor(
     private router: Router,
+    private snackbar: MatSnackBar,
     private dialogue: MatDialogRef<CompanyEditComponent>,
     private activatedRoute: ActivatedRoute,
     private companyService: CompanyService,
@@ -101,24 +106,29 @@ export class CompanyEditComponent implements OnInit {
       status: this.status.value,
     };
 
-    this.companyService.updateCompany(company).subscribe(
-      (data) => {
-        if (data.data === null){
-          this.hasError = true;
-          this.message = data.message;
-        }
-        else {
-          this.Toast.fire({
-            icon: 'success',
-            title: data.message,
+    this.companyService.updateCompany(company)
+      .subscribe(data => {
+        this.successApiMessage  = data.message;
+        this.Status = Boolean(data.success);
+        if (this.Status === true){
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
           });
-          this.router.navigateByUrl('/company');
+        } else {
+          this.errorApiMessage = data.message;
+          this.snackbar.open(this.successApiMessage.toString(), '', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            panelClass: ['green-snackbar']
+          });
         }
-      },
-      (error) => {
+      }, error => {
         console.log(error);
-      }
-    );
+      });
   }
 
   findContinent(id: number) {
