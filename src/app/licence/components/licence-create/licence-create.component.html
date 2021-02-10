@@ -1,12 +1,9 @@
 
 <div class="card card-warning card-outline">
   <div class="card-header">
-    <h4 class="card-title">AJOUTER UNE NOUVELLE LICENCE</h4>
+    <h4 class="card-title" style="font-weight:bold;font-size: small;">AJOUTER UNE NOUVELLE LICENCE</h4>
   </div>
   <div class="card-body">
-    <!--<button mat-raised-button (click)="isEditable = !isEditable">
-      {{!isEditable ? 'Enable edit mode' : 'Disable edit mode'}}
-    </button>-->
     <mat-horizontal-stepper linear #stepper>
       <mat-step [stepControl]="licenceForm">
         <form [formGroup]="licenceForm">
