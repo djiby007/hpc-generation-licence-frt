@@ -7,6 +7,7 @@ import {ApplicationService} from "../../service/application.service";
 import {ApplicationModel} from "../../models/application.model";
 import {MatDialogRef} from "@angular/material/dialog";
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from "@angular/material/snack-bar";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-application-create',
@@ -23,6 +24,18 @@ export class ApplicationCreateComponent implements OnInit {
   message = '';
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
+
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
@@ -87,20 +100,15 @@ export class ApplicationCreateComponent implements OnInit {
         this.successApiMessage  = data.message;
         this.Status = Boolean(data.success);
         if (this.Status === true){
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
+          this.Toast.fire({
+            icon: 'success',
+            title: data.message,
           });
           this.OnClose();
         } else {
-          this.errorApiMessage = data.message;
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
+          this.Toast.fire({
+            icon: 'error',
+            title: data.message,
           });
         }
       }, error => {

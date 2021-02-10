@@ -140,20 +140,15 @@ export class FilialeCreateComponent implements OnInit {
         this.successApiMessage  = data.message;
         this.Status = Boolean(data.success);
         if (this.Status === true){
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
+          this.Toast.fire({
+            icon: 'success',
+            title: data.message,
           });
           this.OnClose();
         } else {
-          this.errorApiMessage = data.message;
-          this.snackbar.open(this.successApiMessage.toString(), '', {
-            duration: 4000,
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            panelClass: ['green-snackbar']
+          this.Toast.fire({
+            icon: 'error',
+            title: data.message,
           });
         }
       }, error => {
