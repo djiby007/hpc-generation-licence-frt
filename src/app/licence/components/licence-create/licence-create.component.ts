@@ -20,12 +20,6 @@ import {LicenceModel} from '../../models/licence.model';
   styleUrls: ['./licence-create.component.css']
 })
 export class LicenceCreateComponent implements OnInit {
-  constructor(private router: Router,
-              private licenceService: LicenceService,
-              private optionService: OptionService,
-              private filialeService: FilialeService,
-              private applicationService: ApplicationService,
-              private formBuilder: FormBuilder) { }
   licenceForm: FormGroup;
   detailsForm: FormGroup;
   resumeForm: FormGroup;
@@ -46,6 +40,12 @@ export class LicenceCreateComponent implements OnInit {
     optionVente: ['', Validators.required]
   });
   selectedUnite = 'jour';
+  constructor(private router: Router,
+              private licenceService: LicenceService,
+              private optionService: OptionService,
+              private filialeService: FilialeService,
+              private applicationService: ApplicationService,
+              private formBuilder: FormBuilder) { }
   Toast = Swal.mixin({
     toast: true,
     position: 'top-end',

@@ -7,17 +7,13 @@ import { LicenceListComponent } from './components/licence-list/licence-list.com
 import { LicenceRoutingModule } from './licence-routing.module';
 import {AppMaterialModule} from '../utilities/app-material/app-material.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { DetailsFacturationEditComponent } from './components/details-facturation-edit/details-facturation-edit.component';
-
-
 
 @NgModule({
   declarations: [
     LicenceCreateComponent,
     LicenceDetailsComponent,
     LicenceEditComponent,
-    LicenceListComponent,
-    DetailsFacturationEditComponent
+    LicenceListComponent
   ],
     imports: [
         CommonModule,

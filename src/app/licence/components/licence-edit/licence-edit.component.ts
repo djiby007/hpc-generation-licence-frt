@@ -9,14 +9,13 @@ import {ApplicationService} from '../../../application/service/application.servi
 import {FilialeModel} from '../../../filiale/models/filiale.model';
 import {ApplicationModel} from '../../../application/models/application.model';
 import {DetailsFacturationModel} from '../../models/detailsFacturation.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LicenceModel} from '../../models/licence.model';
-import {MatDialog, MatDialogConfig, MatDialogRef} from '@angular/material/dialog';
-import {DetailsFacturationEditComponent} from '../details-facturation-edit/details-facturation-edit.component';
-import {OptionEditComponent} from '../../../option/component/option-edit/option-edit.component';
-import {OptionCreateComponent} from '../../../option/component/option-create/option-create.component';
+import {MatDialog} from '@angular/material/dialog';
 import {MatTableDataSource} from '@angular/material/table';
 import {LicenceDtoModel} from '../../models/licenceDto.model';
+import * as moment from 'moment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-licence-edit',
@@ -34,33 +33,40 @@ export class LicenceEditComponent implements OnInit {
   detailsFactureList: MatTableDataSource<DetailsFacturationModel>;
   currentApplication: ApplicationModel;
   currentOption: OptionModel;
+  currentFiliale: FilialeModel;
   selectedUnite = 'jour';
   licence: LicenceModel;
   licenceDto: LicenceDtoModel;
+  dateFin: Date;
+  newDuree: number;
   Columns: string[] = [ 'Option', 'Nombre', 'Montant', 'Actions' ];
   detailsForm: FormGroup;
-  value = this.formBuilder.group({
-    nombre: ['', Validators.required],
-    montant: ['', Validators.required],
-    optionVente: ['', Validators.required]
-  });
-  details: FormArray;
-  successStatus: boolean;
+  hasError = false;
+  message = '';
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
-  constructor(private dialog: MatDialog,
+  constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private licenceService: LicenceService,
               private filialeService: FilialeService,
               private applicationService: ApplicationService,
-              private optionService: OptionService,
-              private formBuilder: FormBuilder,
-              private snackbar: MatSnackBar) { }
+              private optionService: OptionService) {}
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
 
   ngOnInit(): void {
     this.findLicence(+this.activatedRoute.snapshot.paramMap.get('id'));
-    console.log(this.detailsFactureList);
     this.createForm();
+    this.initialiserDetailsForm();
     this.getApplicationList();
     this.getFilialeList();
     this.getOptionList();
@@ -77,22 +83,20 @@ export class LicenceEditComponent implements OnInit {
     });
   }
 
-  editDetails(Details: DetailsFacturationModel){
-    /*this.licenceService.currentDetail = Details;
-    const dialogOption = new MatDialogConfig();
-    dialogOption.disableClose = true;
-    dialogOption.autoFocus = true;
-    dialogOption.width = '50%';
-    this.dialog.open(DetailsFacturationEditComponent, dialogOption);*/
+  initialiserDetailsForm(){
+    this.detailsForm = new FormGroup({
+      optionVente: new FormControl('', Validators.required),
+      nombre:  new FormControl('', Validators.required),
+      montant: new FormControl('', Validators.required)
+    });
   }
 
-  addDetails() {
-    /*const dialogOption = new MatDialogConfig();
-    dialogOption.disableClose = true;
-    dialogOption.autoFocus = true;
-    dialogOption.width = '50%';
-    dialogOption.panelClass = ['background-dialog'];
-    this.dialog.open(OptionCreateComponent, dialogOption);*/
+  addDetailsForm(){
+    const details = this.detailsForm.value;
+    details.optionVente = this.currentOption;
+    this.detailsFactureList.data.push(details);
+    this.detailsFactureList._updateChangeSubscription();
+    this.initialiserDetailsForm();
   }
 
   get application(){
@@ -118,6 +122,7 @@ export class LicenceEditComponent implements OnInit {
   findLicence(id: number) {
     this.licenceService.findLicence(id).subscribe(value => {
       this.licenceDto = value.data;
+      console.log(this.licenceDto);
       this.application.setValue(this.licenceDto.licence.application.id);
       this.montant.setValue(this.licenceDto.licence.application.prix);
       this.filiale.setValue(this.licenceDto.licence.filiale.id);
@@ -127,12 +132,6 @@ export class LicenceEditComponent implements OnInit {
       this.detailsFactureList = new MatTableDataSource<DetailsFacturationModel>(this.licenceDto.detailsFacturationList);
     });
   }
-/*
-  findDetails(idLicence: number) {
-    this.licenceService.findDetails(idLicence).subscribe(data => {
-      this.detailsFactureList = new MatTableDataSource<DetailsFacturationModel>(data);
-    });
-  }*/
 
   getOptionList(){
     this.optionService.getOptionList().subscribe(data => {
@@ -158,37 +157,70 @@ export class LicenceEditComponent implements OnInit {
   }
 
   getOptionSelected(obj){
-    this.currentOption = obj.value;
+    this.currentOption = this.listOptions.find(option => option.id === obj.value);
+  }
+  getFilialeSelected(obj){
+    this.currentFiliale = this.listFiliales.find(filiale => filiale.id === obj.value);
   }
 
   getSelectedUnite(obj){
     this.selectedUnite = obj.value;
   }
 
-  removeGroup(index) {
-    /*this.detailsFactureList.splice(index);*/
-  }
-
-  trackByFn(index: any, item: any) {
-    return index;
+  removeDetails(index) {
+    this.detailsFactureList.data.splice(this.detailsFactureList.data.indexOf(index), 1);
+    this.detailsFactureList._updateChangeSubscription();
   }
 
   updateLicence() {
-    /*const options = this.optionService.currentOption;
-    const option: OptionModel = {id: options.id , code: options.code, success: options.success, message: options.message,
-      caption: this.updateOptionForm.get('caption').value, status: this.updateOptionForm.get('status').value};
-    this.optionService.updateOption(option.id, option).subscribe( data => {
-      this.successApiMessage = data.message;
-      this.snackbar.open(this.successApiMessage.toString(), '', {
-        duration: 4000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        panelClass: ['green-snackbar']
-      });
-      this.OnClose();
+    const duree = this.updateLicenceForm.get('duree').value;
+    /// console.log(this.selectedUnite);
+    if (this.selectedUnite === 'jour') {
+      this.dateFin = moment(this.updateLicenceForm.get('dateDebut').value).add(duree, 'days').toDate();
+    }
+    if (this.selectedUnite === 'mois'){
+      this.dateFin = moment(this.updateLicenceForm.get('dateDebut').value).add(duree, 'months').toDate();
+    }
+    if (this.selectedUnite === 'an'){
+      this.dateFin = moment(this.updateLicenceForm.get('dateDebut').value).add(duree, 'years').toDate();
+    }
+    const a = moment(this.dateFin);
+    const b = moment(this.updateLicenceForm.get('dateDebut').value);
+    this.newDuree= a.diff(b, 'days');
+    this.currentFiliale = this.listFiliales.find(filiale => filiale.id === this.updateLicenceForm.get('filiale').value);
+    this.currentApplication = this.listApplications.find(appli => appli.id === this.updateLicenceForm.get('application').value);
+    this.licenceDto = {
+      licence: {
+        id: this.licenceDto.licence.id,
+        application: this.currentApplication,
+        filiale: this.currentFiliale,
+        montant: this.montant.value,
+        description: this.description.value,
+        dateDebut: this.dateDebut.value,
+        cle: this.licenceDto.licence.cle,
+        dateFin: this.dateFin,
+        duree: this.newDuree,
+        status: this.licenceDto.licence.status
+        },
+      detailsFacturationList: this.detailsFactureList.data
+
+    };
+    console.log(this.licenceDto);
+    this.licenceService.updateLicence(this.licenceDto.licence.id, this.licenceDto).subscribe( value => {
+      if (value.data === null){
+        this.hasError = true;
+        this.message = value.message;
+      }
+      else {
+        this.Toast.fire({
+          icon: 'success',
+          title: value.message,
+        });
+        this.router.navigateByUrl('/licence');
+      }
     }, error => {
       console.log(error.message);
-    });*/
+    });
   }
 
 }

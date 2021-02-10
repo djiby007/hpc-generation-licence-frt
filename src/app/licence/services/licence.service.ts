@@ -24,8 +24,8 @@ export class LicenceService {
     return this.httpClient.post<any>(this.apiUrl + this.licenceEndPoint, licenceDto);
   }
 
-  updateLicence(id: number, licence: LicenceDtoModel): Observable<any>{
-    return this.httpClient.put(this.apiUrl + this.licenceEndPoint + '/' + id, licence);
+  updateLicence(id: number, licenceDto: LicenceDtoModel): Observable<any>{
+    return this.httpClient.put(this.apiUrl + this.licenceEndPoint + '/' + id, licenceDto);
   }
 
   findLicence(id: number): Observable<any>{
