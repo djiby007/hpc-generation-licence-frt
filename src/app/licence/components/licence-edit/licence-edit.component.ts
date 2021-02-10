@@ -16,6 +16,7 @@ import {DetailsFacturationEditComponent} from '../details-facturation-edit/detai
 import {OptionEditComponent} from '../../../option/component/option-edit/option-edit.component';
 import {OptionCreateComponent} from '../../../option/component/option-create/option-create.component';
 import {MatTableDataSource} from '@angular/material/table';
+import {LicenceDtoModel} from '../../models/licenceDto.model';
 
 @Component({
   selector: 'app-licence-edit',
@@ -35,6 +36,7 @@ export class LicenceEditComponent implements OnInit {
   currentOption: OptionModel;
   selectedUnite = 'jour';
   licence: LicenceModel;
+  licenceDto: LicenceDtoModel;
   Columns: string[] = [ 'Option', 'Nombre', 'Montant', 'Actions' ];
   detailsForm: FormGroup;
   value = this.formBuilder.group({
@@ -57,7 +59,7 @@ export class LicenceEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.findLicence(+this.activatedRoute.snapshot.paramMap.get('id'));
-    this.findDetails(+this.activatedRoute.snapshot.paramMap.get('id'));
+    console.log(this.detailsFactureList);
     this.createForm();
     this.getApplicationList();
     this.getFilialeList();
@@ -76,21 +78,21 @@ export class LicenceEditComponent implements OnInit {
   }
 
   editDetails(Details: DetailsFacturationModel){
-    this.licenceService.currentDetail = Details;
+    /*this.licenceService.currentDetail = Details;
     const dialogOption = new MatDialogConfig();
     dialogOption.disableClose = true;
     dialogOption.autoFocus = true;
     dialogOption.width = '50%';
-    this.dialog.open(DetailsFacturationEditComponent, dialogOption);
+    this.dialog.open(DetailsFacturationEditComponent, dialogOption);*/
   }
 
   addDetails() {
-    const dialogOption = new MatDialogConfig();
+    /*const dialogOption = new MatDialogConfig();
     dialogOption.disableClose = true;
     dialogOption.autoFocus = true;
     dialogOption.width = '50%';
     dialogOption.panelClass = ['background-dialog'];
-    this.dialog.open(OptionCreateComponent, dialogOption);
+    this.dialog.open(OptionCreateComponent, dialogOption);*/
   }
 
   get application(){
@@ -115,21 +117,22 @@ export class LicenceEditComponent implements OnInit {
 
   findLicence(id: number) {
     this.licenceService.findLicence(id).subscribe(value => {
-      this.licence = value.data;
-      this.application.setValue(this.licence.application.id);
-      this.montant.setValue(this.licence.application.prix);
-      this.filiale.setValue(this.licence.filiale.id);
-      this.description.setValue(this.licence.description);
-      this.dateDebut.setValue(this.licence.dateDebut);
-      this.duree.setValue(this.licence.duree);
+      this.licenceDto = value.data;
+      this.application.setValue(this.licenceDto.licence.application.id);
+      this.montant.setValue(this.licenceDto.licence.application.prix);
+      this.filiale.setValue(this.licenceDto.licence.filiale.id);
+      this.description.setValue(this.licenceDto.licence.description);
+      this.dateDebut.setValue(this.licenceDto.licence.dateDebut);
+      this.duree.setValue(this.licenceDto.licence.duree);
+      this.detailsFactureList = new MatTableDataSource<DetailsFacturationModel>(this.licenceDto.detailsFacturationList);
     });
   }
-
+/*
   findDetails(idLicence: number) {
     this.licenceService.findDetails(idLicence).subscribe(data => {
       this.detailsFactureList = new MatTableDataSource<DetailsFacturationModel>(data);
     });
-  }
+  }*/
 
   getOptionList(){
     this.optionService.getOptionList().subscribe(data => {

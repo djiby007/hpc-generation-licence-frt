@@ -1,85 +1,85 @@
-<div class="content-wrapper pt-4">
-        <div class="card card-warning card-outline">
-          <div class="card-header">
-            <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES UTILISATEURS</h6>
-          </div>
-          <div class="card-body table-responsive pt-2 pb-3">
-            <div class="table-responsive" >
-              <div class="panel-body">
-                <div style="overflow: auto">
-                  <div class="row" class="d-flex justify-content-lg-between">
-                    <div class="col-lg-3">
-                      <a mat-raised-button color="accent" type="submit" (click)="onAddUser()" class="btn-sm save" >Ajouter</a>
-                    </div>
-                    <div class="col-lg-3">
-                      <mat-form-field >
-                        <input matInput (keyup)="applyFilterUser($event.target.value)" placeholder="Rechercher">
-                        <button mat-button matSuffix mat-icon-button aria-label="Clear">
-                          <mat-icon style="font-size: medium">search</mat-icon>
-                        </button>
-                      </mat-form-field>
-                    </div>
-                  </div>
-                  <div  class="mat-elevation-z8">
-                    <table mat-table multiTemplateDataRows [dataSource]="listUser" matSort class="table-bordred table-striped table-sm">
-                      <tr mat-header-row *matHeaderRowDef="Columns" ></tr>
-                      <tr mat-row *matRowDef="let country;columns:Columns"></tr>
 
-
-                      <ng-container matColumnDef="Civilité">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Civilité</th>
-                        <td mat-header-cell *matCellDef="let element">{{element.civility}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Login">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Login</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.login}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Prénom">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Prénom</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.firstName}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Nom">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Nom</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.lastName}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Email">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Email</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.email}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Profile">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Profile</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.profile.caption}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Filiale">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Filiale</th>
-                        <td mat-header-cell *matCellDef="let element" > {{element.filiale.caption}}</td>
-                      </ng-container>
-
-                      <ng-container matColumnDef="Actions">
-                        <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
-                        <td mat-cell *matCellDef="let user" class="d-flex justify-content-sm-between">
-                          <a mat-icon-button class="edit" (click)="onEditUser(user)">
-                            <mat-icon>launch</mat-icon>
-                          </a>
-                          <a mat-icon-button color="warn"  (click)="onDeleteUser(user)">
-                            <mat-icon>delete_outline</mat-icon>
-                          </a>
-                        </td>
-                      </ng-container>
-                    </table>
-                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-                  </div>
-                </div>
-              </div>
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES UTILISATEURS</h6>
+  </div>
+  <div class="card-body table-responsive pt-2 pb-3">
+    <div class="table-responsive" >
+      <div class="panel-body">
+        <div style="overflow: auto">
+          <div class="row" class="d-flex justify-content-lg-between">
+            <div class="col-lg-3">
+              <a mat-raised-button color="accent" type="submit" (click)="onAddUser()" class="btn-sm save" >Ajouter</a>
+            </div>
+            <div class="col-lg-3">
+              <mat-form-field >
+                <input matInput (keyup)="applyFilterUser($event.target.value)" placeholder="Rechercher">
+                <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon style="font-size: medium">search</mat-icon>
+                </button>
+              </mat-form-field>
             </div>
           </div>
+          <div  class="mat-elevation-z8">
+            <table mat-table multiTemplateDataRows [dataSource]="listUser" matSort class="table-bordred table-striped table-sm">
+              <tr mat-header-row *matHeaderRowDef="Columns" ></tr>
+              <tr mat-row *matRowDef="let country;columns:Columns"></tr>
+
+
+              <ng-container matColumnDef="Civilité">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Civilité</th>
+                <td mat-header-cell *matCellDef="let element">{{element.civility}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Login">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Login</th>
+                <td mat-header-cell *matCellDef="let element" > {{element.login}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Prénom">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Prénom</th>
+                <td mat-header-cell *matCellDef="let element" > {{element.firstName}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Nom">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black"> Nom</th>
+                <td mat-header-cell *matCellDef="let element" > {{element.lastName}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Email">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Email</th>
+                <td mat-header-cell *matCellDef="let element" > {{element.email}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Profile">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Profile</th>
+                <td mat-header-cell *matCellDef="let element" > {{element.profile.caption}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Filiale">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Filiale</th>
+                <td mat-header-cell *matCellDef="let element" > {{element.filiale.caption}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="Actions">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-small;font-weight: bold;color: black">Actions</th>
+                <td mat-cell *matCellDef="let user" class="d-flex justify-content-sm-between">
+                  <a mat-icon-button class="edit" (click)="onEditUser(user)">
+                    <mat-icon>launch</mat-icon>
+                  </a>
+                  <a mat-icon-button color="warn"  (click)="onDeleteUser(user)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </a>
+                </td>
+              </ng-container>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
 </div>
+
 
 

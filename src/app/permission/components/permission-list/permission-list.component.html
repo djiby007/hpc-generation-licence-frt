@@ -1,102 +1,44 @@
-<!--<div class="content-wrapper">
-  <section class="container">
-    <div class="row mt-3">
-      <div class="col-md-12">
-        <div class="card card-warning card-outline">
-          <div class="card-header">
-            <h4 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES AFFECTATIONS</h4>
+
+<div class="card card-warning card-outline">
+  <div class="card-header">
+    <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES PERMISSIONS</h6>
+  </div>
+  <div class="card-body table-responsive pt-2 pb-3">
+    <div class="table-responsive" >
+      <div class="panel-body">
+        <div style="overflow: auto">
+          <div class="row" class="d-flex justify-content-lg-between">
+            <div class="col-lg-3">
+              <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="AlouerPermision()" >Alouer Permission</a>
+            </div>
+            <div class="col-lg-3">
+              <mat-form-field >
+                <input matInput (keyup)="applyFilterProfiles($event.target.value)" placeholder="Rechercher">
+                <button mat-button matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon style="font-size: medium">search</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
           </div>
-          <div class="card-body table-responsive pt-2 pb-3">
-            <div class="panel-body pb-4">
-              <div class="row">
-                <div class="col-sm-6">
-                  <button (click)="AlouerPermision()" *ngIf="canWrite == true" class="btn btn-success btn-sm">
-                    <i class="fa fa-link" aria-hidden="true"></i> Alouer Permission
-                  </button>
-                </div>
-                <div class="col-sm-6">
-               &lt;!&ndash;   <form #searchPermis="ngForm" (ngSubmit)="onChercheProfile(searchPermis.value)"  class="form-inline" style="float:right">
-                    <div class="form-group mr-2">
-                      <select name="code" ngModel class="form-control">
-                        <option value="" selected>Profil</option>
-                        <option *ngFor="let p of profiles" [ngValue]="p.id" selected>{{p.caption}}</option>
-                      </select>
-                    </div>
-                    <button class="btn btn-success btn-sm" type="submit" data-toggle="modal" data-target=".bd-example-modal-lg">
-                      <i class="fa fa-search" aria-hidden="true"></i> Rechercher
-                    </button>
-                  </form>&ndash;&gt;
-                </div>
-              </div>
-            </div>
-            <div class="table-responsive" >
-              <div class="panel-body">
-                <table  class="table table-bordred table-striped">
-                  <tbody>
-                  <thead>
-                  <th>Profile</th>
-                  <th>Fonctionalité</th>
-                  <th>Edit</th>
-                  <th>Write</th>
-                  <th>Read</th>
-                  <th>Delete</th>
-                  <th>Action</th>
-                  </thead>
-                  <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
-                  <tbody>
-                </table>
-                <div *ngIf="test === true"><p>Aucune affectation n'a encore été éffectuée pour ce profil!</p></div>
-              </div>
-            </div>
+          <div  class="mat-elevation-z8" >
+            <table>
+              <tbody  class="table table-bordred table-striped table-sm"  matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
+              <thead class="d-flex justify-content-lg-center table-responsive-sm">
+                <th>Profile</th>
+                <th>Fonctionnalité</th>
+                <th>Edit</th>
+                <th>Write</th>
+                <th>Read</th>
+                <th>Delete</th>
+                <th>Actions</th>
+              </thead>
+                <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
+              <tbody>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 50, 100]" showFirstLastButtons></mat-paginator>
           </div>
         </div>
       </div>
     </div>
-  </section>
-</div>-->
-
-<div class="content-wrapper pt-4">
-   <div class="card card-warning card-outline">
-      <div class="card-header">
-        <h6 class="card-title" style="font-weight:bold;font-size: small;">LISTE DES AFFECTATIONS</h6>
-      </div>
-      <div class="card-body table-responsive pt-2 pb-3">
-        <div class="table-responsive" >
-          <div class="panel-body">
-            <div style="overflow: auto">
-              <div class="row" class="d-flex justify-content-lg-between">
-                <div class="col-lg-3">
-                  <a mat-raised-button color="accent" type="submit" class="btn-sm save" (click)="AlouerPermision()" >Alouer Permission</a>
-                </div>
-                <div class="col-lg-3">
-                  <mat-form-field >
-                    <input matInput (keyup)="applyFilterProfiles($event.target.value)" placeholder="Rechercher">
-                    <button mat-button matSuffix mat-icon-button aria-label="Clear">
-                      <mat-icon style="font-size: medium">search</mat-icon>
-                    </button>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div  class="mat-elevation-z8" >
-                <table>
-                  <tbody  class="table table-bordred table-striped table-sm"  matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
-                  <thead class="d-flex justify-content-lg-center table-responsive-sm">
-                    <th>Profile</th>
-                    <th>Fonctionnalité</th>
-                    <th>Edit</th>
-                    <th>Write</th>
-                    <th>Read</th>
-                    <th>Delete</th>
-                    <th>Actions</th>
-                  </thead>
-                    <app-permission-edit *ngFor="let f of listPermissions" [currentPermission]="f"></app-permission-edit>
-                  <tbody>
-                </table>
-                <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-   </div>
+  </div>
 </div>
