@@ -97,6 +97,9 @@
       </mat-card-content>
 
       <br>
+      <mat-error *ngIf="applicationForm.invalid"  style="font-size: xx-small">
+        <p> (*) Tous les champs sont <strong>obligatoires !</strong> </p>
+      </mat-error>
       <br>
       <mat-card-actions class="">
         <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="applicationForm.invalid" >Sauvegarder</button>

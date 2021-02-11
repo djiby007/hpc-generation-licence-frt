@@ -117,6 +117,11 @@
           </div>
         </div>
       </mat-card-content>
+      <br>
+      <mat-error *ngIf="companyForm.invalid"  style="font-size: xx-small">
+        <p> (*) Tous les champs sont <strong>obligatoires !</strong> </p>
+      </mat-error>
+      <br>
       <mat-card-actions class="">
         <button mat-raised-button color="accent" type="submit" class="btn-sm save" [disabled]="companyForm.invalid" >Sauvegarder</button>
         <a mat-raised-button color="accent" class="btn-sm refuse ml-2" (click)="OnClose()">Annuler</a>
