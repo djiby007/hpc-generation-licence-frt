@@ -4,6 +4,7 @@ import {MatDialogRef} from '@angular/material/dialog';
 import {OptionService} from '../../services/option.service';
 import {OptionModel} from '../../models/option.model';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-option-create',
@@ -15,8 +16,20 @@ export class OptionCreateComponent implements OnInit {
   successApiMessage: string;
   errorApiMessage: string;
   successStatus: boolean;
+  Status: boolean;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
   constructor(private dialogue: MatDialogRef<OptionCreateComponent>,
               private optionService: OptionService ,
               private formBuilder: FormBuilder,
@@ -49,25 +62,17 @@ export class OptionCreateComponent implements OnInit {
 
   onSaveOption(option: OptionModel){
     option = this.optionForm.value;
-    this.optionService.saveOption(option).subscribe(res => {
+    this.optionService.saveOption(option).subscribe(data => {
       this.resetForm();
-      this.successApiMessage  = res.message;
-      this.successStatus = res.success;
-      if (this.successStatus === true){
-        this.snackbar.open(this.successApiMessage.toString(), '', {
-          duration: 4000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          panelClass: ['green-snackbar']
+      if (this.Status === true){
+        this.Toast.fire({
+          icon: 'success',
+          title: data.message,
         });
-        this.OnClose();
       } else {
-        this.errorApiMessage = res.message;
-        this.snackbar.open(this.successApiMessage.toString(), '', {
-          duration: 4000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          panelClass: ['green-snackbar']
+        this.Toast.fire({
+          icon: 'error',
+          title: data.message,
         });
       }
     }, err => {

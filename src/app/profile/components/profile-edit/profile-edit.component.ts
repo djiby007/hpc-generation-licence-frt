@@ -4,6 +4,7 @@ import { ProfileService } from '../../services/profile.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatDialogRef } from '@angular/material/dialog';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-profile-edit',
@@ -18,8 +19,19 @@ export class ProfileEditComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   submitted = false;
   error = false;
+  Status = false;
   statusApi: boolean;
-
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
   constructor(public profileService: ProfileService,
               private formBuilder: FormBuilder,
               private dialogue: MatDialogRef<ProfileEditComponent>,
@@ -63,14 +75,16 @@ export class ProfileEditComponent implements OnInit {
       caption: this.editProfileForm.get('caption').value, status: this.editProfileForm.get('status').value};
     this.profileService.updateProfile(pro.id, pro).subscribe( data => {
       this.successApiMessage = data.message;
-      if ( this.statusApi === false){
-        this.errorApiMessage = data.message;
+      if (this.Status === true){
+        this.Toast.fire({
+          icon: 'success',
+          title: data.message,
+        });
+        this.OnClose();
       } else {
-        this.snackbar.open(this.successApiMessage.toString(), '', {
-          duration: 4000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          panelClass: ['green-snackbar']
+        this.Toast.fire({
+          icon: 'error',
+          title: data.message,
         });
       }
       this.OnClose();

@@ -10,6 +10,7 @@ import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition}
 import {ApplicationEditConfigModel} from '../../../application/models/applicationEditConfig.model';
 import {ApplicationService} from '../../../application/service/application.service';
 import {ApplicationModel} from '../../../application/models/application.model';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-configuration-create',
@@ -25,6 +26,18 @@ export class ConfigurationCreateComponent implements OnInit {
   successStatus: boolean;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  Status: boolean;
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
 
   constructor(private dialogs: MatDialogRef<ConfigurationCreateComponent>,
               private configService: ConfigurationService,
@@ -93,20 +106,18 @@ export class ConfigurationCreateComponent implements OnInit {
       status: this.status.value,
       optionVente: { id: this.optionVente.value, caption: this.optionVente.value.caption },
       application: { id: this.application.value, nom: this.application.value.nom } }
-    this.configService.saveConfig(configs).subscribe(res => {
+    this.configService.saveConfig(configs).subscribe(data => {
       this.resetConfigForm();
-      this.successApiMessage  = res.message;
-      this.successStatus = res.success;
-      if (this.successStatus === true){
-        this.snackbar.open(this.successApiMessage.toString(), '', {
-          duration: 4000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          panelClass: ['green-snackbar']
+      if (this.Status === true){
+        this.Toast.fire({
+          icon: 'success',
+          title: data.message,
         });
-        this.Close();
       } else {
-        this.errorApiMessage = res.message;
+        this.Toast.fire({
+          icon: 'error',
+          title: data.message,
+        });
       }
     }, err => {
       console.log(err.message);

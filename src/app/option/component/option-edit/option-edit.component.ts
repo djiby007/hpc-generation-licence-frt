@@ -4,6 +4,7 @@ import {OptionService} from '../../services/option.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition} from '@angular/material/snack-bar';
 import {OptionModel} from '../../models/option.model';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-option-edit',
@@ -17,6 +18,18 @@ export class OptionEditComponent implements OnInit {
   successStatus: boolean;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  Status: boolean;
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
   constructor(private dialogue: MatDialogRef<OptionEditComponent>,
               public optionService: OptionService ,
               private formBuilder: FormBuilder,
@@ -50,14 +63,15 @@ export class OptionEditComponent implements OnInit {
       caption: this.updateOptionForm.get('caption').value, status: this.updateOptionForm.get('status').value};
     this.optionService.updateOption(option.id, option).subscribe( data => {
       this.successApiMessage = data.message;
-      if ( this.successStatus === false){
-        this.errorApiMessage = data.message;
-      }else{
-        this.snackbar.open(this.successApiMessage.toString(), '', {
-          duration: 4000,
-          horizontalPosition: this.horizontalPosition,
-          verticalPosition: this.verticalPosition,
-          panelClass: ['green-snackbar']
+      if (this.Status === true){
+        this.Toast.fire({
+          icon: 'success',
+          title: data.message,
+        });
+      } else {
+        this.Toast.fire({
+          icon: 'error',
+          title: data.message,
         });
       }
       this.OnClose();

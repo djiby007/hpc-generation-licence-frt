@@ -9,6 +9,7 @@ import {OptionService} from '../../../option/services/option.service';
 import {Observable} from 'rxjs';
 import {ApplicationModel} from '../../../application/models/application.model';
 import {ApplicationService} from '../../../application/service/application.service';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-configuration-edit',
@@ -23,6 +24,18 @@ export class ConfigurationEditComponent implements OnInit {
   errorApiMessage: string;
   horizontalPosition: MatSnackBarHorizontalPosition = 'right';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  Status: boolean;
+  Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener('mouseenter', Swal.stopTimer);
+      toast.addEventListener('mouseleave', Swal.resumeTimer);
+    }
+  });
   constructor(private dialogue: MatDialogRef<ConfigurationEditComponent>,
               public configService: ConfigurationService ,
               private applicationService: ApplicationService,
@@ -91,12 +104,9 @@ export class ConfigurationEditComponent implements OnInit {
       application: { id: this.application.value, nom: this.configService.currentConfig.application.nom }
     };
     this.configService.updateConfig(configuration.id, configuration).subscribe( data => {
-      this.successApiMessage = data.message;
-      this.snackbar.open(this.successApiMessage.toString(), '', {
-        duration: 4000,
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-        panelClass: ['green-snackbar']
+      this.Toast.fire({
+        icon: 'error',
+        title: data.message,
       });
       this.Close();
     }, error => {
