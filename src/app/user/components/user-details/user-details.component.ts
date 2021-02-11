@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
 import {Location} from '@angular/common';
 import {UserModel} from '../../models/user.model';
-import {AuthService} from "../../../authentication/services/auth.service";
 
 @Component({
   selector: 'app-user-details',
@@ -26,12 +25,10 @@ export class UserDetailsComponent implements OnInit {
 
   getUserDetail(){
     this.userService.findUserByUsername(localStorage.getItem('username'))
-      .subscribe((data)=> {
+      .subscribe((data) => {
         this.user = data;
       });
   }
-
-
 
   goBack() {
     this.location.back();
